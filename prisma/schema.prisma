@@ -6,6 +6,153 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
+}
+
+model User{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String //name of the user
+  username String @unique //username for authentication
+  emailAddress String @unique //email address for authentication and contact
+  password String? //password
+  hashedPassword String? //password encrypted that will be stored in the database
+  age Int? //age of the user
+  bio String? //a short description of the user
+  fieldOfStudy String? //the field of the study that user is enrolled or associated with
+  profilePicture String? //profile picture of the user
+  linkedInProfile String? //a link to the user LinkedIn profile
+  facebookProfile String?  //a link to the user Facebook profile
+  tutoringAvailable Boolean? @default(false) //is the user available for tutoring
+  tutoringRating Float? @default(0) //rating of the tutor
+  academicLevel String? //level that will be assigned to the user based on score
+  score Int? @default(0) //score for the user based on interaction and value provided by the user
+  followingIds    String[] @db.ObjectId //ids of the users that follows the user
+  followerIds String[] @db.ObjectId //ids of the users that the user follows
+  createdAt DateTime @default(now()) //when the user has signed up with the application
+  updatedAt DateTime @updatedAt //when the user details were updated
+  posts Post[] //1-many relation b/w user and post (a user can have more than one post)
+  comments Comment[] //1-many relation b/w user and comment
+  notifications Notification[] //1-many relation b/w user and notifications
+  createdGroups StudyGroup[] @relation("groupCreator") //1-many relation b/w user and study group 
+  membership Membership[] //1-many relation b/w user and membership (user can be a member
+                          // of more than one group)
+  event Event[] //1-many relation b/w user and event (user can be attending more than one event)
+  eventAttendance EventAttendance[] // Reference to EventAttendance records
+}                         
+
+
+model Post {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  content     String?   // Content of the post
+  createdAt   DateTime  @default(now()) // When the post was created
+  likedIds    String[]  @db.ObjectId // IDs of users who liked the post
+  upVoteIds   String[]  @db.ObjectId // IDs of users who upvoted the post
+  downVoteIds String[]  @db.ObjectId // IDs of users who downvoted the post
+  mediaUrls   String[]  // URLs or identifiers for media files associated with the post
+  authorId    String    @db.ObjectId // ID of the author of the post
+  studyGroupId  String?    @db.ObjectId // ID of the associated study group, if any
+
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments  Comment[] // A post can have more than one comment
+  studyGroup    StudyGroup? @relation(fields: [studyGroupId], references: [id], onDelete: SetNull)
+}
+
+
+model Comment{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  content String? //content of the comment
+  createdAt DateTime @default(now()) //when the comment was made
+  upVoteIds String[] @db.ObjectId //up vote recieved by the comment
+  downVoteIds String[] @db.ObjectId //down vote recieved by the comment
+  postId String @db.ObjectId //id of the post on which the comment was made
+  authorId String @db.ObjectId //id of the author who made the comment
+
+  author User @relation(fields:[authorId], references: [id], onDelete: Cascade)
+  //authorId field of the Comment model is linked with the id of the User model
+
+  post Post  @relation(fields: [postId], references:[id], onDelete: Cascade)
+  //postId field of the Comment model is linked with the id of the Post model
+}
+
+model StudyGroup {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  groupName   String   // Name of the group
+  description String   // A short description about the group
+  private     Boolean  @default(false) // Indicates if the group is private; public by default
+  subject     String?  // The main subject or area of focus for the study group
+  createdAt   DateTime @default(now()) // When the group was created
+  updatedAt   DateTime @updatedAt // When the group details were last updated
+  creatorId   String   @db.ObjectId // ID of the creator who created the group
+
+  creator   User         @relation("groupCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  members   Membership[] // More than one user can be a member of the group
+  posts     Post[]       // A group can have more than one post related to its subject
+  events    Event[]      // A group can have more than one event
+}
+
+enum MembershipStatus{
+  //status of user request to join a private group
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+model Membership {
+  id     String           @id @default(auto()) @map("_id") @db.ObjectId
+  userId String           @db.ObjectId // ID of the user who requested to join the group
+  groupId String          @db.ObjectId // ID of the group for which membership is requested
+  status MembershipStatus @default(PENDING) // Status of the user's request to join a private group
+
+  user   User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  group  StudyGroup  @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) // When the membership request was created
+}
+
+model EventAttendance {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  userId   String @db.ObjectId
+  eventId  String @db.ObjectId
+
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event    Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, eventId]) // Ensure each user-event pair is unique
+}
+
+
+model Event {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String   // Title of the event
+  description String   // A detailed description of the event
+  startTime   DateTime @default(now()) // When the event starts
+  endTime     DateTime // When the event ends
+  groupId     String   @db.ObjectId // ID of the group hosting the event
+  createdBy   String   @db.ObjectId // ID of the user who created the event
+
+  group       StudyGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  creator     User       @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+  eventAttendance EventAttendance[] // Reference to EventAttendance records
+}
+
+model Notification {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  type        NotificationType // Type of notification (e.g., EVENT_INVITE, NEW_POST, etc.)
+  body        String   // Main content or message of the notification
+  createdAt   DateTime @default(now()) // When the notification was created
+  read        Boolean  @default(false) // Indicates whether the notification has been read
+  userId      String   @db.ObjectId // ID of the user who will receive the notification
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum NotificationType {
+  EVENT_INVITE
+  NEW_POST
+  GROUP_JOIN_REQUEST
+  GROUP_JOIN_ACCEPTED
+  LIKE
+  UPVOTE
+  DOWNVOTE
+  COMMENT
 }
