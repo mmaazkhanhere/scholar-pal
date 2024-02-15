@@ -25,8 +25,6 @@ const Header = (props: Props) => {
         setShowMobileMenu(!showMobileMenu)
     }, [showMobileMenu])
 
-    console.log(showMobileMenu)
-
     return (
         <header
             className='w-full fixed z-50 bg-[#fefefe] shadow-sm'
