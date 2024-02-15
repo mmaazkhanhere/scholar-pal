@@ -1,19 +1,32 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState, useCallback } from 'react'
 
 import Avatar from './avatar'
 import NavbarItems from './navbar-item'
+import MobileNavbar from './mobile-navbar'
 
 import { FaMagic } from 'react-icons/fa'
 import { RiRobot2Fill } from 'react-icons/ri'
-import { IoMdNotifications } from "react-icons/io";
+import { IoMdNotifications, IoMdMenu } from "react-icons/io";
 import { TbLogout } from "react-icons/tb";
+
 
 
 type Props = {}
 
 const Header = (props: Props) => {
+
+    const [showMobileMenu, setShowMobileMenu] = useState(false)
+
+    const toggleMobileMenu = useCallback(() => {
+        setShowMobileMenu(!showMobileMenu)
+    }, [showMobileMenu])
+
+    console.log(showMobileMenu)
+
     return (
         <header
             className='w-full fixed z-50 bg-[#fefefe] shadow-sm'
@@ -24,7 +37,7 @@ const Header = (props: Props) => {
             >
                 {/*Logo and Assistant */}
                 <div
-                    className='flex items-center justify-start '
+                    className='flex items-center justify-start'
                 >
                     {/*Logo */}
                     <Link href='/'>
@@ -56,19 +69,33 @@ const Header = (props: Props) => {
                     {/*Assistant Mobile */}
                     <button
                         aria-label='AI Assistant Button'
-                        className='block lg:hidden hover:scale-105'
+                        className='block lg:hidden hover:scale-105 pl-[2px]'
                     >
                         <RiRobot2Fill className='fill-[#1abc9c] w-7 h-7' />
                     </button>
                 </div>
 
                 {/*Navigation Items */}
-                <div className='flex items-center justify-start gap-4 lg:gap-8'>
+                <div className='flex items-center justify-start gap-5 lg:gap-8'>
                     <NavbarItems />
                     <IoMdNotifications className='hidden lg:block w-7 h-7' />
                     <Avatar />
                     <TbLogout className='hidden lg:block w-7 h-7' />
+                    {/*Mobile Menu */}
+                    <button
+                        aria-label='Menu Button'
+                        onClick={toggleMobileMenu}
+                        className='block lg:hidden'
+                    >
+                        <IoMdMenu className='w-7 h-7' />
+                        {
+                            showMobileMenu && <MobileNavbar toggleButton={toggleMobileMenu} />
+                        }
+
+                    </button>
                 </div>
+
+
             </nav>
         </header>
     )
