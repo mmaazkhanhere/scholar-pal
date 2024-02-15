@@ -6,45 +6,66 @@ import useLoginModal from '@/hooks/useLoginModal'
 import useRegisterModal from '@/hooks/useRegisterModal'
 import { ToastContainer } from 'react-toastify'
 
-
 type Props = {}
 
-const LoginModal = (props: Props) => {
+const RegisterModal = (props: Props) => {
 
     const handleLoginModal = useLoginModal()
     const handleRegisterModal = useRegisterModal()
 
-    const [username, setUsername] = useState<string>('')
-    const [password, setPassword] = useState<string>('')
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [name, setName] = useState<string>('')
+    const [username, setUsername] = useState<string>('')
+    const [email, setEmail] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
 
-    const handleSumbit = () => {
-        console.log('Modal Submitted')
+    const handleSubmit = () => {
+        console.log("Register")
     }
 
     const toggleModal = useCallback(() => {
         if (isLoading) {
             return;
         }
-        handleLoginModal.onClose();
-        handleRegisterModal.onOpen();
+        handleRegisterModal.onClose()
+        handleLoginModal.onOpen()
     }, [handleLoginModal, handleRegisterModal, isLoading])
-
-
 
     const modalBody: React.ReactNode = (
         <div className='flex flex-col gap-4'>
+            {/*User Full Name */}
+            <Input
+                label='Full Name'
+                placeholder='Jack Reacher'
+                type='text'
+                value={name}
+                disabled={isLoading}
+                onChange={(event) => setName(event.target.value)}
+            />
+
+            {/*User username */}
             <Input
                 label='Username'
-                placeholder='John Doe'
+                placeholder='jackreacherhere'
                 type='text'
                 value={username}
                 disabled={isLoading}
                 onChange={(event) => setUsername(event.target.value)}
             />
+
+            {/*User Email Address */}
+            <Input
+                label='Email Address'
+                placeholder='jackreacherhere@mail.com'
+                type='email'
+                value={email}
+                disabled={isLoading}
+                onChange={(event) => setEmail(event.target.value)}
+            />
+
+            {/*User Password */}
             <Input
                 label='Password'
-                placeholder='Enter your password...'
                 type='password'
                 value={password}
                 disabled={isLoading}
@@ -55,12 +76,12 @@ const LoginModal = (props: Props) => {
 
     const modalFooter: React.ReactNode = (
         <div className='text-[#343a40]/60'>
-            <p>New to ScholarPal?
+            <p>Already part of ScholarPal Family?
                 <span
                     onClick={toggleModal}
                     className='underline hover:text-[#343a40]/90 cursor-pointer'
                 >
-                    Register yourself with us
+                    Login to your account
                 </span>
             </p>
         </div>
@@ -69,19 +90,18 @@ const LoginModal = (props: Props) => {
     return (
         <>
             <Modal
+                title='Register'
                 disabled={isLoading}
-                isOpen={handleLoginModal.isOpen}
-                title='Login'
+                buttonLabel='Register'
+                isOpen={handleRegisterModal.isOpen}
                 body={modalBody}
-                buttonLabel='Login'
-                onSubmit={handleSumbit}
                 footer={modalFooter}
-                onClose={handleLoginModal.onClose}
+                onSubmit={handleSubmit}
+                onClose={handleRegisterModal.onClose}
             />
             <ToastContainer />
         </>
-
     )
 }
 
-export default LoginModal
+export default RegisterModal
