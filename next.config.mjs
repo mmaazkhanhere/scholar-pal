@@ -1,6 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-    serverComponentsExternalPackages: ['bcrypt'],
-};
+const nextConfig = {};
 
 export default nextConfig;

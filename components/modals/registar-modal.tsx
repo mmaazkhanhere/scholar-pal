@@ -7,6 +7,10 @@ import Modal from '../modal'
 import useLoginModal from '@/hooks/useLoginModal'
 import useRegisterModal from '@/hooks/useRegisterModal'
 import { ToastContainer } from 'react-toastify'
+import axios from 'axios'
+import { successNotification } from '@/libs/success-notification'
+import { signIn } from 'next-auth/react'
+import { errorNotification } from '@/libs/error-notification'
 
 type Props = {}
 
@@ -21,8 +25,31 @@ const RegisterModal = (props: Props) => {
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
 
-    const handleSubmit = () => {
-        console.log("Register")
+    const handleSubmit = async () => {
+        try {
+            setIsLoading(true);
+
+            await axios.post('/api/register', {
+                name, username, email, password
+            });
+
+            setIsLoading(false);
+            successNotification('Account Created');
+
+            signIn('credentials', {
+                email, password
+            });
+            handleRegisterModal.onClose()
+        } catch (error: any) {
+            setIsLoading(false);
+            console.error(error, 'REGISTAR_MODAL_ERROR');
+            if (error.status === 400) {
+                errorNotification('Missing details')
+            }
+            else if (error.status === 500) {
+                errorNotification('Internal Server Error')
+            }
+        }
     }
 
     const toggleModal = useCallback(() => {
@@ -90,7 +117,8 @@ const RegisterModal = (props: Props) => {
     )
 
     return (
-        <>
+        <React.Fragment>
+            <ToastContainer />
             <Modal
                 title='Register'
                 disabled={isLoading}
@@ -101,8 +129,8 @@ const RegisterModal = (props: Props) => {
                 onSubmit={handleSubmit}
                 onClose={handleRegisterModal.onClose}
             />
-            <ToastContainer />
-        </>
+
+        </React.Fragment>
     )
 }
 

@@ -6,7 +6,10 @@ import Modal from '../modal'
 
 import useLoginModal from '@/hooks/useLoginModal'
 import useRegisterModal from '@/hooks/useRegisterModal'
-import { ToastContainer } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify'
+import { signIn } from 'next-auth/react'
+import { successNotification } from '@/libs/success-notification'
+import { errorNotification } from '@/libs/error-notification'
 
 
 type Props = {}
@@ -16,12 +19,22 @@ const LoginModal = (props: Props) => {
     const handleLoginModal = useLoginModal()
     const handleRegisterModal = useRegisterModal()
 
-    const [username, setUsername] = useState<string>('')
+    const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
-    const handleSumbit = () => {
-        console.log('Modal Submitted')
+    const handleSubmit = async () => {
+        try {
+            setIsLoading(true);
+            await signIn('credentials', {
+                email, password
+            })
+            successNotification('Logged In')
+            handleLoginModal.onClose()
+        } catch (error) {
+            console.error(error, "LOGIN_ERROR")
+            errorNotification('Something went wrong')
+        }
     }
 
     const toggleModal = useCallback(() => {
@@ -37,12 +50,12 @@ const LoginModal = (props: Props) => {
     const modalBody: React.ReactNode = (
         <div className='flex flex-col gap-4'>
             <Input
-                label='Username'
-                placeholder='John Doe'
+                label='Email Address'
+                placeholder='johndoe@mail.com'
                 type='text'
-                value={username}
+                value={email}
                 disabled={isLoading}
-                onChange={(event) => setUsername(event.target.value)}
+                onChange={(event) => setEmail(event.target.value)}
             />
             <Input
                 label='Password'
@@ -70,17 +83,18 @@ const LoginModal = (props: Props) => {
 
     return (
         <>
+            <ToastContainer />
             <Modal
                 disabled={isLoading}
                 isOpen={handleLoginModal.isOpen}
                 title='Login'
                 body={modalBody}
                 buttonLabel='Login'
-                onSubmit={handleSumbit}
+                onSubmit={handleSubmit}
                 footer={modalFooter}
                 onClose={handleLoginModal.onClose}
             />
-            <ToastContainer />
+
         </>
 
     )
