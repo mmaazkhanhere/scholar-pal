@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useCallback, useState } from 'react'
 import Input from '../input'
 import Modal from '../modal'
@@ -75,15 +77,15 @@ const RegisterModal = (props: Props) => {
     )
 
     const modalFooter: React.ReactNode = (
-        <div className='text-[#343a40]/60'>
-            <p>Already part of ScholarPal Family?
-                <span
-                    onClick={toggleModal}
-                    className='underline hover:text-[#343a40]/90 cursor-pointer'
-                >
-                    Login to your account
-                </span>
-            </p>
+        <div className='flex items-center space-x-4 text-[#343a40]/60'>
+            <span>Already part of ScholarPal Family?</span>
+            <button
+                aria-label='Register User'
+                onClick={toggleModal}
+                className='underline hover:text-[#343a40]/90 cursor-pointer'
+            >
+                Login to your account
+            </button>
         </div>
     )
 

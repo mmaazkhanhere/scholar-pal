@@ -1,12 +1,13 @@
-import { NextResponse, NextRequest } from "next/server";
-import bcrypt from 'bcrypt'
-import prisma from '@/libs/prismadb'
-import NextAuth from "next-auth/next";
-import CredentialsProvider from "next-auth/providers/credentials"
+import NextAuth, { AuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { AuthOptions } from "next-auth";
+import bcrypt from "bcryptjs-react";
+
+import prisma from "@/libs/prismadb";
+
 
 export const authOptions: AuthOptions = {
+
     adapter: PrismaAdapter(prisma),
     providers: [
         CredentialsProvider({
@@ -17,37 +18,40 @@ export const authOptions: AuthOptions = {
             },
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
-                    throw new Error('Missing Credentials')
+                    throw new Error('Missing credentials');
                 }
 
                 const user = await prisma.user.findUnique({
                     where: {
                         emailAddress: credentials.email
                     }
-                })
+                });
 
-                if (!user || !user.hashedPassword) {
-                    throw new Error('Missing Credentials')
+                if (!user || !user?.hashedPassword) {
+                    throw new Error('Invalid password');
                 }
 
-                const passwordMatched = await bcrypt.compare(credentials.password, user.hashedPassword)
+                const isCorrectPassword = await bcrypt.compare(
+                    credentials.password,
+                    user.hashedPassword
+                );
 
-                if (!passwordMatched) {
-                    throw new Error('Invalid Password')
+                if (!isCorrectPassword) {
+                    throw new Error('Invalid credentials');
                 }
 
                 return user;
             }
-        }),
+        })
     ],
     debug: process.env.NODE_ENV === 'development',
     session: {
-        strategy: 'jwt'
+        strategy: "jwt",
     },
-    jwt: {
-        secret: process.env.NEXTAUTH_JWT_SECRET,
-    },
-    secret: process.env.NEXTAUTH_SECRET
+    secret: process.env.NEXTAUTH_SECRET,
 }
 
-export default NextAuth(authOptions)
+
+const handler = NextAuth(authOptions);
+
+export { handler as GET, handler as POST };

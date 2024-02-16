@@ -1,9 +1,14 @@
+import getCurrentUser from "@/action/getCurrentUser";
 import Header from "@/components/header";
 
-export default function Home() {
+
+export default async function Home() {
+
+  const currentUser = await getCurrentUser()
+
   return (
     <main>
-      <Header />
+      <Header currentUser={currentUser!} />
     </main>
   );
 }

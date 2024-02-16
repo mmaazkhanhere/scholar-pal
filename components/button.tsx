@@ -18,7 +18,7 @@ const Button: React.FC<Props> = ({ label, secondary, onClick, disabled, large, a
             className={`
             disabled:opacity-75 disabled:cursor-not-allowed rounded-xl font-semibold
             transition duration-500 hover:scale-95 hover:opacity-75
-            ${secondary ? 'border-2 border-[#343a40] bg-transparent' : 'bg-[#1abc9c]'}
+            ${secondary ? 'border-2 border-[#343a40] bg-transparent' : 'bg-[#1abc9c] text-white'}
             ${large ? 'px-5 py-3' : 'px-4 py-2'}
         `}
         >

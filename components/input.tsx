@@ -11,10 +11,10 @@ type Props = {
 
 const Input: React.FC<Props> = ({ placeholder, value, type, onChange, label, disabled }) => {
     return (
-        <div className='w-full'>
+        <div className='w-full flex flex-col gap-2'>
             {
                 label && (
-                    <span className='text-xl font-semibold mb-2'>
+                    <span className='text-xl font-semibold'>
                         {label}
                     </span>
                 )
@@ -25,8 +25,9 @@ const Input: React.FC<Props> = ({ placeholder, value, type, onChange, label, dis
                 type={type}
                 value={value}
                 disabled={disabled}
-                className='w=full py-2 px-4 border-1.5 border-[#343a40] rounded-xl
-                transition duration-500 focus:border-[#1abc9c] disabled:opacity-70
+                className='w-full py-2 px-4 border-1.5 border-[#343a40] rounded-xl
+                transition duration-500 border
+                focus:border-[#1abc9c] disabled:opacity-70
                 disabled:cursor-not-allowed'
             />
         </div>

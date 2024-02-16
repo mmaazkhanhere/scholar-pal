@@ -4,20 +4,25 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState, useCallback } from 'react'
 
-import Avatar from './avatar'
+
 import NavbarItems from './navbar-item'
 import MobileNavbar from './mobile-navbar'
+import Avatar from './avatar'
 
 import { FaMagic } from 'react-icons/fa'
 import { RiRobot2Fill } from 'react-icons/ri'
 import { IoMdNotifications, IoMdMenu } from "react-icons/io";
 import { TbLogout } from "react-icons/tb";
 
+import { User } from '@prisma/client'
 
 
-type Props = {}
 
-const Header = (props: Props) => {
+type Props = {
+    currentUser: User
+}
+
+const Header = ({ currentUser }: Props) => {
 
     const [showMobileMenu, setShowMobileMenu] = useState(false)
 
@@ -27,7 +32,7 @@ const Header = (props: Props) => {
 
     return (
         <header
-            className='w-full fixed z-50 bg-[#fefefe] shadow-sm'
+            className='w-full fixed z-40 bg-[#fefefe] shadow-sm'
         >
             <nav
                 className='flex items-center justify-between max-w-[1600px]
@@ -77,7 +82,7 @@ const Header = (props: Props) => {
                 <div className='flex items-center justify-start gap-5 lg:gap-8'>
                     <NavbarItems />
                     <IoMdNotifications className='hidden lg:block w-7 h-7' />
-                    <Avatar />
+                    <Avatar currentUser={currentUser} />
                     <TbLogout className='hidden lg:block w-7 h-7' />
                     {/*Mobile Menu */}
                     <button

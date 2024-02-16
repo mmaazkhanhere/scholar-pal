@@ -48,7 +48,8 @@ const Modal: React.FC<Props> =
                 >
                     <div
                         className='flex flex-col w-full h-full lg:h-auto relative
-                        outline-none focus:outline-none shadow-lg p-10'
+                        outline-none focus:outline-none shadow-lg p-10 gap-5
+                        lg:gap-10'
                     >
                         <div className='flex items-center justify-between'>
                             <h3
@@ -68,7 +69,7 @@ const Modal: React.FC<Props> =
                             {body}
                         </div>
 
-                        <div className='flex flex-col gap-2'>
+                        <div className='flex flex-col gap-4'>
                             <Button
                                 disabled={disabled}
                                 label={buttonLabel}
