@@ -2,7 +2,7 @@ import React, { ChangeEventHandler } from 'react'
 
 type Props = {
     placeholder?: string;
-    value?: string; //Initial or default value given to the input
+    value?: string; //the variable to which the input value will be assigned
     type?: string; //type of input entered
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     label?: string; //label for the input

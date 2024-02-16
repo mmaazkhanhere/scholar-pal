@@ -15,7 +15,6 @@ model User{
   name String //name of the user
   username String @unique //username for authentication
   emailAddress String @unique //email address for authentication and contact
-  password String? //password
   hashedPassword String? //password encrypted that will be stored in the database
   age Int? //age of the user
   bio String? //a short description of the user
