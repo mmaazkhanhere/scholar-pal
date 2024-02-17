@@ -10,7 +10,7 @@ type Props = {
     title?: string //title of the modal
     body?: React.ReactNode // the body of the modal that is a React Component
     footer?: React.ReactNode // the footer of the modal that is a React Component
-    buttonLabel: string //label of the action button
+    buttonLabel?: string //label of the action button
     disabled?: boolean //disables the modal an
 
 }
@@ -70,12 +70,15 @@ const Modal: React.FC<Props> =
                         </div>
 
                         <div className='flex flex-col gap-4'>
-                            <Button
-                                disabled={disabled}
-                                label={buttonLabel}
-                                large
-                                onClick={handleSubmit}
-                            />
+                            {
+                                buttonLabel && <Button
+                                    disabled={disabled}
+                                    label={buttonLabel}
+                                    large
+                                    onClick={handleSubmit}
+                                />
+                            }
+
                             {footer}
                         </div>
                     </div>

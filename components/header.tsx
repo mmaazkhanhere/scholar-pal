@@ -15,6 +15,7 @@ import { IoMdNotifications, IoMdMenu } from "react-icons/io";
 
 import { IUser } from '@/interface-d'
 import LogoutButton from './logout-button'
+import useAIModal from '@/hooks/useAIModal'
 
 
 type Props = {
@@ -25,12 +26,11 @@ const Header = ({ currentUser }: Props) => {
 
     const [showMobileMenu, setShowMobileMenu] = useState(false)
 
+    const handleAIModal = useAIModal();
+
     const toggleMobileMenu = useCallback(() => {
         setShowMobileMenu(!showMobileMenu)
     }, [showMobileMenu])
-
-    console.log(currentUser)
-
 
     return (
         <header
@@ -59,6 +59,7 @@ const Header = ({ currentUser }: Props) => {
                     {/*Assistant Large Screen*/}
                     <div
                         aria-label='Ask the Assistant'
+                        onClick={() => handleAIModal.onOpen()}
                         className='border rounded-xl py-1.5 px-4 hidden lg:flex
                         items-center justify-start gap-5 w-[350px] cursor-pointer
                         hover:scale-105 transition duration-500'

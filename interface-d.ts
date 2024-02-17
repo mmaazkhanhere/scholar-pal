@@ -10,6 +10,12 @@ export interface IRegisterModal {
     onClose: () => void
 }
 
+export interface IAIModal {
+    isOpen: boolean;
+    onOpen: () => void;
+    onClose: () => void
+}
+
 export interface IUser {
     id: string;
     name: string;
