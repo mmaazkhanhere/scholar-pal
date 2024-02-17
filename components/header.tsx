@@ -9,17 +9,16 @@ import NavbarItems from './navbar-item'
 import MobileNavbar from './mobile-navbar'
 import Avatar from './avatar'
 
-import { FaMagic } from 'react-icons/fa'
+import { FaMagic, FaMedal } from 'react-icons/fa'
 import { RiRobot2Fill } from 'react-icons/ri'
 import { IoMdNotifications, IoMdMenu } from "react-icons/io";
-import { TbLogout } from "react-icons/tb";
 
-import { User } from '@prisma/client'
-
+import { IUser } from '@/interface-d'
+import LogoutButton from './logout-button'
 
 
 type Props = {
-    currentUser: User
+    currentUser: IUser
 }
 
 const Header = ({ currentUser }: Props) => {
@@ -29,6 +28,9 @@ const Header = ({ currentUser }: Props) => {
     const toggleMobileMenu = useCallback(() => {
         setShowMobileMenu(!showMobileMenu)
     }, [showMobileMenu])
+
+    console.log(currentUser)
+
 
     return (
         <header
@@ -82,8 +84,15 @@ const Header = ({ currentUser }: Props) => {
                 <div className='flex items-center justify-start gap-5 lg:gap-8'>
                     <NavbarItems />
                     <IoMdNotifications className='hidden lg:block w-7 h-7' />
-                    <Avatar currentUser={currentUser} />
-                    <TbLogout className='hidden lg:block w-7 h-7' />
+
+                    <Avatar
+                        profilePicture={currentUser?.profilePicture}
+                        username={currentUser?.username}
+                    />
+                    <div className='hidden lg:block'>
+                        <LogoutButton label />
+                    </div>
+
                     {/*Mobile Menu */}
                     <button
                         aria-label='Menu Button'

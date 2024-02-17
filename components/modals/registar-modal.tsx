@@ -26,31 +26,39 @@ const RegisterModal = (props: Props) => {
     const [password, setPassword] = useState<string>('')
 
     const handleSubmit = async () => {
+        setIsLoading(true);
         try {
-            setIsLoading(true);
-
             await axios.post('/api/register', {
                 name, username, email, password
             });
 
-            setIsLoading(false);
-            successNotification('Account Created');
-
-            signIn('credentials', {
-                email, password
+            const result = await signIn('credentials', {
+                email, password, redirect: false
             });
-            handleRegisterModal.onClose()
-        } catch (error: any) {
+
+            if (result?.ok) {
+                setTimeout(() => successNotification('Account Created'), 500);
+                handleRegisterModal.onClose();
+            } else {
+                setTimeout(() => errorNotification('Some error occurred'), 500);
+            }
+
+        } catch (error) {
+
             setIsLoading(false);
-            console.error(error, 'REGISTAR_MODAL_ERROR');
-            if (error.status === 400) {
-                errorNotification('Missing details')
+            if (axios.isAxiosError(error) && error.response?.status === 400) {
+                setTimeout(() => errorNotification('Missing Credentials'), 500);
             }
-            else if (error.status === 500) {
-                errorNotification('Internal Server Error')
+            else if (axios.isAxiosError(error) && error.response?.status === 409) {
+                setTimeout(() => errorNotification('User Already Exists'), 500);
             }
+            else {
+                setTimeout(() => errorNotification('Some error occurred'), 500);
+            }
+            console.error(error, 'REGISTER_MODAL_ERROR');
         }
-    }
+    };
+
 
     const toggleModal = useCallback(() => {
         if (isLoading) {

@@ -1,42 +1,30 @@
 "use client"
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-import getCurrentUser from '@/action/getCurrentUser';
 import useLoginModal from '@/hooks/useLoginModal';
-
-import { User } from '@prisma/client';
 
 
 type Props = {
-    currentUser: User
+    profilePicture?: string
+    username?: string
     isLarge?: boolean;
 };
 
-const Avatar: React.FC<Props> = ({ isLarge }) => {
+const Avatar: React.FC<Props> = ({ isLarge, profilePicture, username }) => {
 
     const router = useRouter();
     const handleLogin = useLoginModal();
-    const [currentUser, setCurrentUser] = useState<User | null>(null)
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            const user = await getCurrentUser();
-            setCurrentUser(user as User);
-        };
-        fetchUser()
-    }, [])
 
     const onClick = useCallback(() => {
-        console.log(handleLogin.isOpen)
-        if (currentUser === null) {
+        if (!profilePicture) {
             return handleLogin.onOpen();
         }
-        router.push(`/user/${currentUser.username}`)
-    }, [currentUser, handleLogin, router])
-
+        router.push(`/user/${username}`)
+    }, [profilePicture, router, username, handleLogin])
 
     return (
         <button
@@ -49,7 +37,7 @@ const Avatar: React.FC<Props> = ({ isLarge }) => {
             `}
         >
             <Image
-                src={currentUser?.profilePicture ?? '/placeholder.png'}
+                src={profilePicture ?? '/placeholder.png'}
                 alt='User Avatar'
                 fill
                 className='object-cover rounded-full'

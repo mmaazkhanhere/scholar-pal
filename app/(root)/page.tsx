@@ -1,5 +1,6 @@
 import getCurrentUser from "@/action/getCurrentUser";
 import Header from "@/components/header";
+import { IUser } from "@/interface-d";
 
 
 export default async function Home() {
@@ -8,7 +9,7 @@ export default async function Home() {
 
   return (
     <main>
-      <Header currentUser={currentUser!} />
+      <Header currentUser={currentUser as IUser} />
     </main>
   );
 }

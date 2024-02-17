@@ -1,5 +1,6 @@
 
 import "./globals.css";
+import 'react-toastify/dist/ReactToastify.css';
 import type { Metadata } from "next";
 import AuthContext from "@/libs/auth-context";
 import LoginModal from "@/components/modals/login-modal";

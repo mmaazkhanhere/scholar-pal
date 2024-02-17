@@ -6,8 +6,8 @@ import Modal from '../modal'
 
 import useLoginModal from '@/hooks/useLoginModal'
 import useRegisterModal from '@/hooks/useRegisterModal'
-import { ToastContainer, toast } from 'react-toastify'
-import { signIn } from 'next-auth/react'
+import { ToastContainer } from 'react-toastify'
+import { getSession, signIn } from 'next-auth/react'
 import { successNotification } from '@/libs/success-notification'
 import { errorNotification } from '@/libs/error-notification'
 
@@ -26,16 +26,28 @@ const LoginModal = (props: Props) => {
     const handleSubmit = async () => {
         try {
             setIsLoading(true);
-            await signIn('credentials', {
-                email, password
-            })
-            successNotification('Logged In')
-            handleLoginModal.onClose()
+
+            const result = await signIn('credentials', {
+                redirect: false, // Prevent automatic redirection
+                email,
+                password,
+            });
+            await getSession()
+
+            setIsLoading(false);
+
+            if (result?.error) {
+                setTimeout(() => errorNotification('Failed to log in. Please check your credentials.'), 500);
+            } else {
+                setTimeout(() => successNotification('Logged In'), 500);
+                handleLoginModal.onClose();
+            }
         } catch (error) {
             console.error(error, "LOGIN_ERROR")
-            errorNotification('Something went wrong')
+            setTimeout(() => errorNotification('Something went wrong'), 500);
         }
     }
+
 
     const toggleModal = useCallback(() => {
         if (isLoading) {

@@ -40,10 +40,26 @@ export const authOptions: AuthOptions = {
                     throw new Error('Invalid credentials');
                 }
 
-                return user;
+                return {
+                    ...user,
+                    email: user.emailAddress,
+                };
             }
         })
     ],
+    callbacks: {
+        async session({ session, token, user }) {
+            // Ensure the session.user object exists
+            session.user = session.user || {};
+
+            // Now that you've ensured session.user exists, you can safely assign email to it
+            if (user?.email) {
+                session.user.email = user.email;
+            }
+            return session;
+        }
+    },
+
     debug: process.env.NODE_ENV === 'development',
     session: {
         strategy: "jwt",
