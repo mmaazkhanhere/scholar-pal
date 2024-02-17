@@ -8,8 +8,8 @@ import useLoginModal from '@/hooks/useLoginModal'
 import useRegisterModal from '@/hooks/useRegisterModal'
 import { ToastContainer } from 'react-toastify'
 import { getSession, signIn } from 'next-auth/react'
-import { successNotification } from '@/libs/success-notification'
-import { errorNotification } from '@/libs/error-notification'
+import { successNotification } from '@/helpers/success-notification'
+import { errorNotification } from '@/helpers/error-notification'
 
 
 type Props = {}
@@ -37,14 +37,14 @@ const LoginModal = (props: Props) => {
             setIsLoading(false);
 
             if (result?.error) {
-                setTimeout(() => errorNotification('Failed to log in. Please check your credentials.'), 500);
+                setTimeout(() => errorNotification('Failed to log in. Please check your credentials.'), 1000);
             } else {
-                setTimeout(() => successNotification('Logged In'), 500);
+                setTimeout(() => successNotification('Logged In'), 1000);
                 handleLoginModal.onClose();
             }
         } catch (error) {
             console.error(error, "LOGIN_ERROR")
-            setTimeout(() => errorNotification('Something went wrong'), 500);
+            setTimeout(() => errorNotification('Something went wrong'), 1000);
         }
     }
 
@@ -81,7 +81,10 @@ const LoginModal = (props: Props) => {
     )
 
     const modalFooter: React.ReactNode = (
-        <div className='flex items-center space-x-4 text-[#343a40]/60'>
+        <div
+            className='flex items-center space-x-4 text-[#343a40]/60
+        text-sm lg:text-base'
+        >
             <span>New to ScholarPal?</span>
             <button
                 aria-label='Register User'

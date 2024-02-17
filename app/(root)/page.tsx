@@ -1,4 +1,4 @@
-import getCurrentUser from "@/action/getCurrentUser";
+import getCurrentUser from "@/actions/getCurrentUser";
 import Header from "@/components/header";
 import { IUser } from "@/interface-d";
 

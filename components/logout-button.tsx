@@ -1,5 +1,5 @@
 import useLoginModal from '@/hooks/useLoginModal';
-import { successNotification } from '@/libs/success-notification';
+import { successNotification } from '@/helpers/success-notification';
 import { getSession, signOut, useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 import { TbLogout } from 'react-icons/tb';

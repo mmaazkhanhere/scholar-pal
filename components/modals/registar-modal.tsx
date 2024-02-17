@@ -8,9 +8,9 @@ import useLoginModal from '@/hooks/useLoginModal'
 import useRegisterModal from '@/hooks/useRegisterModal'
 import { ToastContainer } from 'react-toastify'
 import axios from 'axios'
-import { successNotification } from '@/libs/success-notification'
+import { successNotification } from '@/helpers/success-notification'
 import { signIn } from 'next-auth/react'
-import { errorNotification } from '@/libs/error-notification'
+import { errorNotification } from '@/helpers/error-notification'
 
 type Props = {}
 
@@ -37,23 +37,23 @@ const RegisterModal = (props: Props) => {
             });
 
             if (result?.ok) {
-                setTimeout(() => successNotification('Account Created'), 500);
+                setTimeout(() => successNotification('Account Created'), 1000);
                 handleRegisterModal.onClose();
             } else {
-                setTimeout(() => errorNotification('Some error occurred'), 500);
+                setTimeout(() => errorNotification('Some error occurred'), 1000);
             }
 
         } catch (error) {
 
             setIsLoading(false);
             if (axios.isAxiosError(error) && error.response?.status === 400) {
-                setTimeout(() => errorNotification('Missing Credentials'), 500);
+                setTimeout(() => errorNotification('Missing Credentials'), 1000);
             }
             else if (axios.isAxiosError(error) && error.response?.status === 409) {
-                setTimeout(() => errorNotification('User Already Exists'), 500);
+                setTimeout(() => errorNotification('User Already Exists'), 1000);
             }
             else {
-                setTimeout(() => errorNotification('Some error occurred'), 500);
+                setTimeout(() => errorNotification('Some error occurred'), 1000);
             }
             console.error(error, 'REGISTER_MODAL_ERROR');
         }
@@ -112,7 +112,10 @@ const RegisterModal = (props: Props) => {
     )
 
     const modalFooter: React.ReactNode = (
-        <div className='flex items-center space-x-4 text-[#343a40]/60'>
+        <div
+            className='flex items-center space-x-4 text-[#343a40]/60
+        text-sm lg:text-base'
+        >
             <span>Already part of ScholarPal Family?</span>
             <button
                 aria-label='Register User'

@@ -14,7 +14,7 @@ const Input: React.FC<Props> = ({ placeholder, value, type, onChange, label, dis
         <div className='w-full flex flex-col gap-2'>
             {
                 label && (
-                    <span className='text-xl font-semibold'>
+                    <span className='lg:text-xl font-semibold'>
                         {label}
                     </span>
                 )

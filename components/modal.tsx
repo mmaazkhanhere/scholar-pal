@@ -43,12 +43,12 @@ const Modal: React.FC<Props> =
                 bg-black/70 inset-0'
             >
                 <div
-                    className='w-full lg:w-[50%] lg:max-w-3xl h-full lg:h-auto 
+                    className='w-[75%] lg:w-[50%] lg:max-w-3xl h-auto lg:h-auto 
                     rounded-xl bg-[#fefefe]'
                 >
                     <div
                         className='flex flex-col w-full h-full lg:h-auto relative
-                        outline-none focus:outline-none shadow-lg p-10 gap-5
+                        outline-none focus:outline-none shadow-lg p-4 md:p-8 lg:p-10 gap-5
                         lg:gap-10'
                     >
                         <div className='flex items-center justify-between'>
