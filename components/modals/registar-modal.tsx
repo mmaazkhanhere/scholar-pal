@@ -1,3 +1,6 @@
+/*A react component that displays a register modal which takes user detail to
+register them with the application */
+
 "use client"
 
 import React, { useCallback, useState } from 'react'
@@ -16,8 +19,10 @@ type Props = {}
 
 const RegisterModal = (props: Props) => {
 
-    const handleLoginModal = useLoginModal()
-    const handleRegisterModal = useRegisterModal()
+    const handleLoginModal = useLoginModal() //hook to manage the login modal visibility
+    const handleRegisterModal = useRegisterModal() //hook to manage the register modal visibility
+
+    //state variables for the user credentials
 
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [name, setName] = useState<string>('')
@@ -26,15 +31,21 @@ const RegisterModal = (props: Props) => {
     const [password, setPassword] = useState<string>('')
 
     const handleSubmit = async () => {
+        /*An async function that is called when the user clicks on Register button.
+        The modal is disabled by setting the isLoading state variable to true. 
+        The credentials of the user are passed to the register endpoint */
+
         setIsLoading(true);
         try {
             await axios.post('/api/register', {
                 name, username, email, password
-            });
+            }); //make a POST request to endpoint passing user details
 
             const result = await signIn('credentials', {
                 email, password, redirect: false
-            });
+            }); //sign in the user
+
+            //displaying different notifications based on the user status
 
             if (result?.ok) {
                 setTimeout(() => successNotification('Account Created'), 1000);
@@ -44,6 +55,8 @@ const RegisterModal = (props: Props) => {
             }
 
         } catch (error) {
+
+            /*Catch errors and display and appropriate notification */
 
             setIsLoading(false);
             if (axios.isAxiosError(error) && error.response?.status === 400) {
@@ -61,6 +74,7 @@ const RegisterModal = (props: Props) => {
 
 
     const toggleModal = useCallback(() => {
+        /*function that toggles between register modal and login modal */
         if (isLoading) {
             return;
         }
@@ -69,6 +83,10 @@ const RegisterModal = (props: Props) => {
     }, [handleLoginModal, handleRegisterModal, isLoading])
 
     const modalBody: React.ReactNode = (
+
+        /*Body of the modal that contains input component to take user details
+        from the user */
+
         <div className='flex flex-col gap-4'>
             {/*User Full Name */}
             <Input
@@ -112,6 +130,10 @@ const RegisterModal = (props: Props) => {
     )
 
     const modalFooter: React.ReactNode = (
+
+        /*Footer content displayed below the main body of the modal. It contains
+        a toggle button to close the register modal and display login modal */
+
         <div
             className='flex items-center space-x-4 text-[#343a40]/60
         text-sm lg:text-base'

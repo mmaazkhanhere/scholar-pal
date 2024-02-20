@@ -1,3 +1,6 @@
+/*A react input component that takes optional parameters to control its
+appearance */
+
 import React, { ChangeEventHandler } from 'react'
 
 type Props = {

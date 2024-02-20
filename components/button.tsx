@@ -1,12 +1,15 @@
+/*A button react component that takes optional parameter to control its appearance
+and behavior */
+
 import React from 'react'
 
 type Props = {
-    label: string
-    secondary?: boolean
-    onClick: () => void
-    disabled?: boolean
-    large?: boolean
-    ariaLabel?: string
+    label: string //text of the button
+    secondary?: boolean //checks if the type of button is secondary
+    onClick: () => void //function that is called when the button is clicked
+    disabled?: boolean //disables the button
+    large?: boolean //checks if the button is large
+    ariaLabel?: string //aria label for the button
 }
 
 const Button: React.FC<Props> = ({ label, secondary, onClick, disabled, large, ariaLabel }) => {

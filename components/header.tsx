@@ -1,3 +1,6 @@
+/*Header of the application that incorporates various elements and functionalities
+to enhance user interaction and navigation within the application */
+
 'use client'
 
 import Image from 'next/image'
@@ -19,16 +22,19 @@ import useAIModal from '@/hooks/useAIModal'
 
 
 type Props = {
-    currentUser: IUser
+    currentUser: IUser //current user details
 }
 
 const Header = ({ currentUser }: Props) => {
 
-    const [showMobileMenu, setShowMobileMenu] = useState(false)
+    const [showMobileMenu, setShowMobileMenu] = useState(false) /*state variable
+    to control the visibility of the mobile menu*/
 
-    const handleAIModal = useAIModal();
+    const handleAIModal = useAIModal(); //hook to handle the visibility of AI modal
 
     const toggleMobileMenu = useCallback(() => {
+        /*function that displays the mobile menu */
+
         setShowMobileMenu(!showMobileMenu)
     }, [showMobileMenu])
 
@@ -85,12 +91,15 @@ const Header = ({ currentUser }: Props) => {
                 {/*Navigation Items */}
                 <div className='flex items-center justify-start gap-5 lg:gap-8'>
                     <NavbarItems />
+
                     <IoMdNotifications className='hidden lg:block w-7 h-7' />
 
                     <Avatar
                         profilePicture={currentUser?.profilePicture}
                         username={currentUser?.username}
                     />
+
+                    {/*Logout button that is displayed only in large screen */}
                     <div className='hidden lg:block'>
                         <LogoutButton label />
                     </div>

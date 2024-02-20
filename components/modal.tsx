@@ -19,6 +19,7 @@ const Modal: React.FC<Props> =
     ({ isOpen, title, body, footer, onClose, onSubmit, buttonLabel, disabled }) => {
 
         const handleClose = useCallback(() => {
+            //function that closes the modal
             if (disabled) {
                 return
             }
@@ -26,6 +27,7 @@ const Modal: React.FC<Props> =
         }, [disabled, onClose])
 
         const handleSubmit = useCallback(() => {
+            //function that runs when submit button is clicked
             if (disabled) {
                 return
             }
@@ -34,6 +36,7 @@ const Modal: React.FC<Props> =
         }, [disabled, onSubmit])
 
         if (!isOpen) {
+            //modal is not opened if the isOpen is false
             return null;
         }
 
@@ -51,12 +54,16 @@ const Modal: React.FC<Props> =
                         outline-none focus:outline-none shadow-lg p-4 md:p-8 lg:p-10 gap-5
                         lg:gap-10'
                     >
+                        {/*Title of modal and button to close it */}
                         <div className='flex items-center justify-between'>
+                            {/*Title */}
                             <h3
                                 className='text-2xl font-semibold'
                             >
                                 {title}
                             </h3>
+
+                            {/*Close button */}
                             <button
                                 aria-label='Close Button'
                                 onClick={handleClose}
@@ -65,10 +72,12 @@ const Modal: React.FC<Props> =
                             </button>
                         </div>
 
+                        {/*Body of the modal */}
                         <div className='flex-auto'>
                             {body}
                         </div>
 
+                        {/*Button to submit the modal and footer content */}
                         <div className='flex flex-col gap-4'>
                             {
                                 buttonLabel && <Button

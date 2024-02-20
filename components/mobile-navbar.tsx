@@ -1,3 +1,5 @@
+/*React component that represents the mobile menu */
+
 import React from 'react';
 import Link from 'next/link';
 
@@ -8,7 +10,7 @@ import { IoMdNotifications } from 'react-icons/io';
 import LogoutButton from './logout-button';
 
 type Props = {
-    toggleButton(): void;
+    toggleButton(): void; //function that closes the mobile options
 };
 
 const MobileNavbar: React.FC<Props> = ({ toggleButton }) => {

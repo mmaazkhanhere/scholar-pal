@@ -1,3 +1,5 @@
+/*component that represents the navigation item of the navbar */
+
 import React from 'react'
 import Link from 'next/link';
 

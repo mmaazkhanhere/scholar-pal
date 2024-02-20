@@ -1,27 +1,36 @@
+/*A logout button that logs out the user from the application using the next auth
+functions */
+
 import useLoginModal from '@/hooks/useLoginModal';
 import { successNotification } from '@/helpers/success-notification';
-import { getSession, signOut, useSession } from 'next-auth/react';
-import React, { useEffect, useState } from 'react';
+import { signOut, useSession } from 'next-auth/react';
+import React, { useState } from 'react';
 import { TbLogout } from 'react-icons/tb';
 
 type Props = {
-    label?: boolean;
+    label?: boolean; //an optional parameter for text displayed next to icon
 };
 
 const LogoutButton = ({ label }: Props) => {
 
-    const { data: session, status } = useSession();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const handleLoginModal = useLoginModal();
+    const { data: session } = useSession(); //gets the current session data
+    const [isLoading, setIsLoading] = useState<boolean>(false); /*state
+    variable to disable the button */
+
+    const handleLoginModal = useLoginModal(); //hook to handle visibility of login modal
 
 
     const handleLogout = async () => {
+        /*function that is called when the user clicks on logout button.  */
         try {
-            setIsLoading(true);
-            await signOut({ redirect: false });
+            setIsLoading(true); //sets the loading state to true
+            await signOut({ redirect: false }); //sign out the user
             setTimeout(() => successNotification('Logged out successfully'), 1000);
+            /*display a log out notification */
             setIsLoading(false);
-            handleLoginModal.onOpen()
+
+            handleLoginModal.onOpen() //open the login modal
+
         } catch (error) {
             console.error('ERROR_LOGOUT_FUNCTION', error);
         }
