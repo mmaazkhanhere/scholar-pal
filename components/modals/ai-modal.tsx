@@ -143,7 +143,7 @@ const AIModal = (props: Props) => {
                         {/*AI response */}
                         <textarea
                             readOnly
-                            className="w-full min-h-[100px] p-2 border 
+                            className="w-full min-h-[250px] p-2 border 
                             resize-y overflow-auto "
                             value={response}
                             placeholder="AI's response will appear here..."

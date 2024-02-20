@@ -59,7 +59,10 @@ const LoginModal = (props: Props) => {
             }
 
         } catch (error) {
+
             /*catch errors that occurred during the process */
+            setIsLoading(false);
+
             console.error(error, "LOGIN_ERROR")
             setTimeout(() => errorNotification('Something went wrong'), 1000);
         }
