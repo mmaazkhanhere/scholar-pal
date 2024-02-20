@@ -15,9 +15,10 @@ type Props = {
     profilePicture?: string //profile image of the user
     username?: string //username of the user to navigate to user profile
     isLarge?: boolean; //optional prop whether the avatar is large (for the user profile page)
-};
+    isMedium?: boolean; //optional prop whether the avatar is medium (for the post)
+}
 
-const Avatar: React.FC<Props> = ({ isLarge, profilePicture, username }) => {
+const Avatar: React.FC<Props> = ({ isLarge, profilePicture, username, isMedium }) => {
 
     const router = useRouter(); //get the router object
     const handleLogin = useLoginModal(); //hook to manage the visibility of the login modal
@@ -38,6 +39,7 @@ const Avatar: React.FC<Props> = ({ isLarge, profilePicture, username }) => {
             onClick={onClick}
             className={`
                 ${isLarge ? 'w-32 h-32' : 'w-7 h-7'}
+                ${isMedium ? 'w-[68px] h-[68px]' : 'w-7 h-7'}
                 rounded-full hover:opacity-90 hover:scale-105 transition duration-500
                 cursor-pointer relative
             `}
