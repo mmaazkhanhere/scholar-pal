@@ -57,7 +57,7 @@ const Header = ({ currentUser }: Props) => {
                     </Link>
 
                     {/*Assistant Large Screen*/}
-                    <div
+                    <button
                         aria-label='Ask the Assistant'
                         onClick={() => handleAIModal.onOpen()}
                         className='border rounded-xl py-1.5 px-4 hidden lg:flex
@@ -70,11 +70,12 @@ const Header = ({ currentUser }: Props) => {
                         >
                             Ask ScholarPal Assistant...
                         </p>
-                    </div>
+                    </button>
 
                     {/*Assistant Mobile */}
                     <button
                         aria-label='AI Assistant Button'
+                        onClick={() => handleAIModal.onOpen()}
                         className='block lg:hidden hover:scale-105 pl-[2px]'
                     >
                         <RiRobot2Fill className='fill-[#1abc9c] w-7 h-7' />

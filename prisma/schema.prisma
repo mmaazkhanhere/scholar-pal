@@ -42,19 +42,18 @@ model User{
 
 
 model Post {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  content     String?   // Content of the post
-  createdAt   DateTime  @default(now()) // When the post was created
-  likedIds    String[]  @db.ObjectId // IDs of users who liked the post
-  upVoteIds   String[]  @db.ObjectId // IDs of users who upvoted the post
-  downVoteIds String[]  @db.ObjectId // IDs of users who downvoted the post
-  mediaUrls   String[]  // URLs or identifiers for media files associated with the post
-  authorId    String    @db.ObjectId // ID of the author of the post
-  studyGroupId  String?    @db.ObjectId // ID of the associated study group, if any
+  id              String           @id @default(auto()) @map("_id") @db.ObjectId
+  content         String
+  characterCount  Int              @default(0) // Character count of the post content
+  createdAt       DateTime         @default(now())
+  tags            String[]         // Tags associated with the post, max 3 tags
+  likedBy         String[]         @db.ObjectId // IDs of users who liked the post
+  authorId        String           @db.ObjectId
+  studyGroupId    String?          @db.ObjectId
+  comments        Comment[]
+  studyGroup      StudyGroup?      @relation(fields: [studyGroupId], references: [id], onDelete: SetNull)
+  author          User             @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
-  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  comments  Comment[] // A post can have more than one comment
-  studyGroup    StudyGroup? @relation(fields: [studyGroupId], references: [id], onDelete: SetNull)
 }
 
 
@@ -62,8 +61,7 @@ model Comment{
   id String @id @default(auto()) @map("_id") @db.ObjectId
   content String? //content of the comment
   createdAt DateTime @default(now()) //when the comment was made
-  upVoteIds String[] @db.ObjectId //up vote recieved by the comment
-  downVoteIds String[] @db.ObjectId //down vote recieved by the comment
+  likedBy String[]
   postId String @db.ObjectId //id of the post on which the comment was made
   authorId String @db.ObjectId //id of the author who made the comment
 
