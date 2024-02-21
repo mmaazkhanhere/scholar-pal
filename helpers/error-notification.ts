@@ -1,14 +1,9 @@
-import { toast } from "react-toastify"
+import { enqueueSnackbar } from "notistack";
 
 export const errorNotification = (message: string) => {
-    toast.error(message, {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored"
-    })
+    enqueueSnackbar(message, {
+        autoHideDuration: 2000,
+        variant: 'error',
+        anchorOrigin: { 'horizontal': 'right', 'vertical': 'bottom' }
+    });
 }

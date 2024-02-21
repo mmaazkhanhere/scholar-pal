@@ -4,15 +4,17 @@ register them with the application */
 "use client"
 
 import React, { useCallback, useState } from 'react'
+import axios from 'axios'
+import { signIn } from 'next-auth/react'
+import { SnackbarProvider } from 'notistack'
+
 import Input from '../input'
 import Modal from '../modal'
 
 import useLoginModal from '@/hooks/useLoginModal'
 import useRegisterModal from '@/hooks/useRegisterModal'
-import { ToastContainer } from 'react-toastify'
-import axios from 'axios'
+
 import { successNotification } from '@/helpers/success-notification'
-import { signIn } from 'next-auth/react'
 import { errorNotification } from '@/helpers/error-notification'
 
 type Props = {}
@@ -48,10 +50,10 @@ const RegisterModal = (props: Props) => {
             //displaying different notifications based on the user status
 
             if (result?.ok) {
-                setTimeout(() => successNotification('Account Created'), 1000);
+                successNotification('Account Created');
                 handleRegisterModal.onClose();
             } else {
-                setTimeout(() => errorNotification('Some error occurred'), 1000);
+                errorNotification('Some error occurred');
             }
 
         } catch (error) {
@@ -60,13 +62,13 @@ const RegisterModal = (props: Props) => {
 
             setIsLoading(false);
             if (axios.isAxiosError(error) && error.response?.status === 400) {
-                setTimeout(() => errorNotification('Missing Credentials'), 1000);
+                errorNotification('Missing Credentials');
             }
             else if (axios.isAxiosError(error) && error.response?.status === 409) {
-                setTimeout(() => errorNotification('User Already Exists'), 1000);
+                errorNotification('User Already Exists');
             }
             else {
-                setTimeout(() => errorNotification('Some error occurred'), 1000);
+                errorNotification('Some error occurred');
             }
             console.error(error, 'REGISTER_MODAL_ERROR');
         }
@@ -151,7 +153,7 @@ const RegisterModal = (props: Props) => {
 
     return (
         <React.Fragment>
-            <ToastContainer />
+            <SnackbarProvider />
             <Modal
                 title='Register'
                 disabled={isLoading}

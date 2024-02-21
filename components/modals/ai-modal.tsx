@@ -163,7 +163,7 @@ const AIModal = (props: Props) => {
             body={modalBody}
             isOpen={handleAIModal.isOpen}
             onClose={handleAIModal.onClose}
-            onSubmit={() => console.log('AI Modal')}
+            onSubmit={() => console.log('')}
         />
     );
 };

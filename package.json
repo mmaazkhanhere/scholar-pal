@@ -17,6 +17,7 @@
     "bcryptjs": "^2.4.3",
     "next": "14.1.0",
     "next-auth": "^4.24.5",
+    "notistack": "^3.0.1",
     "openai": "^4.28.0",
     "prisma": "^5.9.1",
     "react": "^18",

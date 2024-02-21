@@ -4,7 +4,7 @@ credentials to login in the application */
 "use client"
 
 import React, { useCallback, useState } from 'react'
-import { ToastContainer } from 'react-toastify'
+import { SnackbarProvider } from 'notistack'
 import { signIn } from 'next-auth/react'
 
 import Input from '../input'
@@ -17,6 +17,7 @@ import { successNotification } from '@/helpers/success-notification'
 import { errorNotification } from '@/helpers/error-notification'
 
 import getSession from '@/actions/getSession'
+
 
 
 type Props = {}
@@ -38,24 +39,19 @@ const LoginModal = (props: Props) => {
         try {
             setIsLoading(true); //disables the modal indicating sign in process in progress
 
-            const result = await signIn('credentials', {
-                redirect: false, // Prevent automatic redirection
-                email,
-                password,
-            }); //pass the user credential to sign in function of next auth
-
-            await getSession() //gets the session indicating user has signed in
+            const result = await signIn('credentials', { redirect: false, email, password });
+            //pass the user credential to sign in function of next auth
+            console.log(result);
 
             setIsLoading(false);
 
-            /*Different notifications depending on the status returned by the 
-            next auth */
-
             if (result?.error) {
-                setTimeout(() => errorNotification('Failed to log in. Please check your credentials.'), 1000);
+                errorNotification(result.error);
+                setIsLoading(false);
             } else {
-                setTimeout(() => successNotification('Logged In'), 1000);
+                successNotification('Logged In');
                 handleLoginModal.onClose();
+                setIsLoading(false);
             }
 
         } catch (error) {
@@ -64,7 +60,7 @@ const LoginModal = (props: Props) => {
             setIsLoading(false);
 
             console.error(error, "LOGIN_ERROR")
-            setTimeout(() => errorNotification('Something went wrong'), 1000);
+            errorNotification('Something went wrong');
         }
     }
 
@@ -130,7 +126,7 @@ const LoginModal = (props: Props) => {
 
     return (
         <>
-            <ToastContainer />
+            <SnackbarProvider />
             <Modal
                 disabled={isLoading}
                 isOpen={handleLoginModal.isOpen}

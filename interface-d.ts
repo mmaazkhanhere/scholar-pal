@@ -16,6 +16,12 @@ export interface IAIModal {
     onClose: () => void
 }
 
+export interface IPostModal {
+    isOpen: boolean;
+    onOpen: () => void;
+    onClose: () => void
+}
+
 export interface IUser {
     id: string;
     name: string;
