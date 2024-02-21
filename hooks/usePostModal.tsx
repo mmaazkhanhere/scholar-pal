@@ -1,10 +1,10 @@
 import { IPostModal } from "@/interface-d";
-import { create } from 'zustand'
+import { create } from "zustand";
 
-const usePostModal = create<IPostModal>((set) => ({
+const useAIModal = create<IPostModal>((set) => ({
     isOpen: false,
     onOpen: () => set({ isOpen: true }),
-    onClose: () => set({ isOpen: false })
+    onClose: () => set({ isOpen: false }),
 }))
 
-export default usePostModal;
+export default useAIModal

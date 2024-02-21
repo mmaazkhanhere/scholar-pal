@@ -6,6 +6,7 @@ import AuthContext from "@/libs/auth-context";
 import LoginModal from "@/components/modals/login-modal";
 import RegisterModal from "@/components/modals/registar-modal";
 import AIModal from "@/components/modals/ai-modal";
+import NewPostModal from "@/components/modals/new-post-modal";
 
 
 export const metadata: Metadata = {
@@ -28,6 +29,7 @@ export default function RootLayout({
           <LoginModal />
           <RegisterModal />
           <AIModal />
+          <NewPostModal />
           {children}
         </AuthContext>
       </body>

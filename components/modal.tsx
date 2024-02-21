@@ -46,7 +46,7 @@ const Modal: React.FC<Props> =
                 bg-black/70 inset-0'
             >
                 <div
-                    className='w-[75%] lg:w-[50%] lg:max-w-3xl h-auto lg:h-auto 
+                    className='w-[85%] lg:w-[50%] lg:max-w-3xl h-auto lg:h-auto 
                     rounded-xl bg-[#fefefe]'
                 >
                     <div

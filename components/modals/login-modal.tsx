@@ -16,10 +16,6 @@ import useRegisterModal from '@/hooks/useRegisterModal'
 import { successNotification } from '@/helpers/success-notification'
 import { errorNotification } from '@/helpers/error-notification'
 
-import getSession from '@/actions/getSession'
-
-
-
 type Props = {}
 
 const LoginModal = (props: Props) => {
@@ -41,7 +37,6 @@ const LoginModal = (props: Props) => {
 
             const result = await signIn('credentials', { redirect: false, email, password });
             //pass the user credential to sign in function of next auth
-            console.log(result);
 
             setIsLoading(false);
 

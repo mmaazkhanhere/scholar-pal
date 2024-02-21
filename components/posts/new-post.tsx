@@ -11,10 +11,9 @@ type Props = {
     currentUser?: IUser
 }
 
-const NewPost = (props: Props) => {
+const NewPost = ({ currentUser }: Props) => {
 
     const handlePostModal = usePostModal()
-    console.log(handlePostModal.isOpen)
 
     return (
         <div className='flex items-center justify-between py-2 px-4 rounded-lg
@@ -22,7 +21,7 @@ const NewPost = (props: Props) => {
         >
             <Avatar isMedium />
             <button
-                onClick={() => handlePostModal.onOpen()}
+                onClick={handlePostModal.onOpen}
                 className='border border-[#343a40]/60 w-full text-left
                 py-2 px-6 rounded-3xl text-xl text-[#343a40]/60'
             >
