@@ -1,17 +1,17 @@
 "use client"
 
 import React, { useState } from 'react'
-import { ToastContainer } from 'react-toastify'
 import { useSession } from 'next-auth/react'
 
 import Modal from '../modal'
 import Avatar from '../avatar'
-
-import usePostModal from '@/hooks/usePostModal'
 import PostLength from '../posts/post-length'
 import PostFooter from '../posts/post-footer'
 import Button from '../button'
 import Tags from '../tags'
+import usePostModal from '@/hooks/usePostModal'
+
+
 
 type Props = {}
 
@@ -40,8 +40,8 @@ const NewPostModal = (props: Props) => {
                     placeholder='What is on your mind?'
                     minLength={100}
                     className='min-h-[200px] lg:min-h-[150px] w-full p-2 overflow-y-auto
-                        placeholder:text-xl border rounded-xl text-xl
-                        focus:outline-none'
+                        placeholder:text-lg lg:placeholder:text-xl border 
+                        rounded-xl text-lg lg:text-xl focus:outline-none'
                     disabled={isLoading}
                 />
 
@@ -55,7 +55,8 @@ const NewPostModal = (props: Props) => {
                     disabled={isLoading || postContent.length > 250}
                     label='Post'
                     onClick={() => console.log('')}
-                    className='self-end px-6 py-3'
+                    className='self-end px-6 py-1 lg:py-3'
+                    ariaLabel='Post Button'
                 />
             </div>
         </div>
