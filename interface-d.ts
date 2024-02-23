@@ -56,8 +56,6 @@ export interface IPost {
     content?: string;
     createdAt: Date;
     likedIds: string[];
-    upVoteIds: string[];
-    downVoteIds: string[];
     mediaUrls: string[];
     authorId: string;
     studyGroupId?: string;

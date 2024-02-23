@@ -2,6 +2,24 @@ import { NextRequest, NextResponse } from "next/server";
 import prismadb from '@/libs/prismadb'
 import getCurrentUser from "@/actions/getCurrentUser";
 
+export const GET = async (request: NextRequest) => {
+    try {
+        const allPosts = await prismadb.post.findMany({
+            include: {
+                author: true,
+                comments: true,
+            },
+            orderBy: {
+                createdAt: 'desc'
+            }
+        })
+
+        return NextResponse.json(allPosts);
+
+    } catch (error) {
+
+    }
+}
 
 
 export const POST = async (request: NextRequest) => {
