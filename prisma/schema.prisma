@@ -44,7 +44,6 @@ model User{
 model Post {
   id              String           @id @default(auto()) @map("_id") @db.ObjectId
   content         String
-  characterCount  Int              @default(0) // Character count of the post content
   createdAt       DateTime         @default(now())
   tags            String[]         // Tags associated with the post, max 3 tags
   likedBy         String[]         @db.ObjectId // IDs of users who liked the post
@@ -53,7 +52,6 @@ model Post {
   comments        Comment[]
   studyGroup      StudyGroup?      @relation(fields: [studyGroupId], references: [id], onDelete: SetNull)
   author          User             @relation(fields: [authorId], references: [id], onDelete: Cascade)
-
 }
 
 

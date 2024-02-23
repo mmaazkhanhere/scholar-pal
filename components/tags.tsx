@@ -46,7 +46,7 @@ const Tags = ({ tags, setTags }: Props) => {
                                 className="text-sm lg:text-base text-[#343abc] 
                                 bg-[#fefefe] rounded-full p-0.5"
                             >
-                                <IoMdClose className='w-4 h-4' />
+                                <IoMdClose className='w-3 lg:w-4 h-3 lg:h-4' />
                             </button>
                         </div>
                     ))

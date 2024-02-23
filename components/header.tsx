@@ -19,6 +19,8 @@ import { IoMdNotifications, IoMdMenu } from "react-icons/io";
 import { IUser } from '@/interface-d'
 import LogoutButton from './logout-button'
 import useAIModal from '@/hooks/useAIModal'
+import useLoginModal from '@/hooks/useLoginModal'
+import { useSession } from 'next-auth/react'
 
 
 type Props = {
@@ -30,13 +32,25 @@ const Header = ({ currentUser }: Props) => {
     const [showMobileMenu, setShowMobileMenu] = useState(false) /*state variable
     to control the visibility of the mobile menu*/
 
+    const session = useSession()
+
     const handleAIModal = useAIModal(); //hook to handle the visibility of AI modal
+    const handleLoginModal = useLoginModal() //hook to handle the visibility of login modal
 
     const toggleMobileMenu = useCallback(() => {
         /*function that displays the mobile menu */
 
         setShowMobileMenu(!showMobileMenu)
     }, [showMobileMenu])
+
+    const handleAIDisplay = () => {
+        if (session.status !== 'authenticated') {
+            handleLoginModal.onOpen()
+        }
+        else {
+            handleAIModal.onOpen()
+        }
+    }
 
     return (
         <header
@@ -65,7 +79,7 @@ const Header = ({ currentUser }: Props) => {
                     {/*Assistant Large Screen*/}
                     <button
                         aria-label='Ask the Assistant'
-                        onClick={() => handleAIModal.onOpen()}
+                        onClick={handleAIDisplay}
                         className='border rounded-xl py-1.5 px-4 hidden lg:flex
                         items-center justify-start gap-5 w-[350px] cursor-pointer
                         hover:scale-105 transition duration-500'
@@ -81,7 +95,7 @@ const Header = ({ currentUser }: Props) => {
                     {/*Assistant Mobile */}
                     <button
                         aria-label='AI Assistant Button'
-                        onClick={() => handleAIModal.onOpen()}
+                        onClick={handleAIDisplay}
                         className='block lg:hidden hover:scale-105 pl-[2px]'
                     >
                         <RiRobot2Fill className='fill-[#1abc9c] w-7 h-7' />

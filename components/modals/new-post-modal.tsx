@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useSession } from 'next-auth/react'
 
 import Modal from '../modal'
@@ -10,6 +10,11 @@ import PostFooter from '../posts/post-footer'
 import Button from '../button'
 import Tags from '../tags'
 import usePostModal from '@/hooks/usePostModal'
+import axios from 'axios'
+import { successNotification } from '@/helpers/success-notification'
+import useLoginModal from '@/hooks/useLoginModal'
+import { errorNotification } from '@/helpers/error-notification'
+
 
 
 
@@ -24,6 +29,36 @@ const NewPostModal = (props: Props) => {
     const session = useSession()
 
     const handlePostModal = usePostModal()
+    const handleLoginModal = useLoginModal()
+
+    const handleSubmit = useCallback(async () => {
+        console.log('function called')
+        try {
+            setIsLoading(true)
+
+            const result = await axios.post('/api/posts', { postContent, tags })
+            if (result.status == 200) {
+                successNotification('Post successfully')
+            }
+            setIsLoading(false)
+            handlePostModal.onClose()
+
+        } catch (error) {
+            setIsLoading(false)
+            console.error('NEW_POST_MODAL_ERROR', error)
+            if (axios.isAxiosError(error) && (error.response?.status == 401)) {
+                errorNotification('Not Authenticated')
+                handleLoginModal.onOpen()
+            }
+            else if (axios.isAxiosError(error) && (error.response?.status == 404)) {
+                errorNotification('Post is empty')
+            }
+            else {
+                errorNotification('Something went wrong')
+            }
+        }
+
+    }, [handleLoginModal, handlePostModal, postContent, tags])
 
     const modalBody: React.ReactNode = (
         <div className='flex flex-col gap-y-5'>
@@ -51,13 +86,6 @@ const NewPostModal = (props: Props) => {
                     <PostFooter />
                     <PostLength currentLength={postContent.length} />
                 </div>
-                <Button
-                    disabled={isLoading || postContent.length > 250}
-                    label='Post'
-                    onClick={() => console.log('')}
-                    className='self-end px-6 py-1 lg:py-3'
-                    ariaLabel='Post Button'
-                />
             </div>
         </div>
     )
@@ -65,11 +93,12 @@ const NewPostModal = (props: Props) => {
     return (
 
         <Modal
-            disabled={isLoading}
+            disabled={isLoading || postContent.length > 250}
             body={modalBody}
             isOpen={handlePostModal.isOpen}
             onClose={handlePostModal.onClose}
-            onSubmit={() => console.log('')}
+            onSubmit={handleSubmit}
+            buttonLabel='Post'
         />
 
     )
