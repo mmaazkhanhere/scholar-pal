@@ -24,7 +24,7 @@ const PostCard = ({ currentUser, post, userId }: Props) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const [comment, setComment] = useState<string>('')
-    const [openComment, setOpenComment] = useState<boolean>(false)
+    const [openComment, setOpenComment] = useState<boolean>(true)
 
     const createdAtCalculation = useMemo(() => {
         if (!post.createdAt) {
@@ -38,11 +38,11 @@ const PostCard = ({ currentUser, post, userId }: Props) => {
 
 
     return (
-        <div
+        <article
             className='flex flex-col items-start justify-center gap-y-5 
-        border border-red-500 w-full'
+            border border-red-500 w-full p-5 shadow-md rounded-xl'
         >
-            <div className='flex items-start justify-start'>
+            <div className='flex items-start justify-start gap-x-5'>
                 <div className='block lg:hidden'>
                     <Avatar />
                 </div>
@@ -50,32 +50,59 @@ const PostCard = ({ currentUser, post, userId }: Props) => {
                     <Avatar isMedium />
                 </div>
                 <div className='flex flex-col items-start'>
-                    <div className='flex items-start justify-start gap-x-4'>
-                        <span>{post.author.name}</span>
-                        <span>@{post.author.username}</span>
+                    <div className='flex items-center justify-start gap-x-2'>
+                        <span
+                            className='text-xl font-semibold'
+                        >
+                            {post.author.name}
+                        </span>
+                        <span className='text-[#343a40]/60'>
+                            @{post.author.username}
+                        </span>
                     </div>
-                    <span>{createdAtCalculation}</span>
+                    <span>
+                        {createdAtCalculation}
+                    </span>
                 </div>
             </div>
 
-            <div>
+            <div className='md:text-lg'>
                 {post.content}
             </div>
-            <hr />
-            <div className='flex justify-start items-center'>
-                <p>Likes: <span>{post.likedBy?.length}</span></p>
-                <p>Comments: <span>{post?.comments?.length}</span></p>
+
+            <div className='flex items-center justify-start'>
+
             </div>
-            <hr />
+
+            <div className='flex justify-start items-center gap-x-5'>
+                <p className='text-lg font-semibold'>Likes:&nbsp;
+                    <span className='font-normal'>
+                        {post.likedBy?.length}
+                    </span></p>
+                <p className='text-lg font-semibold'>
+                    Comments:&nbsp;
+                    <span className='font-normal'>
+                        {post?.comments?.length}
+                    </span></p>
+            </div>
+
             <div className='flex items-center justify-start gap-x-5'>
 
                 {
                     post?.likedBy?.includes(currentUser?.id) ?
-                        <GoHeartFill className='bg-red-500' /> :
-                        <GoHeart />
+                        <GoHeartFill
+                            className='bg-red-500 w-5 h-5 cursor-pointer
+                        hover:bg-red-400 transition duration-300'
+                        /> :
+                        <GoHeart
+                            className='w-6 h-6 cursor-pointer hover:text-black/80
+                            transition duration-300' />
                 }
                 <div className='flex items-center justify-start gap-x-2'>
-                    <FaCommentAlt />
+                    <FaCommentAlt
+                        className='w-5 h-5 hover:text-black/70
+                    transition duration-300 cursor-pointer'
+                    />
                 </div>
             </div>
             {
@@ -96,7 +123,7 @@ const PostCard = ({ currentUser, post, userId }: Props) => {
                     </div>
                 )
             }
-        </div>
+        </article>
     )
 }
 
