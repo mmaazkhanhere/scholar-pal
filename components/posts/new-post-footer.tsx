@@ -6,7 +6,7 @@ import { FaPoll } from "react-icons/fa";
 
 type Props = {}
 
-const PostFooter = (props: Props) => {
+const NewPostFooter = (props: Props) => {
     return (
         <div className='flex items-center justify-start gap-x-5'>
             <div>
@@ -22,4 +22,4 @@ const PostFooter = (props: Props) => {
     )
 }
 
-export default PostFooter
+export default NewPostFooter

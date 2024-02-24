@@ -9,21 +9,18 @@ type Props = {
 }
 
 const PostFeed = ({ currentUser }: Props) => {
-
     const { data: posts = [] } = usePosts()
 
-    console.log(posts)
-
     return (
-        <div className='mt-40 border border-blue-500'>
+        <div className='mt-10 max-w-2xl w-full'>
             {
-                posts.map((post: any) => {
+                posts.map((post: any) => (
                     <PostCard
                         currentUser={currentUser}
                         key={post.id}
                         post={post}
                     />
-                })
+                ))
             }
         </div>
     )

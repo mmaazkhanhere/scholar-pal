@@ -10,10 +10,13 @@ type Props = {
 const HomePage = ({ currentUser }: Props) => {
     return (
         <section
-            className='grid grid-cols-1 lg:grid-cols-7 py-20 lg:py-32 max-w-[1600px]
-            mx-auto px-2 lg:px-4'
+            className='grid grid-cols-1 lg:grid-cols-6 py-20 lg:py-32 max-w-[1600px]
+            mx-auto px-2 lg:px-4 gap-x-8'
         >
-            <div className='lg:col-span-5 w-full flex flex-col items-start border border-black'>
+            <div
+                className='lg:col-span-4 w-full flex flex-col items-start 
+                border border-black'
+            >
                 <NewPost currentUser={currentUser} />
                 <PostFeed currentUser={currentUser!} />
             </div>

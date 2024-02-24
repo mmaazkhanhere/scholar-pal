@@ -30,8 +30,11 @@ const NewPost = (props: Props) => {
     }
 
     return (
-        <div className='flex items-center justify-between py-2 px-4 rounded-lg
-        border-[#343a40]/40 w-full lg:max-w-3xl gap-x-2.5 md:gap-x-5 shadow-md'
+        <button
+            onClick={handleClick}
+            className='flex items-center justify-between py-2 px-4 rounded-lg
+            border-[#343a40]/40 w-full lg:max-w-3xl gap-x-2.5 md:gap-x-5 shadow-md
+            hover:scale-95 transition duration-500 cursor-pointer'
         >
             <div className='block md:hidden'>
                 <Avatar />
@@ -39,14 +42,14 @@ const NewPost = (props: Props) => {
             <div className='hidden md:block'>
                 <Avatar isMedium />
             </div>
-            <Button
-                label='What is on your mind...'
-                secondary
+            <p
                 className='border border-[#343a40]/30 w-full py-1 md:py-2 px-6 
                 rounded-3xl lg:text-xl text-[#343a40]/60 hover:scale-100'
-                onClick={handleClick}
-            />
-        </div>
+
+            >
+                What is on your mind...
+            </p>
+        </button>
     )
 }
 

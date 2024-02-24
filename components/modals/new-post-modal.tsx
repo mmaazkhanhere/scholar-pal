@@ -2,17 +2,18 @@
 
 import React, { useCallback, useState } from 'react'
 import { useSession } from 'next-auth/react'
+import axios from 'axios'
 
 import Modal from '../modal'
 import Avatar from '../avatar'
 import PostLength from '../posts/post-length'
-import PostFooter from '../posts/post-footer'
-import Button from '../button'
+import NewPostFooter from '../posts/new-post-footer'
 import Tags from '../tags'
+
 import usePostModal from '@/hooks/usePostModal'
-import axios from 'axios'
-import { successNotification } from '@/helpers/success-notification'
 import useLoginModal from '@/hooks/useLoginModal'
+
+import { successNotification } from '@/helpers/success-notification'
 import { errorNotification } from '@/helpers/error-notification'
 
 
@@ -83,7 +84,7 @@ const NewPostModal = (props: Props) => {
                 <Tags tags={tags} setTags={setTags} />
 
                 <div className='flex items-center justify-between w-full'>
-                    <PostFooter />
+                    <NewPostFooter />
                     <PostLength currentLength={postContent.length} />
                 </div>
             </div>

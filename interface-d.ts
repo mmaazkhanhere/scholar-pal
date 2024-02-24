@@ -52,16 +52,16 @@ export interface IUser {
 }
 
 export interface IPost {
-    id: string;
-    content?: string;
-    createdAt: Date;
-    likedIds: string[];
-    mediaUrls: string[];
-    authorId: string;
-    studyGroupId?: string;
-    author: IUser;
-    comments: IComment[];
-    studyGroup?: IStudyGroup;
+    id: string; // Assuming the ID is a string representation of MongoDB ObjectId
+    content: string;
+    createdAt: Date; // DateTime in Prisma maps to Date in TypeScript
+    tags?: string[]; // Array of strings for tags
+    likedBy?: string[]; // Array of string IDs for users who liked the post
+    authorId: string; // ID of the author, a string representation of MongoDB ObjectId
+    studyGroupId?: string | null; // Optional or nullable string for study group ID
+    comments?: Comment[]; // Assuming you have an interface defined for Comment
+    studyGroup?: IStudyGroup | null; // Optional or nullable StudyGroup, assuming you have an interface for StudyGroup
+    author: IUser; // Assuming you have an interface defined for User
 }
 
 export interface IComment {

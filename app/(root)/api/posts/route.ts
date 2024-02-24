@@ -43,7 +43,8 @@ export const POST = async (request: NextRequest) => {
             data: {
                 authorId: currentUser.id,
                 content: postContent,
-                tags: tags || []
+                tags: tags || [],
+                likedBy: [],
             }
         })
 
