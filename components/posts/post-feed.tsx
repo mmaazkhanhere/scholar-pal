@@ -1,6 +1,6 @@
 "use client"
 import usePosts from '@/hooks/usePosts'
-import React from 'react'
+import React, { useState } from 'react'
 import PostCard from './post-card'
 import { IUser } from '@/interface-d'
 

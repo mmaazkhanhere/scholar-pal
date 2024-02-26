@@ -59,7 +59,7 @@ export interface IPost {
     likedBy?: string[]; // Array of string IDs for users who liked the post
     authorId: string; // ID of the author, a string representation of MongoDB ObjectId
     studyGroupId?: string | null; // Optional or nullable string for study group ID
-    comments?: Comment[]; // Assuming you have an interface defined for Comment
+    comments: Comment[]; // Assuming you have an interface defined for Comment
     studyGroup?: IStudyGroup | null; // Optional or nullable StudyGroup, assuming you have an interface for StudyGroup
     author: IUser; // Assuming you have an interface defined for User
 }
@@ -68,8 +68,6 @@ export interface IComment {
     id: string;
     content?: string;
     createdAt: Date;
-    upVoteIds: string[];
-    downVoteIds: string[];
     postId: string;
     authorId: string;
     author: IUser;

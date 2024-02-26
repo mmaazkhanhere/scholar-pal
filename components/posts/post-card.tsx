@@ -1,7 +1,7 @@
 "use client"
 
 import { IPost, IUser } from '@/interface-d'
-import React, { useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import Avatar from '../avatar'
 import { formatDistanceToNowStrict, format } from 'date-fns'
 
@@ -11,31 +11,79 @@ import LikeButton from '../like-button'
 import Tags from '../tags'
 
 import { IoSend } from "react-icons/io5";
-import { FaCommentAlt } from 'react-icons/fa'
+import { FaRegCommentAlt } from 'react-icons/fa'
+import CommentFeed from './comment-feed'
+import axios from 'axios'
+import { successNotification } from '@/helpers/success-notification'
+import { errorNotification } from '@/helpers/error-notification'
+import useLoginModal from '@/hooks/useLoginModal'
+import { useSession } from 'next-auth/react'
+import useComments from '@/hooks/useComments'
 
 
 type Props = {
     currentUser: IUser
     post: IPost
-    userId?: string
 }
 
-const PostCard = ({ currentUser, post, userId }: Props) => {
+const PostCard = ({ currentUser, post }: Props) => {
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
-
     const [comment, setComment] = useState<string>('')
     const [openComment, setOpenComment] = useState<boolean>(false)
     const [likedBy, setLikedBy] = useState(post.likedBy ?? []);
 
-    const handleLike = () => {
-        const isLiked = likedBy.includes(currentUser.id); // Check if currentUser's ID is in the array
+    const session = useSession()
+    const handleLoginModal = useLoginModal()
+    const { mutate } = useComments(post.id)
+
+    const handleLike = useCallback(() => {
+        const isLiked = likedBy.includes(currentUser.id);
         if (isLiked) {
-            setLikedBy(likedBy.filter(id => id !== currentUser.id)); // Remove currentUser's ID
+            setLikedBy(likedBy.filter(id => id !== currentUser.id));
         } else {
-            setLikedBy([...likedBy, currentUser.id]); // Add currentUser's ID
+            setLikedBy([...likedBy, currentUser.id]);
         }
-    };
+    }, [currentUser.id, likedBy]);
+
+    const handleOpenComment = () => {
+        if (session.status == 'unauthenticated') {
+            handleLoginModal.onOpen()
+        } else {
+            setOpenComment(!openComment)
+        }
+    }
+
+    const handleComment = useCallback(async () => {
+
+        try {
+
+            setIsLoading(true);
+            const result = await axios.post('/api/comment', {
+                postId: post.id,
+                currentUser: currentUser.id,
+                content: comment
+            });
+            mutate()
+            setComment('');
+            setOpenComment(false);
+            setIsLoading(false);
+            if (result.status == 200) {
+                successNotification('Successful comment')
+            }
+        } catch (error) {
+            console.error('COMMENT_ERROR', error);
+            if (axios.isAxiosError(error) && error.response?.status == 404) {
+                errorNotification('Unable to comment')
+            }
+            else {
+                errorNotification('Something went wrong')
+            }
+        }
+        finally {
+            setIsLoading(false)
+        }
+    }, [comment, currentUser.id, mutate, post.id])
 
     const createdAtCalculation = useMemo(() => {
         if (!post.createdAt) {
@@ -47,6 +95,7 @@ const PostCard = ({ currentUser, post, userId }: Props) => {
         return `${timeString}, ${relativeTimeString} ago`;
     }, [post.createdAt]);
 
+    console.log(post.comments[0])
 
     return (
         <article
@@ -101,12 +150,16 @@ const PostCard = ({ currentUser, post, userId }: Props) => {
                     setIsLoading={setIsLoading}
                     handleLike={handleLike}
                 />
-                <div>
-                    <FaCommentAlt
+                <button
+                    disabled={isLoading}
+                    onClick={handleOpenComment}
+                    aria-label='Comment Button'
+                >
+                    <FaRegCommentAlt
                         className='w-5 h-5 hover:text-black/70
-                        transition duration-300 cursor-pointer'
+                    transition duration-300 cursor-pointer'
                     />
-                </div>
+                </button>
             </div>
             {
                 openComment && (
@@ -121,9 +174,14 @@ const PostCard = ({ currentUser, post, userId }: Props) => {
                             disabled={isLoading}
                             ariaLabel='Comment Button'
                             icon={<IoSend className='w-5 h-5 fill-white' />}
-                            onClick={() => console.log('')}
+                            onClick={handleComment}
                         />
                     </div>
+                )
+            }
+            {
+                post?.comments.length > 0 && (
+                    <CommentFeed post={post} />
                 )
             }
         </article>

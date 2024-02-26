@@ -68,7 +68,7 @@ const LikeButton = ({ post, currentUser, isLoading, setIsLoading, handleLike }: 
         } finally {
             setIsLoading(false); //the loading state is returned to false
         }
-    }, [session.status, handleLoginModal, setIsLoading, post.id, currentUser.id, handleLike]);
+    }, [session.status, handleLoginModal, setIsLoading, post?.id, currentUser?.id, handleLike]);
 
     return (
         <button
