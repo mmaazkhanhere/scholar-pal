@@ -12,7 +12,7 @@ const PostFeed = ({ currentUser }: Props) => {
     const { data: posts = [] } = usePosts()
 
     return (
-        <section className='mt-10 max-w-2xl w-full'>
+        <section className='max-w-3xl w-full'>
             {
                 posts.map((post: any) => (
                     <PostCard

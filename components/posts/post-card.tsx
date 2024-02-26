@@ -6,12 +6,14 @@ import Avatar from '../avatar'
 import { formatDistanceToNowStrict, format } from 'date-fns'
 
 
-import { GoHeart, GoHeartFill } from 'react-icons/go'
+
 import { FaCommentAlt } from 'react-icons/fa'
 import Input from '../input'
 import Button from '../button'
 
 import { IoSend } from "react-icons/io5";
+import LikeButton from '../like-button'
+import Tags from '../tags'
 
 type Props = {
     currentUser: IUser
@@ -24,7 +26,17 @@ const PostCard = ({ currentUser, post, userId }: Props) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const [comment, setComment] = useState<string>('')
-    const [openComment, setOpenComment] = useState<boolean>(true)
+    const [openComment, setOpenComment] = useState<boolean>(false)
+    const [likedBy, setLikedBy] = useState(post.likedBy ?? []);
+
+    const handleLike = () => {
+        const isLiked = likedBy.includes(currentUser.id); // Check if currentUser's ID is in the array
+        if (isLiked) {
+            setLikedBy(likedBy.filter(id => id !== currentUser.id)); // Remove currentUser's ID
+        } else {
+            setLikedBy([...likedBy, currentUser.id]); // Add currentUser's ID
+        }
+    };
 
     const createdAtCalculation = useMemo(() => {
         if (!post.createdAt) {
@@ -40,7 +52,7 @@ const PostCard = ({ currentUser, post, userId }: Props) => {
     return (
         <article
             className='flex flex-col items-start justify-center gap-y-5 
-            border border-red-500 w-full p-5 shadow-md rounded-xl'
+            border border-red-500 w-full p-5 shadow-md rounded-xl mt-10'
         >
             <div className='flex items-start justify-start gap-x-5'>
                 <div className='block lg:hidden'>
@@ -71,37 +83,31 @@ const PostCard = ({ currentUser, post, userId }: Props) => {
             </div>
 
             <div className='flex items-center justify-start'>
-
+                <Tags tags={post.tags!} />
             </div>
 
             <div className='flex justify-start items-center gap-x-5'>
-                <p className='text-lg font-semibold'>Likes:&nbsp;
-                    <span className='font-normal'>
-                        {post.likedBy?.length}
+                <p className='text-lg font-semibold'>
+                    Likes:&nbsp;<span className='font-normal'>
+                        {likedBy.length}
                     </span></p>
                 <p className='text-lg font-semibold'>
-                    Comments:&nbsp;
-                    <span className='font-normal'>
+                    Comments:&nbsp;<span className='font-normal'>
                         {post?.comments?.length}
                     </span></p>
             </div>
 
             <div className='flex items-center justify-start gap-x-5'>
-
-                {
-                    post?.likedBy?.includes(currentUser?.id) ?
-                        <GoHeartFill
-                            className='bg-red-500 w-5 h-5 cursor-pointer
-                        hover:bg-red-400 transition duration-300'
-                        /> :
-                        <GoHeart
-                            className='w-6 h-6 cursor-pointer hover:text-black/80
-                            transition duration-300' />
-                }
+                <LikeButton
+                    post={post}
+                    currentUser={currentUser}
+                    setIsLoading={setIsLoading}
+                    handleLike={handleLike}
+                />
                 <div className='flex items-center justify-start gap-x-2'>
                     <FaCommentAlt
                         className='w-5 h-5 hover:text-black/70
-                    transition duration-300 cursor-pointer'
+                        transition duration-300 cursor-pointer'
                     />
                 </div>
             </div>

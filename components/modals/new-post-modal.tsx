@@ -8,15 +8,13 @@ import Modal from '../modal'
 import Avatar from '../avatar'
 import PostLength from '../posts/post-length'
 import NewPostFooter from '../posts/new-post-footer'
-import Tags from '../tags'
+import AddTags from '../posts/add-tags'
 
 import usePostModal from '@/hooks/usePostModal'
 import useLoginModal from '@/hooks/useLoginModal'
 
 import { successNotification } from '@/helpers/success-notification'
 import { errorNotification } from '@/helpers/error-notification'
-
-
 
 
 type Props = {}
@@ -81,7 +79,7 @@ const NewPostModal = (props: Props) => {
                     disabled={isLoading}
                 />
 
-                <Tags tags={tags} setTags={setTags} />
+                <AddTags tags={tags} setTags={setTags} />
 
                 <div className='flex items-center justify-between w-full'>
                     <NewPostFooter />
