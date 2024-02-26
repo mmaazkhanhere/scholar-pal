@@ -109,6 +109,7 @@ const Header = ({ currentUser }: Props) => {
                     <IoMdNotifications className='hidden lg:block w-7 h-7' />
 
                     <Avatar
+                        isHeaderAvatar
                         profilePicture={currentUser?.profilePicture}
                         username={currentUser?.username}
                     />

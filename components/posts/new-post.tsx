@@ -36,11 +36,8 @@ const NewPost = (props: Props) => {
             border-[#343a40]/40 w-full lg:max-w-3xl gap-x-2.5 md:gap-x-5 shadow-md
             hover:scale-95 transition duration-500 cursor-pointer'
         >
-            <div className='block md:hidden'>
-                <Avatar />
-            </div>
-            <div className='hidden md:block'>
-                <Avatar isMedium />
+            <div>
+                <Avatar isPostAvatar />
             </div>
             <p
                 className='border border-[#343a40]/30 w-full py-1 md:py-2 px-6 

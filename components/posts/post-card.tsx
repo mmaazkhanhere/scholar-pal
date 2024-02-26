@@ -5,15 +5,14 @@ import React, { useMemo, useState } from 'react'
 import Avatar from '../avatar'
 import { formatDistanceToNowStrict, format } from 'date-fns'
 
-
-
-import { FaCommentAlt } from 'react-icons/fa'
 import Input from '../input'
 import Button from '../button'
-
-import { IoSend } from "react-icons/io5";
 import LikeButton from '../like-button'
 import Tags from '../tags'
+
+import { IoSend } from "react-icons/io5";
+import { FaCommentAlt } from 'react-icons/fa'
+
 
 type Props = {
     currentUser: IUser
@@ -52,27 +51,24 @@ const PostCard = ({ currentUser, post, userId }: Props) => {
     return (
         <article
             className='flex flex-col items-start justify-center gap-y-5 
-            border border-red-500 w-full p-5 shadow-md rounded-xl mt-10'
+            w-full p-5 shadow-lg rounded-xl mt-10'
         >
             <div className='flex items-start justify-start gap-x-5'>
-                <div className='block lg:hidden'>
-                    <Avatar />
-                </div>
-                <div className='hidden lg:block'>
-                    <Avatar isMedium />
+                <div>
+                    <Avatar isPostAvatar />
                 </div>
                 <div className='flex flex-col items-start'>
                     <div className='flex items-center justify-start gap-x-2'>
                         <span
-                            className='text-xl font-semibold'
+                            className='lg:text-xl font-semibold'
                         >
                             {post.author.name}
                         </span>
-                        <span className='text-[#343a40]/60'>
+                        <span className='text-sm lg:text-base text-[#343a40]/60'>
                             @{post.author.username}
                         </span>
                     </div>
-                    <span>
+                    <span className='text-[#343a40]/60 text-xs lg:text-sm'>
                         {createdAtCalculation}
                     </span>
                 </div>
@@ -87,12 +83,12 @@ const PostCard = ({ currentUser, post, userId }: Props) => {
             </div>
 
             <div className='flex justify-start items-center gap-x-5'>
-                <p className='text-lg font-semibold'>
-                    Likes:&nbsp;<span className='font-normal'>
+                <p className='lg:text-lg font-semibold'>
+                    Likes:&nbsp;<span className='text-sm lg:text-base font-normal'>
                         {likedBy.length}
                     </span></p>
-                <p className='text-lg font-semibold'>
-                    Comments:&nbsp;<span className='font-normal'>
+                <p className='lg:text-lg font-semibold'>
+                    Comments:&nbsp;<span className='text-sm lg:text-base font-normal'>
                         {post?.comments?.length}
                     </span></p>
             </div>
@@ -101,10 +97,11 @@ const PostCard = ({ currentUser, post, userId }: Props) => {
                 <LikeButton
                     post={post}
                     currentUser={currentUser}
+                    isLoading={isLoading}
                     setIsLoading={setIsLoading}
                     handleLike={handleLike}
                 />
-                <div className='flex items-center justify-start gap-x-2'>
+                <div>
                     <FaCommentAlt
                         className='w-5 h-5 hover:text-black/70
                         transition duration-300 cursor-pointer'

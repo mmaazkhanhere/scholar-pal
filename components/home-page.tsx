@@ -15,7 +15,7 @@ const HomePage = ({ currentUser }: Props) => {
         >
             <div
                 className='lg:col-span-4 w-full flex flex-col items-start 
-                border border-black'
+                px-2 lg:px-0'
             >
                 <NewPost currentUser={currentUser} />
                 <PostFeed currentUser={currentUser!} />

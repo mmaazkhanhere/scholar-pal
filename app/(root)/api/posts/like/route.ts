@@ -20,14 +20,14 @@ export const POST = async (request: NextRequest) => {
             return new NextResponse('No post found', { status: 400 })
         }
 
-        const postLikes: string[] = [...post.likedBy] || []
+        let postLikes: string[] = [...post.likedBy] || []
 
         if (postLikes.includes(userId)) {
-            postLikes.filter((likeId) => likeId !== userId)
+            postLikes = postLikes.filter((likeId) => likeId !== userId); // Correctly updates postLikes
+        } else {
+            postLikes.push(userId);
         }
-        else {
-            postLikes.push(userId)
-        }
+
 
         const updatedPost = await prismadb.post.update({
             where: {

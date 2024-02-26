@@ -62,7 +62,7 @@ const NewPostModal = (props: Props) => {
     const modalBody: React.ReactNode = (
         <div className='flex flex-col gap-y-5'>
             <div className='flex items-center justify-start gap-x-5'>
-                <Avatar isMedium />
+                <Avatar isPostAvatar />
                 <span className='text-xl lg:text-2xl font-bold'>
                     {session.data?.user?.name}
                 </span>
