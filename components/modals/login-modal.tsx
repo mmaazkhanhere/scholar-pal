@@ -15,6 +15,7 @@ import useRegisterModal from '@/hooks/useRegisterModal'
 
 import { successNotification } from '@/helpers/success-notification'
 import { errorNotification } from '@/helpers/error-notification'
+import useUser from '@/hooks/useUser'
 
 type Props = {}
 
@@ -29,6 +30,8 @@ const LoginModal = (props: Props) => {
     const [password, setPassword] = useState<string>('')
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
+    const { mutate } = useUser();
+
     const handleSubmit = async () => {
         /*an async function that is called when the user clicks on login button.
         It  */
@@ -37,7 +40,6 @@ const LoginModal = (props: Props) => {
 
             const result = await signIn('credentials', { redirect: false, email, password });
             //pass the user credential to sign in function of next auth
-
             setIsLoading(false);
 
             if (result?.error) {
@@ -45,6 +47,9 @@ const LoginModal = (props: Props) => {
                 setIsLoading(false);
             } else {
                 successNotification('Logged In');
+                setEmail('')
+                setPassword('');
+                mutate();
                 handleLoginModal.onClose();
                 setIsLoading(false);
             }

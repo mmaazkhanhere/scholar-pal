@@ -2,21 +2,21 @@
 import usePosts from '@/hooks/usePosts'
 import React, { useState } from 'react'
 import PostCard from './post-card'
-import { IUser } from '@/interface-d'
+import useUser from '@/hooks/useUser'
 
-type Props = {
-    currentUser: IUser
-}
+type Props = {}
 
-const PostFeed = ({ currentUser }: Props) => {
+const PostFeed = (props: Props) => {
     const { data: posts = [] } = usePosts()
+    const { user: currentUser } = useUser();
 
+    console.log(currentUser)
     return (
         <section className='max-w-3xl w-full'>
             {
                 posts.map((post: any) => (
                     <PostCard
-                        currentUser={currentUser}
+                        currentUser={currentUser!}
                         key={post.id}
                         post={post}
                     />

@@ -1,17 +1,16 @@
-import getCurrentUser from "@/actions/getCurrentUser";
+
 import Header from "@/components/header";
 import HomePage from "@/components/home-page";
+import useUser from "@/hooks/useUser";
 import { IUser } from "@/interface-d";
+import { useSession } from "next-auth/react";
 
-
-export default async function Home() {
-
-  const currentUser = await getCurrentUser()
+export default function Home() {
 
   return (
     <main>
-      <Header currentUser={currentUser as IUser} />
-      <HomePage currentUser={currentUser as IUser} />
+      <Header />
+      <HomePage />
     </main>
   );
 }

@@ -21,13 +21,12 @@ import LogoutButton from './logout-button'
 import useAIModal from '@/hooks/useAIModal'
 import useLoginModal from '@/hooks/useLoginModal'
 import { useSession } from 'next-auth/react'
+import useUser from '@/hooks/useUser'
 
 
-type Props = {
-    currentUser: IUser //current user details
-}
+type Props = {}
 
-const Header = ({ currentUser }: Props) => {
+const Header = (props: Props) => {
 
     const [showMobileMenu, setShowMobileMenu] = useState(false) /*state variable
     to control the visibility of the mobile menu*/
@@ -110,8 +109,6 @@ const Header = ({ currentUser }: Props) => {
 
                     <Avatar
                         isHeaderAvatar
-                        profilePicture={currentUser?.profilePicture}
-                        username={currentUser?.username}
                     />
 
                     {/*Logout button that is displayed only in large screen */}

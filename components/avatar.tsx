@@ -9,31 +9,31 @@ import { useRouter } from 'next/navigation';
 
 import useLoginModal from '@/hooks/useLoginModal';
 import { useSession } from 'next-auth/react';
+import useUser from '@/hooks/useUser';
 
 
 type Props = {
-    profilePicture?: string //profile image of the user
-    username?: string //username of the user to navigate to user profile
     isProfileAvatar?: boolean; //optional prop whether the avatar is for user profile
     isPostAvatar?: boolean; //optional prop whether the avatar is for post
     isHeaderAvatar?: boolean; //optional prop whether the avatar is for header
     className?: string; //optional prop to tailwind css classes
 }
 
-const Avatar: React.FC<Props> = ({ profilePicture, username, isProfileAvatar, isPostAvatar, isHeaderAvatar, className }) => {
+const Avatar: React.FC<Props> = ({ isProfileAvatar, isPostAvatar, isHeaderAvatar, className }) => {
 
     const router = useRouter(); //get the router object
     const handleLogin = useLoginModal(); //hook to manage the visibility of the login modal
     const session = useSession() //get the current session
 
+    const { user: currentUser } = useUser();
 
     const onClick = useCallback(() => {
         if (!session.data?.user) {
             /*If no current session (if user is not logged in), open login modal */
             return handleLogin.onOpen();
         }
-        router.push(`/user/${username}`) //if user is logged in, navigate to user profile page
-    }, [session.data?.user, router, username, handleLogin])
+        router.push(`/user/${currentUser?.username}`) //if user is logged in, navigate to user profile page
+    }, [session.data?.user, router, currentUser?.username, handleLogin])
 
     return (
         <button
@@ -49,7 +49,7 @@ const Avatar: React.FC<Props> = ({ profilePicture, username, isProfileAvatar, is
             `}
         >
             <Image
-                src={profilePicture ?? '/placeholder.png'} /*If profile picture exists,
+                src={currentUser?.profilePicture ?? '/placeholder.png'} /*If profile picture exists,
                 it is displayed, else the a default placeholder image is displayed */
                 alt='User Avatar'
                 fill

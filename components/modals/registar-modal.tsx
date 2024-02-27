@@ -16,6 +16,7 @@ import useRegisterModal from '@/hooks/useRegisterModal'
 
 import { successNotification } from '@/helpers/success-notification'
 import { errorNotification } from '@/helpers/error-notification'
+import useUser from '@/hooks/useUser'
 
 type Props = {}
 
@@ -31,6 +32,8 @@ const RegisterModal = (props: Props) => {
     const [username, setUsername] = useState<string>('')
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
+
+    const { mutate } = useUser();
 
     const handleSubmit = async () => {
         /*An async function that is called when the user clicks on Register button.
@@ -51,6 +54,11 @@ const RegisterModal = (props: Props) => {
 
             if (result?.ok) {
                 successNotification('Account Created');
+                setName('');
+                setUsername('');
+                setEmail('');
+                setPassword('');
+                mutate();
                 handleRegisterModal.onClose();
             } else {
                 errorNotification('Some error occurred');

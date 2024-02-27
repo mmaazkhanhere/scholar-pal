@@ -8,10 +8,9 @@ import Button from '../button'
 import usePostModal from '@/hooks/usePostModal'
 import useLoginModal from '@/hooks/useLoginModal'
 import { useSession } from 'next-auth/react'
+import useUser from '@/hooks/useUser'
 
-type Props = {
-    currentUser?: IUser
-}
+type Props = {}
 
 const NewPost = (props: Props) => {
 
@@ -19,6 +18,7 @@ const NewPost = (props: Props) => {
     const handleLoginModal = useLoginModal()
 
     const session = useSession()
+    const { user: currentUser, mutate } = useUser();
 
     const handleClick = () => {
         if (session.status !== 'authenticated') {

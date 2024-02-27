@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
 
@@ -27,6 +27,11 @@ const LikeButton = ({ post, currentUser, isLoading, setIsLoading, handleLike }: 
     const [isLiked, setIsLiked] = useState(post?.likedBy?.includes(currentUser?.id));
     /*a state variable that checks if the current user have already liked the post
     by checking if it exist in the likedBy array. */
+
+    useEffect(() => {
+        // Update isLiked state when currentUser or post.likedBy changes
+        setIsLiked(post?.likedBy?.includes(currentUser?.id));
+    }, [currentUser, post.likedBy]);
 
     const onClick = useCallback(async () => {
 

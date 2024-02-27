@@ -6,6 +6,7 @@ import { successNotification } from '@/helpers/success-notification';
 import { signOut, useSession } from 'next-auth/react';
 import React, { useState } from 'react';
 import { TbLogout } from 'react-icons/tb';
+import useUser from '@/hooks/useUser';
 
 type Props = {
     label?: boolean; //an optional parameter for text displayed next to icon
@@ -17,6 +18,8 @@ const LogoutButton = ({ label }: Props) => {
     const [isLoading, setIsLoading] = useState<boolean>(false); /*state
     variable to disable the button */
 
+    const { mutate } = useUser();
+
     const handleLoginModal = useLoginModal(); //hook to handle visibility of login modal
 
 
@@ -25,10 +28,10 @@ const LogoutButton = ({ label }: Props) => {
         try {
             setIsLoading(true); //sets the loading state to true
             await signOut({ redirect: false }); //sign out the user
-            setTimeout(() => successNotification('Logged out successfully'), 1000);
+            successNotification('Logged out successfully');
             /*display a log out notification */
             setIsLoading(false);
-
+            mutate();
             handleLoginModal.onOpen() //open the login modal
 
         } catch (error) {

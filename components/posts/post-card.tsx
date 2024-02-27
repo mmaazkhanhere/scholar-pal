@@ -33,8 +33,9 @@ const PostCard = ({ currentUser, post }: Props) => {
     const [openComment, setOpenComment] = useState<boolean>(false)
     const [likedBy, setLikedBy] = useState(post.likedBy ?? []);
 
-    const session = useSession()
+    const session = useSession();
     const handleLoginModal = useLoginModal()
+
     const { mutate } = useComments(post.id)
 
     const handleLike = useCallback(() => {
@@ -44,7 +45,7 @@ const PostCard = ({ currentUser, post }: Props) => {
         } else {
             setLikedBy([...likedBy, currentUser.id]);
         }
-    }, [currentUser.id, likedBy]);
+    }, [currentUser?.id, likedBy]);
 
     const handleOpenComment = () => {
         if (session.status == 'unauthenticated') {
@@ -64,7 +65,7 @@ const PostCard = ({ currentUser, post }: Props) => {
                 currentUser: currentUser.id,
                 content: comment
             });
-            mutate()
+            mutate();
             setComment('');
             setOpenComment(false);
             setIsLoading(false);
@@ -83,7 +84,7 @@ const PostCard = ({ currentUser, post }: Props) => {
         finally {
             setIsLoading(false)
         }
-    }, [comment, currentUser.id, mutate, post.id])
+    }, [comment, currentUser?.id, mutate, post.id])
 
     const createdAtCalculation = useMemo(() => {
         if (!post.createdAt) {
