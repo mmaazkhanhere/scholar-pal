@@ -5,7 +5,6 @@ import bcrypt from "bcryptjs";
 
 import prisma from "@/libs/prismadb";
 
-
 export const authOptions: AuthOptions = {
 
     adapter: PrismaAdapter(prisma),
@@ -28,7 +27,7 @@ export const authOptions: AuthOptions = {
                 });
 
                 if (!user || !user?.hashedPassword) {
-                    throw new Error('Invalid password');
+                    throw new Error("User doesn't exists");
                 }
 
                 const isCorrectPassword = await bcrypt.compare(

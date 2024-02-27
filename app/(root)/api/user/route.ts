@@ -9,7 +9,7 @@ export const GET = async (request: NextRequest) => {
         const userEmail = request.nextUrl.searchParams.get('userEmail')
 
         if (!userEmail) {
-            return new NextResponse('No user email', { status: 400 })
+            return new NextResponse('No user email', { status: 404 })
         }
 
         const currentUser = await prismadb.user.findUnique({
@@ -19,7 +19,7 @@ export const GET = async (request: NextRequest) => {
         })
 
         if (!currentUser) {
-            return null;
+            return new NextResponse('No user', { status: 404 });
         }
 
         return NextResponse.json(currentUser);

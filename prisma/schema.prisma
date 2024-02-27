@@ -49,6 +49,7 @@ model Post {
   likedBy         String[]         @db.ObjectId // IDs of users who liked the post
   authorId        String           @db.ObjectId
   studyGroupId    String?          @db.ObjectId
+  fileUrls        String[]
   comments        Comment[]
   studyGroup      StudyGroup?      @relation(fields: [studyGroupId], references: [id], onDelete: SetNull)
   author          User             @relation(fields: [authorId], references: [id], onDelete: Cascade)
@@ -150,4 +151,6 @@ enum NotificationType {
   UPVOTE
   DOWNVOTE
   COMMENT
+  FOLLOW_REQUEST
+  FOLLOW_REQUEST_ACCEPTED
 }

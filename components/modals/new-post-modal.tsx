@@ -15,15 +15,18 @@ import useLoginModal from '@/hooks/useLoginModal'
 
 import { successNotification } from '@/helpers/success-notification'
 import { errorNotification } from '@/helpers/error-notification'
+import Image from 'next/image'
+import { AiFillFile } from 'react-icons/ai'
+
 
 
 type Props = {}
 
 const NewPostModal = (props: Props) => {
 
-    const [postContent, setPostContent] = useState<string>('')
+    const [postContent, setPostContent] = useState<string>('');
     const [tags, setTags] = useState<string[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const session = useSession()
 
@@ -31,14 +34,15 @@ const NewPostModal = (props: Props) => {
     const handleLoginModal = useLoginModal()
 
     const handleSubmit = useCallback(async () => {
-        console.log('function called')
         try {
-            setIsLoading(true)
+            setIsLoading(true);
 
-            const result = await axios.post('/api/posts', { postContent, tags })
+            const result = await axios.post('/api/posts', { postContent, tags });
             if (result.status == 200) {
                 successNotification('Post successfully')
             }
+            setPostContent('');
+            setTags([]);
             setIsLoading(false)
             handlePostModal.onClose()
 

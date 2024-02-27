@@ -19,6 +19,7 @@ import { errorNotification } from '@/helpers/error-notification'
 import useLoginModal from '@/hooks/useLoginModal'
 import { useSession } from 'next-auth/react'
 import useComments from '@/hooks/useComments'
+import Image from 'next/image'
 
 
 type Props = {
@@ -96,7 +97,8 @@ const PostCard = ({ currentUser, post }: Props) => {
         return `${timeString}, ${relativeTimeString} ago`;
     }, [post.createdAt]);
 
-    console.log(post.comments[0])
+    console.log(post?.fileUrls[0])
+
 
     return (
         <article
@@ -127,6 +129,15 @@ const PostCard = ({ currentUser, post }: Props) => {
             <div className='md:text-lg'>
                 {post.content}
             </div>
+
+            {
+                post.fileUrls?.length > 0 && <Image
+                    src={post.fileUrls[0]}
+                    alt={post.author.name}
+                    width={100}
+                    height={100}
+                />
+            }
 
             <div className='flex items-center justify-start'>
                 <Tags tags={post.tags!} />

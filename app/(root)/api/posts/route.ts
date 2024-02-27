@@ -44,7 +44,7 @@ export const POST = async (request: NextRequest) => {
                 authorId: currentUser.id,
                 content: postContent,
                 tags: tags || [],
-                likedBy: [],
+                likedBy: []
             }
         })
 

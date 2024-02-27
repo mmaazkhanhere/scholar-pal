@@ -22,6 +22,13 @@ export interface IPostModal {
     onClose: () => void
 }
 
+export interface IFileUploadModal {
+    isOpen: boolean;
+    onOpen: () => void;
+    onClose: () => void
+}
+
+
 export interface IUser {
     id: string;
     name: string;
@@ -56,6 +63,7 @@ export interface IPost {
     content: string;
     createdAt: Date; // DateTime in Prisma maps to Date in TypeScript
     tags?: string[]; // Array of strings for tags
+    fileUrls: string[]; // Array of media uploaded
     likedBy?: string[]; // Array of string IDs for users who liked the post
     authorId: string; // ID of the author, a string representation of MongoDB ObjectId
     studyGroupId?: string | null; // Optional or nullable string for study group ID
