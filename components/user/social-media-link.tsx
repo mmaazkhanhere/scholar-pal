@@ -13,14 +13,17 @@ type Props = {
 
 const SocialMediaLink = ({ facebookUrl, twitterUrl, linkedinUrl }: Props) => {
     return (
-        <div className='flex items-center justify-start gap-x-4'>
+        <div className='flex items-center justify-start gap-x-4 my-5'>
             {
                 facebookUrl && <Link
                     aria-label='Facebook Profile Link'
                     title='Facebook Profile'
                     href={facebookUrl}
                 >
-                    <FaSquareFacebook />
+                    <FaSquareFacebook
+                        className='w-8 lg:w-10 h-8 lg:h-10 hover:opacity-80 
+                        transition duration-300'
+                    />
                 </Link>
             }
             {
@@ -29,7 +32,8 @@ const SocialMediaLink = ({ facebookUrl, twitterUrl, linkedinUrl }: Props) => {
                     title='Twitter Profile'
                     href={twitterUrl}
                 >
-                    <FaSquareXTwitter />
+                    <FaSquareXTwitter className='w-8 lg:w-10 h-8 lg:h-10 hover:opacity-80 
+                        transition duration-300' />
                 </Link>
             }
             {
@@ -38,7 +42,8 @@ const SocialMediaLink = ({ facebookUrl, twitterUrl, linkedinUrl }: Props) => {
                     title='LinkedIn Profile'
                     href={linkedinUrl}
                 >
-                    <FaLinkedin />
+                    <FaLinkedin className='w-8 lg:w-10 h-8 lg:h-10 hover:opacity-80 
+                        transition duration-300' />
                 </Link>
             }
         </div>

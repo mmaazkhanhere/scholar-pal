@@ -36,7 +36,6 @@ const EditModal = (props: Props) => {
         setProfilePicture(user?.profilePicture as string);
     }, [user?.name, user?.profilePicture])
 
-    console.log(name, bio, profilePicture, linkedInProfile, facebookProfile, twitterProfile);
 
     const onSubmit = useCallback(async () => {
 
@@ -52,6 +51,13 @@ const EditModal = (props: Props) => {
                 setIsLoading(false);
                 successNotification('Profile successfully updated');
                 mutate();
+                setName('');
+                setBio('');
+                setFieldOfStudy('');
+                setProfilePicture('');
+                setLinkedInProfile('');
+                setFacebookProfile('');
+                setTwitterProfile('');
                 handleEditModal.onClose();
             }
 

@@ -9,9 +9,9 @@ const UserProfile = (props: Props) => {
         <React.Fragment>
             <Header />
             <section
-                className='max-w-[1600px] mx-auto grid grid-cols-7 w-full pt-20'
+                className='max-w-[1600px] mx-auto grid lg:grid-cols-7 w-full pt-28'
             >
-                <div className='col-span-2 border border-black w-full'>
+                <div className='lg:col-span-2 border rounded-lg w-full'>
                     <UserSidebar />
                 </div>
             </section>
