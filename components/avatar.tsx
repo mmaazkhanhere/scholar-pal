@@ -41,7 +41,7 @@ const Avatar: React.FC<Props> = ({ isProfileAvatar, isPostAvatar, isHeaderAvatar
             onClick={onClick}
             className={`
                 ${className}
-                ${isProfileAvatar && 'w-32 h-32'}
+                ${isProfileAvatar && 'w-48 h-48'}
                 ${isPostAvatar && ' w-12 lg:w-[68px] h-12 lg:h-[68px]'}
                 ${isHeaderAvatar && 'w-7 h-7'}
                 rounded-full hover:opacity-90 hover:scale-105 transition duration-500

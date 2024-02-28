@@ -25,6 +25,10 @@ export const GET = async (request: NextRequest) => {
 export const POST = async (request: NextRequest) => {
 
     try {
+        /*
+        Todos: Add functionality to upload media files
+        Todos: Ability to delete post
+         */
 
         const body = await request.json();
         const { postContent, tags } = body;

@@ -22,7 +22,7 @@ export interface IPostModal {
     onClose: () => void
 }
 
-export interface IFileUploadModal {
+export interface IEditModal {
     isOpen: boolean;
     onOpen: () => void;
     onClose: () => void
@@ -41,6 +41,7 @@ export interface IUser {
     profilePicture?: string;
     linkedInProfile?: string;
     facebookProfile?: string;
+    twitterUrl?: string;
     tutoringAvailable?: boolean;
     tutoringRating?: number;
     academicLevel?: string;
