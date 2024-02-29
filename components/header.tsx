@@ -110,7 +110,8 @@ const Header = (props: Props) => {
 
                     <Avatar
                         isHeaderAvatar
-                        userId={user?.profilePicture}
+                        userId={user?.id}
+                        profilePicture={user?.profilePicture}
                     />
 
                     {/*Logout button that is displayed only in large screen */}

@@ -7,6 +7,7 @@ import { signOut, useSession } from 'next-auth/react';
 import React, { useState } from 'react';
 import { TbLogout } from 'react-icons/tb';
 import useUser from '@/hooks/useUser';
+import { useRouter } from 'next/navigation';
 
 type Props = {
     label?: boolean; //an optional parameter for text displayed next to icon
@@ -17,6 +18,8 @@ const LogoutButton = ({ label }: Props) => {
     const { data: session } = useSession(); //gets the current session data
     const [isLoading, setIsLoading] = useState<boolean>(false); /*state
     variable to disable the button */
+
+    const router = useRouter()
 
     const { mutate } = useUser();
 
@@ -29,6 +32,7 @@ const LogoutButton = ({ label }: Props) => {
             setIsLoading(true); //sets the loading state to true
             await signOut({ redirect: false }); //sign out the user
             successNotification('Logged out successfully');
+            router.push('/');
             /*display a log out notification */
             setIsLoading(false);
             mutate();

@@ -14,6 +14,7 @@ import Avatar from '../avatar';
 import { FaMedal, FaStar } from "react-icons/fa";
 
 import useUser from '@/hooks/useUser';
+import useLoginModal from '@/hooks/useLoginModal';
 
 
 const UserSidebar = () => {
@@ -22,19 +23,24 @@ const UserSidebar = () => {
 
     const userId = usePathname().split('/').pop();
 
-    const { user } = useUser();
+    const { user: currentUser } = useUser();
+    const { user } = useUser(userId);
+
     const handleEditModal = useEditModal()
+    const handleLoginModal = useLoginModal();
 
     const formattedDate = user?.createdAt ? format(new Date(user.createdAt), 'PPP') : '';
 
     return (
         <div
             className='flex flex-col items-start justify-center text-[#343a40]
-        p-5'
+        p-6 border rounded-lg'
         >
             <Avatar
                 isNavigable={false}
                 isProfileAvatar
+                userId={user?.id}
+                profilePicture={user?.profilePicture}
                 className='self-center'
             />
             <div className='flex items-end gap-x-5 mt-5'>
@@ -85,7 +91,7 @@ const UserSidebar = () => {
             </p>
 
             {
-                user?.id == userId ? (
+                currentUser?.id == userId ? (
                     <Button
                         label='Edit Profile'
                         ariaLabel='Edit Profile Button'

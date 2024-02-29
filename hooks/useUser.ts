@@ -3,13 +3,16 @@ import { useSession } from "next-auth/react";
 import { IUser } from '@/interface-d';
 import fetcher from "@/libs/fetcher";
 
-const useUser = () => {
+const useUser = (userId?: string) => {
     const { data: session, status } = useSession();
 
     const userEmail = session?.user?.email
 
-    // Here, we use TypeScript generics to specify that the fetcher will return IUser or null
-    const { data, error, mutate } = useSWR<IUser | null>(session && status === "authenticated" ? `/api/user/?userEmail=${userEmail}` : null, fetcher);
+    const fetchUrl = userId
+        ? `/api/user/${userId}` // Path to fetch data for a specific user by userId
+        : (session && status === "authenticated" ? `/api/user/?userEmail=${userEmail}` : null); // Path to fetch current user data
+
+    const { data, error, mutate } = useSWR<IUser | null>(fetchUrl, fetcher);
 
     return {
         user: data, // TypeScript now knows data is IUser | null

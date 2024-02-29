@@ -12,11 +12,12 @@ import AddTags from '../posts/add-tags'
 
 import usePostModal from '@/hooks/usePostModal'
 import useLoginModal from '@/hooks/useLoginModal'
+import usePosts from '@/hooks/usePosts'
+import useUser from '@/hooks/useUser'
 
 import { successNotification } from '@/helpers/success-notification'
 import { errorNotification } from '@/helpers/error-notification'
-import Image from 'next/image'
-import { AiFillFile } from 'react-icons/ai'
+
 
 
 
@@ -28,10 +29,12 @@ const NewPostModal = (props: Props) => {
     const [tags, setTags] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const session = useSession()
+    const session = useSession();
+    const { mutate } = usePosts();
+    const { user: currentUser } = useUser();
 
-    const handlePostModal = usePostModal()
-    const handleLoginModal = useLoginModal()
+    const handlePostModal = usePostModal();
+    const handleLoginModal = useLoginModal();
 
     const handleSubmit = useCallback(async () => {
         try {
@@ -43,8 +46,9 @@ const NewPostModal = (props: Props) => {
             }
             setPostContent('');
             setTags([]);
-            setIsLoading(false)
-            handlePostModal.onClose()
+            mutate();
+            setIsLoading(false);
+            handlePostModal.onClose();
 
         } catch (error) {
             setIsLoading(false)
@@ -61,12 +65,17 @@ const NewPostModal = (props: Props) => {
             }
         }
 
-    }, [handleLoginModal, handlePostModal, postContent, tags])
+    }, [handleLoginModal, handlePostModal, mutate, postContent, tags])
 
     const modalBody: React.ReactNode = (
         <div className='flex flex-col gap-y-5'>
             <div className='flex items-center justify-start gap-x-5'>
-                <Avatar isPostAvatar />
+                <Avatar
+                    isNavigable={false}
+                    isPostAvatar
+                    userId={currentUser?.id}
+                    profilePicture={currentUser?.profilePicture}
+                />
                 <span className='text-xl lg:text-2xl font-bold'>
                     {session.data?.user?.name}
                 </span>

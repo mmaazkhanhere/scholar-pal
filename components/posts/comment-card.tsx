@@ -28,7 +28,7 @@ const CommentCard = ({ comment }: Props) => {
                 />
             </div>
             <div className='flex flex-col items-start'>
-                <div className='flex items-center justify-start gap-x-2'>
+                <div className='flex items-center justify-start gap-x-1 lg:gap-x-2'>
                     <p className='lg:text-lg font-semibold'>
                         {comment.author?.name}
                     </p>
@@ -36,8 +36,8 @@ const CommentCard = ({ comment }: Props) => {
                     <p className='text-sm text-[#343a40]/60'>
                         @{comment.author?.username}
                     </p>
-                    <p className='text-sm text-[#343a40]/60'>
-                        {calculateCreatedTime}
+                    <p className='hidden lg:block text-sm text-[#343a40]/60'>
+                        {calculateCreatedTime} ago
                     </p>
                 </div>
                 <p className='text-sm'>

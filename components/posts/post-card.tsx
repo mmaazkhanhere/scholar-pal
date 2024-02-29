@@ -43,7 +43,7 @@ const PostCard = ({ currentUser, post }: Props) => {
     const handleLoginModal = useLoginModal()
 
     const { mutate } = useComments(post.id)
-    const { data, mutate: mutatePost } = usePosts()
+    const { mutate: mutatePost } = usePosts()
 
     const handleLike = useCallback(() => {
         const isLiked = likedBy.includes(currentUser.id);

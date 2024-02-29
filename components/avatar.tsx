@@ -9,7 +9,6 @@ import { useRouter } from 'next/navigation';
 
 import useLoginModal from '@/hooks/useLoginModal';
 import { useSession } from 'next-auth/react';
-import useUser from '@/hooks/useUser';
 
 
 type Props = {

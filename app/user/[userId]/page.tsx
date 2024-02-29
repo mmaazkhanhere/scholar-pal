@@ -2,9 +2,8 @@
 import React from 'react'
 
 import Header from '@/components/header'
-import UserPosts from '@/components/user/user-posts'
 import UserSidebar from '@/components/user/user-sidebar'
-import NewPost from '@/components/posts/new-post'
+import UserPostBar from '@/components/user/user-post-bar'
 
 type Props = {}
 
@@ -14,15 +13,12 @@ const UserProfile = (props: Props) => {
         <React.Fragment>
             <Header />
             <section
-                className='max-w-[1600px] mx-auto grid lg:grid-cols-7 w-full pt-28'
+                className='max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-7 w-full pt-28'
             >
-                <div className='lg:col-span-2 border rounded-lg w-full'>
+                <div className='lg:col-span-2 w-full'>
                     <UserSidebar />
                 </div>
-                <div className='flex flex-col lg:col-span-5 w-full px-20'>
-                    <NewPost />
-                    <UserPosts />
-                </div>
+                <UserPostBar />
             </section>
         </React.Fragment>
 
