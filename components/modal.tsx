@@ -46,10 +46,11 @@ const Modal: React.FC<Props> =
             bg-black/70'
             >
                 <div className='w-[85%] lg:w-[50%] max-w-3xl bg-[#fefefe] 
-                rounded-xl shadow-lg overflow-hidden'
+                rounded-xl flex flex-col shadow-lg overflow-hidden p-10
+                gap-5'
                 >
                     {/* Header */}
-                    <div className='flex items-center justify-between p-4 md:p-8 border-b'>
+                    <div className='flex items-center justify-between'>
                         <h3 className='text-2xl font-semibold'>
                             {title}
                         </h3>
@@ -62,23 +63,23 @@ const Modal: React.FC<Props> =
                     </div>
 
                     {/* Body */}
-                    <div className='max-h-[70vh] overflow-auto p-4 md:p-8'>
+                    <div className='max-h-[70vh] overflow-auto'>
                         {body}
                     </div>
 
                     {/* Footer */}
-                    <div className='border-t p-4 md:p-8'>
-                        {
-                            buttonLabel && (
-                                <Button
-                                    onClick={handleSubmit}
-                                    disabled={disabled}
-                                    label={buttonLabel}
-                                />
-                            )
-                        }
-                        {footer}
-                    </div>
+                    {
+                        buttonLabel && (
+                            <Button
+                                onClick={handleSubmit}
+                                disabled={disabled}
+                                label={buttonLabel}
+                                className='w-full mt-5 lg:py-3'
+                            />
+                        )
+                    }
+
+                    {footer}
                 </div>
             </section>
         );

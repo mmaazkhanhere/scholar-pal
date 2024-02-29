@@ -1,19 +1,26 @@
 "use client"
 
-import useUser from '@/hooks/useUser';
 import React, { useState } from 'react';
-import Avatar from '../avatar';
-import FollowerDetail from './follower-detail';
-import { FaMedal, FaStar } from "react-icons/fa";
-import { format } from 'date-fns';
 import Link from 'next/link';
-import Button from '../button';
+import { format } from 'date-fns';
+import { usePathname } from 'next/navigation';
+
+import FollowerDetail from './follower-detail';
 import useEditModal from '@/hooks/useEditModal';
+import Button from '../button';
 import SocialMediaLink from './social-media-link';
+import Avatar from '../avatar';
+
+import { FaMedal, FaStar } from "react-icons/fa";
+
+import useUser from '@/hooks/useUser';
+
 
 const UserSidebar = () => {
 
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
+
+    const userId = usePathname().split('/').pop();
 
     const { user } = useUser();
     const handleEditModal = useEditModal()
@@ -77,13 +84,25 @@ const UserSidebar = () => {
                 {user?.bio}
             </p>
 
-            <Button
-                label='Edit Profile'
-                ariaLabel='Edit Profile Button'
-                onClick={handleEditModal.onOpen}
-                className='w-full md:py-3 md:text-base'
-                disabled={isLoading}
-            />
+            {
+                user?.id == userId ? (
+                    <Button
+                        label='Edit Profile'
+                        ariaLabel='Edit Profile Button'
+                        onClick={handleEditModal.onOpen}
+                        className='w-full md:py-3 md:text-base'
+                        disabled={isLoading}
+                    />
+                ) : (
+                    <Button
+                        label='Follow'
+                        ariaLabel='Follow Button'
+                        onClick={() => console.log('Follow')}
+                        className='w-full md:py-3 md:text-base'
+                        disabled={isLoading}
+                    />
+                )
+            }
 
             <p className='font-bold lg:text-lg my-5'>
                 Joined: <span className='font-normal text-sm lg:text-base'>

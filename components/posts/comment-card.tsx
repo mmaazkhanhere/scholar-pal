@@ -22,7 +22,10 @@ const CommentCard = ({ comment }: Props) => {
             border-b border-b-[#343a40]/20 py-2'
         >
             <div>
-                <Avatar isHeaderAvatar />
+                <Avatar
+                    profilePicture={comment.author.profilePicture}
+                    isHeaderAvatar
+                />
             </div>
             <div className='flex flex-col items-start'>
                 <div className='flex items-center justify-start gap-x-2'>

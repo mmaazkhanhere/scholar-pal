@@ -4,22 +4,27 @@ import { IPost, IUser } from '@/interface-d'
 import React, { useCallback, useMemo, useState } from 'react'
 import Avatar from '../avatar'
 import { formatDistanceToNowStrict, format } from 'date-fns'
+import axios from 'axios'
+import { useSession } from 'next-auth/react'
+import Image from 'next/image'
 
 import Input from '../input'
 import Button from '../button'
 import LikeButton from '../like-button'
 import Tags from '../tags'
+import CommentFeed from './comment-feed'
 
 import { IoSend } from "react-icons/io5";
 import { FaRegCommentAlt } from 'react-icons/fa'
-import CommentFeed from './comment-feed'
-import axios from 'axios'
+
+
 import { successNotification } from '@/helpers/success-notification'
 import { errorNotification } from '@/helpers/error-notification'
+
 import useLoginModal from '@/hooks/useLoginModal'
-import { useSession } from 'next-auth/react'
 import useComments from '@/hooks/useComments'
-import Image from 'next/image'
+
+import usePosts from '@/hooks/usePosts'
 
 
 type Props = {
@@ -38,6 +43,7 @@ const PostCard = ({ currentUser, post }: Props) => {
     const handleLoginModal = useLoginModal()
 
     const { mutate } = useComments(post.id)
+    const { data, mutate: mutatePost } = usePosts()
 
     const handleLike = useCallback(() => {
         const isLiked = likedBy.includes(currentUser.id);
@@ -67,6 +73,7 @@ const PostCard = ({ currentUser, post }: Props) => {
                 content: comment
             });
             mutate();
+            mutatePost();
             setComment('');
             setOpenComment(false);
             setIsLoading(false);
@@ -85,7 +92,7 @@ const PostCard = ({ currentUser, post }: Props) => {
         finally {
             setIsLoading(false)
         }
-    }, [comment, currentUser?.id, mutate, post.id])
+    }, [comment, currentUser.id, mutate, mutatePost, post.id])
 
     const createdAtCalculation = useMemo(() => {
         if (!post.createdAt) {
@@ -97,8 +104,6 @@ const PostCard = ({ currentUser, post }: Props) => {
         return `${timeString}, ${relativeTimeString} ago`;
     }, [post.createdAt]);
 
-    console.log(post?.fileUrls[0])
-
 
     return (
         <article
@@ -107,17 +112,21 @@ const PostCard = ({ currentUser, post }: Props) => {
         >
             <div className='flex items-start justify-start gap-x-5'>
                 <div>
-                    <Avatar isPostAvatar />
+                    <Avatar
+                        userId={post.author.id}
+                        profilePicture={post.author.profilePicture}
+                        isPostAvatar
+                    />
                 </div>
                 <div className='flex flex-col items-start'>
                     <div className='flex items-center justify-start gap-x-2'>
                         <span
                             className='lg:text-xl font-semibold'
                         >
-                            {post.author.name}
+                            {post.author?.name}
                         </span>
                         <span className='text-sm lg:text-base text-[#343a40]/60'>
-                            @{post.author.username}
+                            @{post.author?.username}
                         </span>
                     </div>
                     <span className='text-[#343a40]/60 text-xs lg:text-sm'>
@@ -133,7 +142,7 @@ const PostCard = ({ currentUser, post }: Props) => {
             {
                 post.fileUrls?.length > 0 && <Image
                     src={post.fileUrls[0]}
-                    alt={post.author.name}
+                    alt={post.author?.name}
                     width={100}
                     height={100}
                 />
@@ -192,7 +201,7 @@ const PostCard = ({ currentUser, post }: Props) => {
                 )
             }
             {
-                post?.comments.length > 0 && (
+                post?.comments?.length > 0 && (
                     <CommentFeed post={post} />
                 )
             }

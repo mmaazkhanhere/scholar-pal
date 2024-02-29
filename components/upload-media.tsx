@@ -1,5 +1,4 @@
 import React from 'react';
-import { useDropzone } from 'react-dropzone';
 import { AiFillPicture } from 'react-icons/ai';
 
 type Props = {}

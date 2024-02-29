@@ -1,13 +1,12 @@
 "use client"
 
 import React from 'react'
+import { useSession } from 'next-auth/react'
 
-import { IUser } from '@/interface-d'
 import Avatar from '../avatar'
-import Button from '../button'
+
 import usePostModal from '@/hooks/usePostModal'
 import useLoginModal from '@/hooks/useLoginModal'
-import { useSession } from 'next-auth/react'
 import useUser from '@/hooks/useUser'
 
 type Props = {}
@@ -18,7 +17,7 @@ const NewPost = (props: Props) => {
     const handleLoginModal = useLoginModal()
 
     const session = useSession()
-    const { user: currentUser, mutate } = useUser();
+    const { user } = useUser();
 
     const handleClick = () => {
         if (session.status !== 'authenticated') {
@@ -37,7 +36,11 @@ const NewPost = (props: Props) => {
             hover:scale-95 transition duration-500 cursor-pointer'
         >
             <div>
-                <Avatar isPostAvatar />
+                <Avatar
+                    profilePicture={user?.profilePicture}
+                    isPostAvatar
+                    userId={user?.id}
+                />
             </div>
             <p
                 className='border border-[#343a40]/30 w-full py-1 md:py-2 px-6 

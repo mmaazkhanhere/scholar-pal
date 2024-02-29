@@ -18,26 +18,27 @@ type Props = {
     isHeaderAvatar?: boolean; //optional prop whether the avatar is for header
     isNavigable?: boolean; //optional prop whether the avatar redirects to user profile
     className?: string; //optional prop to tailwind css classes
+    profilePicture?: string;
+    userId?: string;
 }
 
-const Avatar: React.FC<Props> = ({ isProfileAvatar, isPostAvatar, isHeaderAvatar, className, isNavigable }) => {
+const Avatar: React.FC<Props> = ({ isProfileAvatar, isPostAvatar, isHeaderAvatar, className, isNavigable, userId, profilePicture }) => {
 
     const router = useRouter(); //get the router object
     const handleLogin = useLoginModal(); //hook to manage the visibility of the login modal
     const session = useSession() //get the current session
 
-    const { user: currentUser } = useUser();
 
     const onClick = useCallback(() => {
-        if (isNavigable) {
+        if (!isNavigable) {
             if (!session.data?.user) {
                 /*If no current session (if user is not logged in), open login modal */
                 return handleLogin.onOpen();
             }
-            router.push(`/user/${currentUser?.username}`) //if user is logged in, navigate to user profile page
+            router.push(`/user/${userId}`) //if user is logged in, navigate to user profile page
         }
 
-    }, [isNavigable, session.data?.user, router, currentUser?.username, handleLogin])
+    }, [isNavigable, userId, session.data?.user, router, handleLogin])
 
     return (
         <button
@@ -53,8 +54,7 @@ const Avatar: React.FC<Props> = ({ isProfileAvatar, isPostAvatar, isHeaderAvatar
             `}
         >
             <Image
-                src={currentUser?.profilePicture ?? '/placeholder.png'} /*If profile picture exists,
-                it is displayed, else the a default placeholder image is displayed */
+                src={profilePicture || '/placeholder.png'}
                 alt='User Avatar'
                 fill
                 className='object-cover rounded-full'

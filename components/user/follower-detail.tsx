@@ -17,12 +17,12 @@ const FollowerDetail = ({ followers, following }: Props) => {
                 className='flex items-center justify-start gap-x-2'
             >
                 <FaUser
-                    className='w-6 lg:w-7 h-6 lg:h-7'
+                    className='w-5 lg:w-6 h-5 lg:h-6'
                 />
-                <span className='text-lg lg:text-xl font-semibold'>
+                <span className='text-lg font-semibold'>
                     Followers:
                 </span>
-                <span className='text-lg lg:text-xl font-bold'>
+                <span className='text-lg font-bold'>
                     {followers?.length}
                 </span>
             </div>
@@ -31,11 +31,11 @@ const FollowerDetail = ({ followers, following }: Props) => {
                 aria-label='Followings'
                 className='flex items-center justify-start gap-x-2'
             >
-                <FaUserCheck className='w-7 lg:w-8 h-7 lg:h-8' />
-                <span className='text-lg lg:text-xl font-semibold'>
+                <FaUserCheck className='w-6 lg:w-7 h-6 lg:h-7' />
+                <span className='text-lg font-semibold'>
                     Following
                 </span>
-                <span className='text-lg lg:text-xl font-bold'>
+                <span className='text-lg font-bold'>
                     {following?.length}
                 </span>
             </div>

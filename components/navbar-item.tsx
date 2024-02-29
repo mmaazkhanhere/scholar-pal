@@ -15,19 +15,31 @@ const NavbarItems = (props: Props) => {
         <div
             className='hidden lg:flex items-center justify-start gap-8'
         >
-            <Link href='/'>
+            <Link
+                title='Groups'
+                href='/'
+                aria-label='Groups'
+            >
                 <FaUserGroup
                     className='w-6 h-6 hover:scale-105 hover:opacity-95'
                 />
             </Link>
 
-            <Link href='/'>
+            <Link
+                title='Tutors'
+                href='/'
+                aria-label='Tutors'
+            >
                 <BsPersonWorkspace
                     className='w-6 h-6 hover:scale-105 hover:opacity-95'
                 />
             </Link>
 
-            <Link href='/' >
+            <Link
+                title='Forums'
+                href='/'
+                aria-label='Forums'
+            >
                 <MdForum
                     className='w-6 h-6 hover:scale-105 hover:opacity-95'
                 />

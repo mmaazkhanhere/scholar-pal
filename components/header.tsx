@@ -32,6 +32,7 @@ const Header = (props: Props) => {
     to control the visibility of the mobile menu*/
 
     const session = useSession()
+    const { user } = useUser();
 
     const handleAIModal = useAIModal(); //hook to handle the visibility of AI modal
     const handleLoginModal = useLoginModal() //hook to handle the visibility of login modal
@@ -109,6 +110,7 @@ const Header = (props: Props) => {
 
                     <Avatar
                         isHeaderAvatar
+                        userId={user?.profilePicture}
                     />
 
                     {/*Logout button that is displayed only in large screen */}
