@@ -13,7 +13,8 @@ const UserProfile = (props: Props) => {
         <React.Fragment>
             <Header />
             <section
-                className='max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-7 w-full pt-28'
+                className='max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-7 w-full pt-28
+                px-2 lg:px-0'
             >
                 <div className='lg:col-span-2 w-full'>
                     <UserSidebar />

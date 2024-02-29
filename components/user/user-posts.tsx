@@ -8,6 +8,7 @@ import PostCard from '../posts/post-card'
 import { IPost } from '@/interface-d'
 import useUser from '@/hooks/useUser'
 import LoadingSpinner from '../loading-spinner'
+import Link from 'next/link'
 
 type Props = {}
 
@@ -15,9 +16,9 @@ const UserPosts = (props: Props) => {
 
     const userId = usePathname().split('/').pop();
     const { data: posts, isLoading } = usePosts(userId)
-    const { user: currentUser } = useUser();
+    const { user } = useUser();
 
-    if (isLoading || !currentUser) {
+    if (isLoading || !user) {
         return <LoadingSpinner spinnerSize={75} />
     }
 
@@ -25,11 +26,15 @@ const UserPosts = (props: Props) => {
         <div className='max-w-4xl w-full'>
             {
                 posts?.map((post: IPost) => (
-                    <PostCard
-                        currentUser={currentUser}
+                    <Link
+                        href={`/post/${post.id}`}
                         key={post.id}
-                        post={post}
-                    />
+                    >
+                        <PostCard
+                            user={user}
+                            post={post}
+                        />
+                    </Link>
                 ))
             }
         </div>

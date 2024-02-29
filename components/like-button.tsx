@@ -13,25 +13,25 @@ import { errorNotification } from '@/helpers/error-notification';
 
 type Props = {
     post: IPost, //post data
-    currentUser: IUser, //current login user data
+    user: IUser, //current login user data
     isLoading?: boolean,
     setIsLoading: (isLoading: boolean) => void; //set the loading state of like button
     handleLike: () => void; //function from the post card component to handle the like button
 };
 
-const LikeButton = ({ post, currentUser, isLoading, setIsLoading, handleLike }: Props) => {
+const LikeButton = ({ post, user, isLoading, setIsLoading, handleLike }: Props) => {
 
     const session = useSession(); //session of the current login user
     const handleLoginModal = useLoginModal(); //custom hook to handle login modal
 
-    const [isLiked, setIsLiked] = useState(post?.likedBy?.includes(currentUser?.id));
+    const [isLiked, setIsLiked] = useState(post?.likedBy?.includes(user?.id));
     /*a state variable that checks if the current user have already liked the post
     by checking if it exist in the likedBy array. */
 
     useEffect(() => {
         // Update isLiked state when currentUser or post.likedBy changes
-        setIsLiked(post?.likedBy?.includes(currentUser?.id));
-    }, [currentUser, post.likedBy]);
+        setIsLiked(post?.likedBy?.includes(user?.id));
+    }, [user, post.likedBy]);
 
     const onClick = useCallback(async () => {
 
@@ -54,7 +54,7 @@ const LikeButton = ({ post, currentUser, isLoading, setIsLoading, handleLike }: 
 
             await axios.post('/api/posts/like', {
                 postId: post.id,
-                userId: currentUser.id,
+                userId: user.id,
             }); //make an HTTP POST request along with post id and user id
 
             handleLike(); /*This function updates the number of like in the
@@ -73,7 +73,7 @@ const LikeButton = ({ post, currentUser, isLoading, setIsLoading, handleLike }: 
         } finally {
             setIsLoading(false); //the loading state is returned to false
         }
-    }, [session.status, handleLoginModal, setIsLoading, post?.id, currentUser?.id, handleLike]);
+    }, [session.status, handleLoginModal, setIsLoading, post?.id, user?.id, handleLike]);
 
     return (
         <button

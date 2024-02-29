@@ -21,8 +21,6 @@ const UserPostBar = (props: Props) => {
                     userId == user?.id && <NewPost />
                 }
             </div>
-
-
             <UserPosts />
         </div>
     )

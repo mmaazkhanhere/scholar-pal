@@ -28,11 +28,13 @@ import usePosts from '@/hooks/usePosts'
 
 
 type Props = {
-    currentUser: IUser
+    user: IUser
     post: IPost
 }
 
-const PostCard = ({ currentUser, post }: Props) => {
+const PostCard = ({ user, post }: Props) => {
+
+    console.log(user)
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [comment, setComment] = useState<string>('')
@@ -46,13 +48,13 @@ const PostCard = ({ currentUser, post }: Props) => {
     const { mutate: mutatePost } = usePosts()
 
     const handleLike = useCallback(() => {
-        const isLiked = likedBy.includes(currentUser.id);
+        const isLiked = likedBy.includes(user.id);
         if (isLiked) {
-            setLikedBy(likedBy.filter(id => id !== currentUser.id));
+            setLikedBy(likedBy.filter(id => id !== user.id));
         } else {
-            setLikedBy([...likedBy, currentUser.id]);
+            setLikedBy([...likedBy, user.id]);
         }
-    }, [currentUser?.id, likedBy]);
+    }, [user?.id, likedBy]);
 
     const handleOpenComment = () => {
         if (session.status == 'unauthenticated') {
@@ -69,7 +71,7 @@ const PostCard = ({ currentUser, post }: Props) => {
             setIsLoading(true);
             const result = await axios.post('/api/comment', {
                 postId: post.id,
-                currentUser: currentUser.id,
+                currentUser: user.id,
                 content: comment
             });
             mutate();
@@ -92,7 +94,7 @@ const PostCard = ({ currentUser, post }: Props) => {
         finally {
             setIsLoading(false)
         }
-    }, [comment, currentUser.id, mutate, mutatePost, post.id])
+    }, [comment, user.id, mutate, mutatePost, post.id])
 
     const createdAtCalculation = useMemo(() => {
         if (!post.createdAt) {
@@ -113,8 +115,8 @@ const PostCard = ({ currentUser, post }: Props) => {
             <div className='flex items-start justify-start gap-x-5'>
                 <div>
                     <Avatar
-                        userId={post.author.id}
-                        profilePicture={post.author.profilePicture}
+                        userId={post.author?.id}
+                        profilePicture={post.author?.profilePicture}
                         isPostAvatar
                     />
                 </div>
@@ -166,7 +168,7 @@ const PostCard = ({ currentUser, post }: Props) => {
             <div className='flex items-center justify-start gap-x-5'>
                 <LikeButton
                     post={post}
-                    currentUser={currentUser}
+                    user={user}
                     isLoading={isLoading}
                     setIsLoading={setIsLoading}
                     handleLike={handleLike}
