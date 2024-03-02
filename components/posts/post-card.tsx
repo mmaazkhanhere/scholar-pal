@@ -30,9 +30,10 @@ import usePosts from '@/hooks/usePosts'
 type Props = {
     user: IUser
     post: IPost
+    isPostPage?: boolean
 }
 
-const PostCard = ({ user, post }: Props) => {
+const PostCard = ({ user, post, isPostPage = false }: Props) => {
 
     console.log(user)
 
@@ -204,7 +205,7 @@ const PostCard = ({ user, post }: Props) => {
             }
             {
                 post?.comments?.length > 0 && (
-                    <CommentFeed post={post} />
+                    <CommentFeed post={post} isPostPage={isPostPage} />
                 )
             }
         </article>

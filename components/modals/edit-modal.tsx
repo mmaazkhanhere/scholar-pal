@@ -10,6 +10,7 @@ import axios from 'axios';
 import { successNotification } from '@/helpers/success-notification';
 import useLoginModal from '@/hooks/useLoginModal';
 import { errorNotification } from '@/helpers/error-notification';
+import ToggleButton from '../toggle-button';
 
 type Props = {}
 
@@ -79,6 +80,10 @@ const EditModal = (props: Props) => {
 
     }, [age, bio, facebookProfile, fieldOfStudy, handleEditModal, handleLoginModal, linkedInProfile, mutate, name, profilePicture, tutoringAvailable, twitterProfile])
 
+    const toggleTutor = () => {
+        setTutoringAvailable(!tutoringAvailable);
+    }
+
     const modalBody: React.ReactNode = (
         <div className='flex flex-col gap-y-3'>
 
@@ -147,14 +152,11 @@ const EditModal = (props: Props) => {
                 value={linkedInProfile}
             />
 
-            <div className="flex items-center justify-between my-4">
-                <label htmlFor="tutoringAvailable" className="mr-2">Available for Tutoring:</label>
-                <input
-                    id="tutoringAvailable"
-                    type="checkbox"
-                    checked={tutoringAvailable}
-                    onChange={() => setTutoringAvailable(!tutoringAvailable)}
-                    className="toggle toggle-accent"
+            <div className="flex items-center gap-x-4 py-4">
+                <span className='lg:text-lg font-medium'>Available for Tutoring:</span>
+                <ToggleButton
+                    tutoringAvailable={tutoringAvailable!}
+                    onChange={toggleTutor}
                 />
             </div>
 

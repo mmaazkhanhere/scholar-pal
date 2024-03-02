@@ -63,7 +63,12 @@ const Modal: React.FC<Props> =
                     </div>
 
                     {/* Body */}
-                    <div className='max-h-[70vh] overflow-auto'>
+                    <div
+                        className='max-h-[70vh] overflow-auto'
+                        style={{
+                            scrollbarWidth: 'none',
+                        }}
+                    >
                         {body}
                     </div>
 

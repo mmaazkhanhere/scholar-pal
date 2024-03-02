@@ -26,6 +26,7 @@ const PostDetail = (props: Props) => {
             <PostCard
                 post={post}
                 user={user}
+                isPostPage={true}
             />
         </div>
     )
