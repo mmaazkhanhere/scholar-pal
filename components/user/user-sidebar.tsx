@@ -77,7 +77,7 @@ const UserSidebar = () => {
     return (
         <div
             className='flex flex-col items-start justify-center text-[#343a40]
-        p-6 border rounded-lg'
+        p-6 border rounded-lg gap-y-5'
         >
             <Avatar
                 isNavigable={false}
@@ -86,53 +86,70 @@ const UserSidebar = () => {
                 profilePicture={user?.profilePicture}
                 className='self-center'
             />
-            <div className='flex items-end gap-x-5 mt-5'>
-                <h3 className='text-2xl lg:text-4xl font-bold '>
-                    {user?.name}
-                </h3>
-                <div className='flex items-center gap-x-1'>
-                    <FaMedal className='w-5 lg:w-6 h-5 lg:h-6 text-[#1abc9c]' />
-                    <span className='text-lg text-[#1abc9c]'>
-                        {user?.score}
-                    </span>
+            <div className='flex flex-col items-start'>
+                <div className='flex items-end gap-x-5 mt-5'>
+                    <h3 className='text-2xl lg:text-4xl font-bold '>
+                        {user?.name}
+                    </h3>
+                    <div className='flex items-center gap-x-1'>
+                        <FaMedal className='w-5 lg:w-6 h-5 lg:h-6 text-[#1abc9c]' />
+                        <span className='text-lg text-[#1abc9c]'>
+                            {user?.score}
+                        </span>
+                    </div>
+                </div>
+                <div
+                    className='flex items-center justify-start gap-x-4 pt-2 
+                text-[#343a40]/60 lg:text-base'
+                >
+                    <p className='font-semibold'>
+                        @{user?.username}
+                    </p>
+                    {
+                        user?.age && <span >{user?.age} years old</span>
+                    }
                 </div>
             </div>
 
-            <div
-                className='flex items-center justify-start gap-x-4 pt-2 
-                text-[#343a40]/60 lg:text-base'
-            >
-                <p className='font-semibold'>
-                    @{user?.username}
-                </p>
-                {
-                    user?.age && <span >{user?.age} years old</span>
-                }
-            </div>
-            <p className='uppercase font-bold my-5 lg:text-lg'>
-                {user?.fieldOfStudy}
-            </p>
+
+
             {
-                user?.tutoringAvailable ? (
-                    <Link
-                        href="/tutor-page"
-                        className='flex items-center text-[#1abc9c] gap-x-5 mb-5'
-                    >
-                        <span className='lg:text-lg font-bold'>Available for Tutoring</span>
-                        <div className='flex items-center gap-x-1'>
-                            <FaStar />
-                            <span>
-                                {user?.tutoringRating}
-                            </span>
-                        </div>
-                    </Link>
-                ) : <p className='mb-5'>Not Available for Tutoring</p>
+                user?.fieldOfStudy && <p className='uppercase font-bold lg:text-lg'>
+                    {user?.fieldOfStudy}
+                </p>
             }
 
-            <p className='lg:text-lg mb-5'>
-                {user?.bio}
-            </p>
+            {
+                user?.tutoringAvailable && (
+                    <Link
+                        href="/tutor-page"
+                        className='flex items-center text-[#1abc9c] gap-x-5'
+                    >
+                        <span className='lg:text-lg font-bold'>Available for Tutoring</span>
+                        {
+                            user.tutoringAvailable && <div className='flex items-center gap-x-1'>
+                                <FaStar />
+                                {
+                                    user.tutoringRating == 0 ? (
+                                        <span className='text-md lg:text-base text-[#1abc9c/40]'>New</span>
+                                    ) : (
+                                        <span>
+                                            {user?.tutoringRating}
+                                        </span>
+                                    )
+                                }
 
+                            </div>
+                        }
+
+                    </Link>
+                )
+            }
+            {
+                user?.bio && <p className='lg:text-lg mb-5'>
+                    {user?.bio}
+                </p>
+            }
             {
                 currentUser?.id == userId ? (
                     <Button
@@ -152,7 +169,7 @@ const UserSidebar = () => {
                 )
             }
 
-            <p className='font-bold lg:text-lg my-5'>
+            <p className='font-bold lg:text-lg'>
                 Joined: <span className='font-normal text-sm lg:text-base'>
                     {formattedDate}
                 </span>
@@ -160,11 +177,14 @@ const UserSidebar = () => {
 
             <hr className='w-full' />
 
-            <SocialMediaLink
-                facebookUrl={user?.facebookProfile}
-                linkedinUrl={user?.linkedInProfile}
-                twitterUrl={user?.twitterUrl}
-            />
+            {
+                (user?.facebookProfile || user?.twitterUrl || user?.linkedInProfile) && <SocialMediaLink
+                    facebookUrl={user?.facebookProfile}
+                    linkedinUrl={user?.linkedInProfile}
+                    twitterUrl={user?.twitterUrl}
+                />
+            }
+
 
             <FollowerDetail
                 followers={user?.followerIds}

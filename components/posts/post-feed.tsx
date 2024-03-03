@@ -22,7 +22,7 @@ const PostFeed = (props: Props) => {
     }
 
     return (
-        <section className='max-w-3xl w-full'>
+        <section className='max-w-4xl w-full'>
             {
                 posts.map((post: IPost) => (
                     <Link
