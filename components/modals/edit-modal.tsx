@@ -1,32 +1,40 @@
+//An edit modal component to update or edit the current user's profile
+
 'use client'
 
 import useUser from '@/hooks/useUser';
 import React, { useCallback, useEffect, useState } from 'react'
+import axios from 'axios';
+
 import ImageUpload from '../image-upload';
 import Input from '../input';
 import Modal from '../modal';
-import useEditModal from '@/hooks/useEditModal';
-import axios from 'axios';
-import { successNotification } from '@/helpers/success-notification';
-import useLoginModal from '@/hooks/useLoginModal';
-import { errorNotification } from '@/helpers/error-notification';
 import ToggleButton from '../toggle-button';
+
+import useEditModal from '@/hooks/useEditModal';
+import useLoginModal from '@/hooks/useLoginModal';
+
+import { successNotification } from '@/helpers/success-notification';
+import { errorNotification } from '@/helpers/error-notification';
+
 
 type Props = {}
 
 const EditModal = (props: Props) => {
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    //state variables for user details
     const [name, setName] = useState<string>('');
     const [bio, setBio] = useState<string>('');
-    const [age, setAge] = useState<number | undefined>(); // Made it explicitly optional
+    const [age, setAge] = useState<number | undefined>();
     const [fieldOfStudy, setFieldOfStudy] = useState<string>('');
     const [profilePicture, setProfilePicture] = useState<string>('');
-    // Additional states
     const [linkedInProfile, setLinkedInProfile] = useState<string>('');
     const [facebookProfile, setFacebookProfile] = useState<string>('');
     const [twitterProfile, setTwitterProfile] = useState<string>('');
     const [tutoringAvailable, setTutoringAvailable] = useState<boolean | undefined>(false);
+
 
     const { user, mutate } = useUser();
     const handleEditModal = useEditModal()
@@ -35,23 +43,36 @@ const EditModal = (props: Props) => {
     useEffect(() => {
         setName(user?.name as string);
         setProfilePicture(user?.profilePicture as string);
-    }, [user?.name, user?.profilePicture])
+    }, [user?.name, user?.profilePicture]) /*assign the user name and profile
+    picture on initial render*/
 
+
+    /*function that is called when user submit the modal. It make a PATCH request
+    and pass all the user data to update it. After successful updating, all
+    teh state variables are returned to initial state (empty strings mostly).
+    A success notification is displayed for successful update. All the related
+    errors are handled correctly. */
 
     const onSubmit = useCallback(async () => {
 
         try {
-            setIsLoading(true);
+
+            setIsLoading(true);//loading state is state indicating process in progress
+
             const request = await axios.patch('/api/user', {
                 name, bio, age,
                 fieldOfStudy, profilePicture, linkedInProfile, facebookProfile,
                 twitterProfile, tutoringAvailable
-            })
+            }) //a PATCH request with related data
 
-            if (request.status == 200) {
+            if (request.status == 200) {//if successful request
+
                 setIsLoading(false);
-                successNotification('Profile successfully updated');
-                mutate();
+
+                successNotification('Profile successfully updated');//success notification
+                mutate(); //manually refetch the updated user profile
+
+                //reset the state variables vales
                 setName('');
                 setBio('');
                 setFieldOfStudy('');
@@ -63,27 +84,33 @@ const EditModal = (props: Props) => {
             }
 
         } catch (error) {
-            setIsLoading(false);
+
             console.error('UPDATE_PROFILE_ERROR', error);
+
             if (axios.isAxiosError(error) && error.response?.status == 401) {
-                handleLoginModal.onOpen()
+                handleLoginModal.onOpen() /*if user is not authenticated, open the
+                login modal */
             }
             else if (axios.isAxiosError(error) && error.response?.status == 400) {
-                errorNotification('Missing details')
+                errorNotification('Missing details') //if details are missing
             }
             else {
-                errorNotification('Something went wrong')
+                errorNotification('Something went wrong') //error notification
             }
         } finally {
-            setIsLoading(false);
+            setIsLoading(false); //set the loading state to false indicate completion
         }
 
     }, [age, bio, facebookProfile, fieldOfStudy, handleEditModal, handleLoginModal, linkedInProfile, mutate, name, profilePicture, tutoringAvailable, twitterProfile])
 
+
+    //function to toggle the tutor availability
     const toggleTutor = () => {
-        setTutoringAvailable(!tutoringAvailable);
+        setTutoringAvailable(!tutoringAvailable); /*If it is true, change it to 
+        false and vice versa */
     }
 
+    //the content of the modal
     const modalBody: React.ReactNode = (
         <div className='flex flex-col gap-y-3'>
 

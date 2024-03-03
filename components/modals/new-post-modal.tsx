@@ -1,3 +1,5 @@
+/*A modal component that displays the UI to create a new post. */
+
 "use client"
 
 import React, { useCallback, useState } from 'react'
@@ -19,45 +21,65 @@ import { successNotification } from '@/helpers/success-notification'
 import { errorNotification } from '@/helpers/error-notification'
 
 
-
-
 type Props = {}
 
 const NewPostModal = (props: Props) => {
 
-    const [postContent, setPostContent] = useState<string>('');
-    const [tags, setTags] = useState<string[]>([]);
+    const [postContent, setPostContent] = useState<string>(''); /*Content of the
+    post */
+    const [tags, setTags] = useState<string[]>([]); /*Tags that are assigned
+    to the post */
+
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const session = useSession();
+
     const { mutate } = usePosts();
     const { user: currentUser } = useUser();
 
     const handlePostModal = usePostModal();
     const handleLoginModal = useLoginModal();
 
+
+    /*function that is called when the user submits the modal that makes a post 
+    request to create a new post*/
     const handleSubmit = useCallback(async () => {
+
         try {
+
             setIsLoading(true);
 
             const result = await axios.post('/api/posts', { postContent, tags });
-            if (result.status == 200) {
-                successNotification('Post successfully')
-            }
-            setPostContent('');
-            setTags([]);
-            mutate();
-            setIsLoading(false);
-            handlePostModal.onClose();
+            //post request to the api endpoint to create new post
 
-        } catch (error) {
+            if (result.status == 200) {
+                /*if the post was successfully created, a success notification
+                is displayed and all the state variables are reset*/
+
+                successNotification('Post successfully')
+
+                setPostContent('');
+                setTags([]);
+
+                mutate(); //manually fetch updated list of posts made
+                setIsLoading(false);
+
+                handlePostModal.onClose(); //close the new post modal
+            }
+
+        }
+        catch (error) {
+
             setIsLoading(false)
             console.error('NEW_POST_MODAL_ERROR', error)
+
             if (axios.isAxiosError(error) && (error.response?.status == 401)) {
+                //if user is not authenticated, open the login modal
                 errorNotification('Not Authenticated')
                 handleLoginModal.onOpen()
             }
             else if (axios.isAxiosError(error) && (error.response?.status == 404)) {
+                //if post is empty, display an error notification
                 errorNotification('Post is empty')
             }
             else {
@@ -67,20 +89,32 @@ const NewPostModal = (props: Props) => {
 
     }, [handleLoginModal, handlePostModal, mutate, postContent, tags])
 
+
+    //content of the modal
+
     const modalBody: React.ReactNode = (
         <div className='flex flex-col gap-y-5'>
+
+            {/*Avatar and name */}
             <div className='flex items-center justify-start gap-x-5'>
+                {/*Avatar */}
                 <Avatar
                     isNavigable={false}
                     isPostAvatar
                     userId={currentUser?.id}
                     profilePicture={currentUser?.profilePicture}
                 />
+
+                {/*Name */}
                 <span className='text-xl lg:text-2xl font-bold'>
-                    {session.data?.user?.name}
+                    {currentUser?.name}
                 </span>
             </div>
+
+            {/*Content of the post, its tags, modal footer and length of
+            the post */}
             <div className='flex flex-col items-start w-full gap-y-4'>
+                {/*Post content */}
                 <textarea
                     value={postContent}
                     onChange={(event) => setPostContent(event.target.value)}
@@ -92,8 +126,10 @@ const NewPostModal = (props: Props) => {
                     disabled={isLoading}
                 />
 
+                {/*Tags */}
                 <AddTags tags={tags} setTags={setTags} />
 
+                {/*Footer and length of the post */}
                 <div className='flex items-center justify-between w-full'>
                     <NewPostFooter />
                     <PostLength currentLength={postContent.length} />
