@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { usePathname } from 'next/navigation';
@@ -15,21 +15,64 @@ import { FaMedal, FaStar } from "react-icons/fa";
 
 import useUser from '@/hooks/useUser';
 import useLoginModal from '@/hooks/useLoginModal';
+import LoadingSpinner from '../loading-spinner';
+import axios from 'axios';
+import { successNotification } from '@/helpers/success-notification';
+import { errorNotification } from '@/helpers/error-notification';
+import FollowButton from '../follow-button';
 
 
 const UserSidebar = () => {
 
-    const [isLoading, setIsLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const userId = usePathname().split('/').pop();
 
-    const { user: currentUser } = useUser();
-    const { user } = useUser(userId);
+    const { user: currentUser, isLoading, mutate } = useUser();
+    const { user, mutate: mutateTargetUser } = useUser(userId);
 
     const handleEditModal = useEditModal()
     const handleLoginModal = useLoginModal();
 
     const formattedDate = user?.createdAt ? format(new Date(user.createdAt), 'PPP') : '';
+
+    const handleFollow = useCallback(async () => {
+        try {
+
+            setLoading(true);
+
+            if (!currentUser) {
+                handleLoginModal.onOpen()
+            };
+
+            const request = await axios.post('/api/user/follow', {
+                userId: userId
+            });
+
+            if (request.status == 200) {
+                successNotification('User followed')
+                mutate();
+                mutateTargetUser(userId);
+                setLoading(false);
+            }
+        } catch (error) {
+            console.error('FOLLOW_FUNCTION_ERROR', error);
+            if (axios.isAxiosError(error) && error.response?.status == 400) {
+                errorNotification('You cannot follow yourself')
+            }
+            else {
+                errorNotification('Something went wrong');
+            }
+        }
+        finally {
+            setLoading(false);
+        }
+
+    }, [currentUser, handleLoginModal, mutate, mutateTargetUser, userId])
+
+    if (isLoading) {
+        return <LoadingSpinner spinnerSize={60} />
+    }
 
     return (
         <div
@@ -97,15 +140,14 @@ const UserSidebar = () => {
                         ariaLabel='Edit Profile Button'
                         onClick={handleEditModal.onOpen}
                         className='w-full md:py-3 md:text-base'
-                        disabled={isLoading}
+                        disabled={loading}
                     />
                 ) : (
-                    <Button
-                        label='Follow'
-                        ariaLabel='Follow Button'
-                        onClick={() => console.log('Follow')}
-                        className='w-full md:py-3 md:text-base'
-                        disabled={isLoading}
+                    <FollowButton
+                        currentUser={currentUser!}
+                        targetUser={user!}
+                        onClick={handleFollow}
+                        loading={loading}
                     />
                 )
             }
