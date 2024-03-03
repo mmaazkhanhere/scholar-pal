@@ -4,7 +4,7 @@ import React from 'react'
 
 import useUser from '@/hooks/useUser'
 import useUsers from '@/hooks/useUsers'
-import HomepageCard from './homepage-card'
+import UserSuggestionCard from './user-suggestion-card'
 
 
 
@@ -17,15 +17,14 @@ const UserSuggestion = (props: Props) => {
 
     if (isLoading) {
         return (
-            <h3 className='text-center'>Who to Follow</h3>
+            <h3 className='text-center font-semibold lg:text-2xl'>Who to Follow</h3>
         );
     }
-
 
     return (
         <section
             className='flex flex-col items-center border border-[#343a40]/40
-        rounded-lg p-5'
+        rounded-lg p-5 fixed w-full max-w-[440px]'
         >
             <h2 className='text-center font-semibold lg:text-2xl'>
                 Who to Follow
@@ -36,7 +35,7 @@ const UserSuggestion = (props: Props) => {
             >
                 {
                     suggestUsers?.map((suggestUser) => (
-                        <HomepageCard
+                        <UserSuggestionCard
                             key={suggestUser.id}
                             suggestUser={suggestUser}
                         />

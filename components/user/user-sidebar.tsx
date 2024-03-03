@@ -70,7 +70,7 @@ const UserSidebar = () => {
 
     }, [currentUser, handleLoginModal, mutate, mutateTargetUser, userId])
 
-    if (isLoading) {
+    if (isLoading || !user) {
         return <LoadingSpinner spinnerSize={60} />
     }
 

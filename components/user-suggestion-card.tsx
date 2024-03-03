@@ -5,14 +5,14 @@ import Avatar from './avatar'
 import { IUser } from '@/interface-d'
 
 type Props = {
-    suggestUser?: IUser
+    suggestUser: IUser
 }
 
-const HomepageCard = ({ suggestUser }: Props) => {
+const UserSuggestionCard = ({ suggestUser }: Props) => {
 
     return (
         <Link
-            href={`/user/${suggestUser?.id}`}
+            href={`/user/${suggestUser.id}`}
             className='flex flex-col items-start p-2 w-full'
         >
             <div className='flex items-start justify-start gap-x-4'>
@@ -46,4 +46,4 @@ const HomepageCard = ({ suggestUser }: Props) => {
     )
 }
 
-export default HomepageCard
+export default UserSuggestionCard

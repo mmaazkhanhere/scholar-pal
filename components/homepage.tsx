@@ -1,5 +1,6 @@
 import React from 'react'
-import NewPost from './posts/new-post'
+
+import NewPostButton from './posts/new-post-button'
 import PostFeed from './posts/post-feed'
 import UserSuggestion from './user-suggestion'
 
@@ -16,10 +17,10 @@ const HomePage = (props: Props) => {
                 className='lg:col-span-5 w-full flex flex-col items-start 
                 px-2 lg:px-0'
             >
-                <NewPost />
+                <NewPostButton />
                 <PostFeed />
             </div>
-            <div className='hidden lg:block lg:col-span-2 w-full'>
+            <div className='hidden lg:block lg:col-span-2 w-full relative'>
                 <UserSuggestion />
             </div>
         </section>

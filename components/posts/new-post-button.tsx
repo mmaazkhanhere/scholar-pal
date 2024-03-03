@@ -11,7 +11,7 @@ import useUser from '@/hooks/useUser'
 
 type Props = {}
 
-const NewPost = (props: Props) => {
+const NewPostButton = (props: Props) => {
 
     const handlePostModal = usePostModal()
     const handleLoginModal = useLoginModal()
@@ -35,22 +35,20 @@ const NewPost = (props: Props) => {
             border-[#343a40]/40 w-full lg:max-w-4xl gap-x-2.5 md:gap-x-5 shadow-md
             hover:scale-95 transition duration-500 cursor-pointer'
         >
-            <div>
-                <Avatar
-                    profilePicture={user?.profilePicture}
-                    isPostAvatar
-                    userId={user?.id}
-                />
-            </div>
-            <p
+            <Avatar
+                profilePicture={user?.profilePicture}
+                isPostAvatar
+                userId={user?.id}
+            />
+            <span
                 className='border border-[#343a40]/30 w-full py-1 md:py-2 px-6 
                 rounded-3xl lg:text-xl text-[#343a40]/60 hover:scale-100'
 
             >
                 What is on your mind...
-            </p>
+            </span>
         </button>
     )
 }
 
-export default NewPost
+export default NewPostButton
