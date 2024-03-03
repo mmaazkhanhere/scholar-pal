@@ -15,13 +15,14 @@ type Props = {
     isProfileAvatar?: boolean; //optional prop whether the avatar is for user profile
     isPostAvatar?: boolean; //optional prop whether the avatar is for post
     isHeaderAvatar?: boolean; //optional prop whether the avatar is for header
+    isSuggestionAvatar?: boolean; //optional prop whether the avatar is for suggested users
     isNavigable?: boolean; //optional prop whether the avatar redirects to user profile
     className?: string; //optional prop to tailwind css classes
     profilePicture?: string;
     userId?: string;
 }
 
-const Avatar: React.FC<Props> = ({ isProfileAvatar, isPostAvatar, isHeaderAvatar, className, isNavigable, userId, profilePicture }) => {
+const Avatar: React.FC<Props> = ({ isProfileAvatar, isPostAvatar, isHeaderAvatar, className, isNavigable, userId, profilePicture, isSuggestionAvatar }) => {
 
     const router = useRouter(); //get the router object
     const handleLogin = useLoginModal(); //hook to manage the visibility of the login modal
@@ -48,6 +49,7 @@ const Avatar: React.FC<Props> = ({ isProfileAvatar, isPostAvatar, isHeaderAvatar
                 ${isProfileAvatar && 'w-56 lg:w-64 h-56 lg:h-64'}
                 ${isPostAvatar && ' w-12 lg:w-[68px] h-12 lg:h-[68px]'}
                 ${isHeaderAvatar && 'w-7 h-7'}
+                ${isSuggestionAvatar && ' w-14 h-14'}
                 rounded-full hover:opacity-90 hover:scale-105 transition duration-500
                 cursor-pointer relative
             `}
