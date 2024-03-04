@@ -18,13 +18,17 @@ type Props = {
 
 const CommentFeed = ({ post, isPostPage }: Props) => {
 
-    const { data: comments = [] } = useComments(post.id); /*use a custom 
+    const { data: comments = [], isLoading } = useComments(post.id); /*use a custom 
     react hook to fetch all the comment of the post by passing post id to the
     hook */
 
     /*If user is on post page display all the comment or else display only three
     comments */
     const displayedComments = isPostPage ? comments : comments.slice(0, 3);
+
+    if (isLoading) {
+        return null;
+    }
 
 
     return (

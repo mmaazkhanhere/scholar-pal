@@ -2,7 +2,7 @@
 
 "use client"
 
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 
 import Avatar from '../avatar'
@@ -18,19 +18,16 @@ const NewPostButton = (props: Props) => {
     const handlePostModal = usePostModal() //custom hook to handle visibility of post modal
     const handleLoginModal = useLoginModal() //custom hook to handle visibility of login modal
 
-    const session = useSession() //get the current session
-    const { user: currentUser } = useUser(); //get get the current user
+    const { status } = useSession() //get the current user authentication status
+    const { user: currentUser } = useUser(); //get the current user
 
-    const handleClick = () => {
-        if (session.status !== 'authenticated') {
-            // if the user is not authenticated, then open login modal
+    const handleClick = useCallback(() => {
+        if (status !== 'authenticated') {
             handleLoginModal.onOpen()
-        }
-        else {
-            //if authenticated, open post modal
+        } else {
             handlePostModal.onOpen()
         }
-    }
+    }, [status, handleLoginModal, handlePostModal])
 
     return (
         <div

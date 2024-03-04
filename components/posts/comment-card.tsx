@@ -20,7 +20,7 @@ const CommentCard = ({ comment }: Props) => {
         if (!comment.createdAt) {
             return null;
         }
-        return formatDistanceToNowStrict(new Date(comment.createdAt));
+        return formatDistanceToNowStrict(new Date(comment.createdAt)) + 'ago';
     }, [comment.createdAt])
 
     return (
@@ -51,7 +51,7 @@ const CommentCard = ({ comment }: Props) => {
 
                     {/*The time comment was made */}
                     <p className='hidden lg:block text-sm text-[#343a40]/60'>
-                        {calculateCreatedTime} ago
+                        {calculateCreatedTime}
                     </p>
                 </div>
 
