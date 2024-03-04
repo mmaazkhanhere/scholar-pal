@@ -43,6 +43,8 @@ const Header = (props: Props) => {
         setShowMobileMenu(!showMobileMenu)
     }, [showMobileMenu])
 
+    /*A function that checks if the user is authenticated. If not, it opens the login 
+    modal*/
     const handleAIDisplay = () => {
         if (session.status !== 'authenticated') {
             handleLoginModal.onOpen()

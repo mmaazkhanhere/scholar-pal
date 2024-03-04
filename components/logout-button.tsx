@@ -21,7 +21,7 @@ const LogoutButton = ({ label }: Props) => {
 
     const router = useRouter()
 
-    const { mutate } = useUser();
+    const { mutate } = useUser(); //re-fetches the user
 
     const handleLoginModal = useLoginModal(); //hook to handle visibility of login modal
 
@@ -30,12 +30,17 @@ const LogoutButton = ({ label }: Props) => {
         /*function that is called when the user clicks on logout button.  */
         try {
             setIsLoading(true); //sets the loading state to true
+
             await signOut({ redirect: false }); //sign out the user
-            successNotification('Logged out successfully');
+
+            successNotification('Logged out successfully');/*display a log out 
+            notification */
+
             router.push('/');
-            /*display a log out notification */
+
             setIsLoading(false);
             mutate();
+
             handleLoginModal.onOpen() //open the login modal
 
         } catch (error) {
@@ -45,7 +50,8 @@ const LogoutButton = ({ label }: Props) => {
 
 
     return (
-        <>
+        <React.Fragment>
+            {/*Displayed only if a user is signed in */}
             {
                 session?.user?.email && (
                     <button
@@ -66,7 +72,7 @@ const LogoutButton = ({ label }: Props) => {
                     </button>
                 )
             }
-        </>
+        </React.Fragment>
     );
 };
 

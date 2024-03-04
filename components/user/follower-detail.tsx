@@ -1,16 +1,19 @@
+/*A react component that display a user follower and following numbers. */
+
 import React from 'react'
 
-import { FaUser } from "react-icons/fa";
-import { FaUserCheck } from "react-icons/fa";
+import { FaUser, FaUserCheck } from "react-icons/fa";
 
 type Props = {
-    followers?: string[];
-    following?: string[];
+    followers?: string[]; //a string array of userIds who follow the user
+    following?: string[]; //a string array of userId who the user is following
 }
 
 const FollowerDetail = ({ followers, following }: Props) => {
     return (
         <div className='flex items-center justify-between mb-5 gap-x-5'>
+
+            {/*Follower Number */}
             <div
                 title='Follower'
                 aria-label='Followers'
@@ -26,6 +29,8 @@ const FollowerDetail = ({ followers, following }: Props) => {
                     {followers?.length}
                 </span>
             </div>
+
+            {/*Following number */}
             <div
                 title='Followings'
                 aria-label='Followings'

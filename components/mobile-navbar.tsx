@@ -22,6 +22,7 @@ const MobileNavbar: React.FC<Props> = ({ toggleButton }) => {
                 className="bg-white p-5 rounded-lg flex flex-col items-center 
                 space-y-4 w-48"
             >
+                {/*Close button */}
                 <button
                     aria-label='Close Menu'
                     onClick={toggleButton}
@@ -30,8 +31,9 @@ const MobileNavbar: React.FC<Props> = ({ toggleButton }) => {
                     <MdOutlineClose className='w-5 h-5' />
                 </button>
 
-
-                <Link href="/"
+                {/*Link to study groups */}
+                <Link
+                    href="/"
                     className='flex justify-between items-center w-full'
                 >
                     <FaUserGroup
@@ -40,7 +42,9 @@ const MobileNavbar: React.FC<Props> = ({ toggleButton }) => {
                     <span>Study Groups</span>
                 </Link>
 
-                <Link href="/"
+                {/*Link to tutors available */}
+                <Link
+                    href="/"
                     className='flex justify-between items-center w-full'
                 >
                     <BsPersonWorkspace
@@ -49,6 +53,7 @@ const MobileNavbar: React.FC<Props> = ({ toggleButton }) => {
                     <span>Tutor</span>
                 </Link>
 
+                {/*Link to forums */}
                 <Link href="/"
                     className='flex justify-between items-center w-full'
                 >
@@ -58,6 +63,7 @@ const MobileNavbar: React.FC<Props> = ({ toggleButton }) => {
                     <span>Forums</span>
                 </Link>
 
+                {/*Link to Notifications */}
                 <Link href="/"
                     className='flex justify-between items-center w-full'
                 >
@@ -67,6 +73,7 @@ const MobileNavbar: React.FC<Props> = ({ toggleButton }) => {
                     <span>Notifications</span>
                 </Link>
 
+                {/*Logout button */}
                 <LogoutButton label />
 
             </div>

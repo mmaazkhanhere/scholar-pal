@@ -15,6 +15,7 @@ const NavbarItems = (props: Props) => {
         <div
             className='hidden lg:flex items-center justify-start gap-8'
         >
+            {/*Link to study groups */}
             <Link
                 title='Groups'
                 href='/'
@@ -25,6 +26,7 @@ const NavbarItems = (props: Props) => {
                 />
             </Link>
 
+            {/*Link to tutors */}
             <Link
                 title='Tutors'
                 href='/'
@@ -35,6 +37,7 @@ const NavbarItems = (props: Props) => {
                 />
             </Link>
 
+            {/*Link to forums */}
             <Link
                 title='Forums'
                 href='/'

@@ -1,23 +1,30 @@
+/*A react component that display all the posts using custom hooks for fetching both 
+the posts and the current user's information*/
+
 "use client"
 
 import React from 'react'
+import Link from 'next/link'
 
 import PostCard from './post-card'
 import LoadingSpinner from '../loading-spinner'
 
 import usePosts from '@/hooks/usePosts'
 import useUser from '@/hooks/useUser'
-import Link from 'next/link'
+
 import { IPost } from '@/interface-d'
 
 
 type Props = {}
 
 const PostFeed = (props: Props) => {
-    const { data: posts = [], isLoading } = usePosts()
-    const { user } = useUser();
+
+    const { data: posts = [], isLoading } = usePosts()/*custom react hook to
+    fetch all the posts */
+    const { user } = useUser(); //custom hook to fetch current user
 
     if (isLoading || !user) {
+        //while data is being fetched, display a loading spinner 
         return <LoadingSpinner spinnerSize={70} isLoading={isLoading} />
     }
 

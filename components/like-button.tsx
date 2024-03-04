@@ -1,3 +1,5 @@
+/*A react component that allow users to like or unlike a post in React application */
+
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';

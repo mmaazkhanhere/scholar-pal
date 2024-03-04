@@ -1,3 +1,6 @@
+/*A react component in React is designed to display a list of tags in a visually 
+appealing manner. */
+
 import React from 'react'
 
 type Props = {

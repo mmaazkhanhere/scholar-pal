@@ -1,13 +1,17 @@
+/*A customizable react button component designed for flexibility across different
+part of the application. It supports various props to customize its appearance
+and behavior, making it reusable */
+
 import React, { ReactNode } from 'react';
 
 type Props = {
-    label?: string;
-    secondary?: boolean;
-    onClick: () => void;
-    disabled?: boolean;
-    large?: boolean;
-    ariaLabel?: string;
-    className?: string;
+    label?: string; //text displayed on the button.
+    secondary?: boolean; //A boolean, when true, applies a secondary button styles
+    onClick: () => void; //function called when the button is clicked
+    disabled?: boolean; //A boolean, when true, prevents clicks and changing its style
+    large?: boolean; //boolean, when true, makes a large button
+    ariaLabel?: string; //provides a label for screen reader users
+    className?: string; //custom class passed to the button
     icon?: ReactNode; // Accepts a ReactNode for the icon
 }; ``
 
@@ -27,6 +31,7 @@ const Button: React.FC<Props> = ({ label, secondary, onClick, disabled, large, a
                 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1abc9c] 
             `}
         >
+            {/*If icon is provided, display the icon */}
             {icon && <span className="flex items-center">{icon}</span>}
             {label}
         </button>

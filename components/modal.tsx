@@ -51,9 +51,12 @@ const Modal: React.FC<Props> =
                 >
                     {/* Header */}
                     <div className='flex items-center justify-between'>
+                        {/*Title of the modal */}
                         <h3 className='text-2xl font-semibold'>
                             {title}
                         </h3>
+
+                        {/*Button to close the modal */}
                         <button
                             onClick={handleClose}
                             aria-label='Close Button'
@@ -67,7 +70,7 @@ const Modal: React.FC<Props> =
                         className='max-h-[70vh] overflow-auto'
                         style={{
                             scrollbarWidth: 'none',
-                        }}
+                        }} //make the body scrollable if it exceeds the max height
                     >
                         {body}
                     </div>

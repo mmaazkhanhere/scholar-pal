@@ -1,19 +1,24 @@
+/*A react component that displays the social media icons of user social media
+profiles. They are conditionally rendered depending on the availability of their
+social media profiles*/
+
 import Link from 'next/link';
 import React from 'react'
 
-import { FaSquareFacebook } from "react-icons/fa6";
-import { FaSquareXTwitter } from "react-icons/fa6";
-import { FaLinkedin } from "react-icons/fa6";
+import { FaSquareFacebook, FaLinkedin, FaSquareXTwitter } from "react-icons/fa6";
 
 type Props = {
-    facebookUrl?: string;
-    twitterUrl?: string;
-    linkedinUrl?: string;
+    facebookUrl?: string; //link to Facebook profile
+    twitterUrl?: string; //link to Twitter profile
+    linkedinUrl?: string; //link to linkedin profile
 }
 
 const SocialMediaLink = ({ facebookUrl, twitterUrl, linkedinUrl }: Props) => {
+
     return (
         <div className='flex items-center justify-start gap-x-4 my-5'>
+
+            {/*Facebook Icon */}
             {
                 facebookUrl && <Link
                     aria-label='Facebook Profile Link'
@@ -26,6 +31,8 @@ const SocialMediaLink = ({ facebookUrl, twitterUrl, linkedinUrl }: Props) => {
                     />
                 </Link>
             }
+
+            {/*Twitter Icon */}
             {
                 twitterUrl && <Link
                     aria-label='Twitter Profile Link'
@@ -36,6 +43,8 @@ const SocialMediaLink = ({ facebookUrl, twitterUrl, linkedinUrl }: Props) => {
                         transition duration-300' />
                 </Link>
             }
+
+            {/*LinkedIn Icon */}
             {
                 linkedinUrl && <Link
                     aria-label='LinkedIn Profile Link'

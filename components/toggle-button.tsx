@@ -1,9 +1,11 @@
+/*A react component that is a custom-made toggle switch designed to visually 
+indicate and change a boolean state, in this case, whether tutoring is available. */
 
 import React from 'react';
 
 type Props = {
-    tutoringAvailable: boolean
-    onChange: () => void;
+    tutoringAvailable: boolean //A boolean prop indicating whether tutoring is available
+    onChange: () => void; //function when called, toggle the state of button
 };
 
 const ToggleButton = ({ onChange, tutoringAvailable }: Props) => {
