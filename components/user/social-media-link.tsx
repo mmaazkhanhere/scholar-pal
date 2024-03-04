@@ -16,7 +16,7 @@ type Props = {
 const SocialMediaLink = ({ facebookUrl, twitterUrl, linkedinUrl }: Props) => {
 
     return (
-        <div className='flex items-center justify-start gap-x-4 my-5'>
+        <section className='flex items-center justify-start gap-x-4 my-5'>
 
             {/*Facebook Icon */}
             {
@@ -55,7 +55,7 @@ const SocialMediaLink = ({ facebookUrl, twitterUrl, linkedinUrl }: Props) => {
                         transition duration-300' />
                 </Link>
             }
-        </div>
+        </section>
     )
 }
 

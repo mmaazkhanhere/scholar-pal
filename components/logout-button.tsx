@@ -4,7 +4,7 @@ functions */
 import useLoginModal from '@/hooks/useLoginModal';
 import { successNotification } from '@/helpers/success-notification';
 import { signOut, useSession } from 'next-auth/react';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { TbLogout } from 'react-icons/tb';
 import useUser from '@/hooks/useUser';
 import { useRouter } from 'next/navigation';
@@ -26,7 +26,7 @@ const LogoutButton = ({ label }: Props) => {
     const handleLoginModal = useLoginModal(); //hook to handle visibility of login modal
 
 
-    const handleLogout = async () => {
+    const handleLogout = useCallback(async () => {
         /*function that is called when the user clicks on logout button.  */
         try {
             setIsLoading(true); //sets the loading state to true
@@ -46,7 +46,7 @@ const LogoutButton = ({ label }: Props) => {
         } catch (error) {
             console.error('ERROR_LOGOUT_FUNCTION', error);
         }
-    };
+    }, [handleLoginModal, mutate, router]);
 
 
     return (

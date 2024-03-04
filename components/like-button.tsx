@@ -33,7 +33,7 @@ const LikeButton = ({ post, user, isLoading, setIsLoading, handleLike }: Props) 
     useEffect(() => {
         // Update isLiked state when currentUser or post.likedBy changes
         setIsLiked(post?.likedBy?.includes(user?.id));
-    }, [user.id, post.likedBy]);
+    }, [user?.id, post?.likedBy]);
 
     const toggleLike = useCallback(async () => {
         try {
@@ -61,7 +61,7 @@ const LikeButton = ({ post, user, isLoading, setIsLoading, handleLike }: Props) 
         } finally {
             setIsLoading(false); //the loading state is returned to false
         }
-    }, [handleLike, isLiked, post.id, setIsLoading, user.id]);
+    }, [handleLike, isLiked, post.id, setIsLoading, user?.id]);
 
     const onClick = useCallback(async () => {
 

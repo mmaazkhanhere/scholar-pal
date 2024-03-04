@@ -8,6 +8,9 @@ import React from 'react'
 import Avatar from './avatar'
 
 import { IUser } from '@/interface-d'
+import useLoginModal from '@/hooks/useLoginModal'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
 type Props = {
     suggestUser: IUser
@@ -15,14 +18,28 @@ type Props = {
 
 const UserSuggestionCard = ({ suggestUser }: Props) => {
 
+    const router = useRouter()
+    const { onOpen } = useLoginModal();
+    const { status } = useSession()
+
     if (!suggestUser) {
         return null;
     }
 
+    const onClick = () => {
+        if (status == 'unauthenticated') {
+            onOpen();
+        }
+        else {
+            router.push(`/user/${suggestUser.id}`)
+        }
+    }
+
+
     return (
-        <Link
-            href={`/user/${suggestUser.id}`}
-            className='flex flex-col items-start p-2 w-full'
+        <section
+            onClick={onClick}
+            className='flex flex-col items-start p-2 w-full cursor-pointer'
         >
             <div className='flex items-start justify-start gap-x-4'>
                 {/*Avatar */}
@@ -59,7 +76,7 @@ const UserSuggestionCard = ({ suggestUser }: Props) => {
                 </div>
             </div>
 
-        </Link>
+        </section>
     )
 }
 

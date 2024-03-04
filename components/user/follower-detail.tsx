@@ -11,7 +11,7 @@ type Props = {
 
 const FollowerDetail = ({ followers, following }: Props) => {
     return (
-        <div className='flex items-center justify-between mb-5 gap-x-5'>
+        <section className='flex items-center justify-between mb-5 gap-x-5'>
 
             {/*Follower Number */}
             <div
@@ -44,7 +44,7 @@ const FollowerDetail = ({ followers, following }: Props) => {
                     {following?.length}
                 </span>
             </div>
-        </div>
+        </section>
     )
 }
 

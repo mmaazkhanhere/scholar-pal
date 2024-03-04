@@ -94,7 +94,7 @@ const UserSidebar = () => {
     }
 
     return (
-        <div
+        <section
             className='flex flex-col items-start justify-center text-[#343a40]
         p-6 border rounded-lg gap-y-5'
         >
@@ -234,7 +234,7 @@ const UserSidebar = () => {
                 following={user?.followingIds}
             />
 
-        </div>
+        </section>
     );
 };
 

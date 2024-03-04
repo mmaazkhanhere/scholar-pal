@@ -13,7 +13,7 @@ type Props = {}
 
 const NewPostFooter = (props: Props) => {
     return (
-        <div className='flex items-center justify-start gap-x-5'>
+        <section className='flex items-center justify-start gap-x-5'>
             {/*Upload Media */}
             <UploadMedia />
 
@@ -32,7 +32,7 @@ const NewPostFooter = (props: Props) => {
             >
                 <FaPoll className='w-6 h-6 hover:opacity-80 cursor-pointer' />
             </button>
-        </div>
+        </section>
     )
 }
 

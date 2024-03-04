@@ -33,7 +33,7 @@ const UserPosts = (props: Props) => {
     }
 
     return (
-        <div className='max-w-4xl w-full'>
+        <section className='max-w-4xl w-full'>
             {
                 posts?.map((post: IPost) => (
                     <Link
@@ -47,7 +47,7 @@ const UserPosts = (props: Props) => {
                     </Link>
                 ))
             }
-        </div>
+        </section>
     )
 }
 

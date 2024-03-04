@@ -30,7 +30,7 @@ const NewPostButton = (props: Props) => {
     }, [status, handleLoginModal, handlePostModal])
 
     return (
-        <div
+        <section
             onClick={handleClick}
             className='flex items-center justify-between py-2 px-4 rounded-lg
             border-[#343a40]/40 w-full lg:max-w-4xl gap-x-2.5 md:gap-x-5 shadow-md
@@ -48,7 +48,7 @@ const NewPostButton = (props: Props) => {
             >
                 What is on your mind...
             </span>
-        </div>
+        </section>
     )
 }
 

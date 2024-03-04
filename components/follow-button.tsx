@@ -13,12 +13,15 @@ type Props = {
 }
 
 const FollowButton = ({ currentUser, targetUser, loading, onClick, className }: Props) => {
+
+    const isFollowing = targetUser?.followerIds?.includes(currentUser?.id as string);
+
     return (
         <div className='w-full'>
             {/*If the current user already follows the target user, then display
             an unfollow button. Else display a follow button */}
             {
-                targetUser?.followerIds?.includes(currentUser?.id as string) ? (
+                isFollowing ? (
                     <Button
                         label='Unfollow'
                         ariaLabel='Unfollow Button'

@@ -45,7 +45,7 @@ const AddTags = ({ tags, setTags }: Props) => {
     };
 
     return (
-        <div className="flex flex-col gap-2">
+        <section className="flex flex-col gap-2">
             {/* Displaying the current tags as a list */}
             <div className="flex flex-wrap gap-2">
                 {tags.map((tag, index) => (
@@ -100,7 +100,7 @@ const AddTags = ({ tags, setTags }: Props) => {
                     className='fill-[#1abc9c] self-start w-8 h-8'
                 />
             </button>
-        </div>
+        </section>
     );
 };
 
