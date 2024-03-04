@@ -11,7 +11,11 @@ const useComments = (postId: string) => {
 
     const url: string = `/api/comment?postId=${postId}` //api end point to fetch comments
 
-    const { data, error, isLoading, mutate } = useSWR(url, fetcher);
+    const { data, error, isLoading, mutate } = useSWR(url, fetcher, {
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false
+    });
 
     return {
         data, error, isLoading, mutate //return the comments

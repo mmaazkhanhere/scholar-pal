@@ -8,7 +8,6 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { formatDistanceToNowStrict, format } from 'date-fns'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
-import Image from 'next/image'
 
 import Input from '../input'
 import Button from '../button'

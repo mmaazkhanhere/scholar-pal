@@ -20,19 +20,37 @@ export const GET = async (request: NextRequest) => {
         /* finds the specific post in the database using the postId and include
         author and comments detail associated with it.*/
 
-        const post = await prismadb.post.findFirst({
+        const post = await prismadb.post.findUnique({
             where: {
                 id: postId //find the post where id is equal to the postId
             },
             include: {
-                author: true, //include the author of the post
-                comments: true //include the comments made on the post
+                author: {
+                    select: {
+                        name: true,
+                        username: true,
+                        profilePicture: true,
+                        id: true
+                    }
+                },
+                comments: {
+                    select: {
+                        author: {
+                            select: {
+                                name: true,
+                                username: true,
+                                profilePicture: true,
+                                id: true
+                            }
+                        }
+                    }
+                } //include the comments made on the post
             }
         })
 
         if (!post) {
             //if no post found, return 400 status code
-            return new NextResponse('Cannot find the post', { status: 400 });
+            return new NextResponse('Cannot find the post', { status: 404 });
         }
 
         return NextResponse.json(post); //else return the post in json

@@ -10,7 +10,11 @@ const useUsers = (currentUserId?: string) => {
 
     const apiEndpoint = `/api/user/suggestion/${currentUserId}` //api endpoint
 
-    const { data, error, isLoading } = useSWR<IUser[]>(apiEndpoint, fetcher); /*
+    const { data, error, isLoading } = useSWR<IUser[]>(apiEndpoint, fetcher, {
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false
+    }); /*
     fetch the user */
 
     return { data, error, isLoading }; //return the user

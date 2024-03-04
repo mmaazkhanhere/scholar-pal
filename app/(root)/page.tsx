@@ -1,14 +1,12 @@
-
 import Header from "@/components/header";
-import HomePage from "@/components/homepage";
-
+import Homepage from "@/components/home-page";
 
 export default function Home() {
 
   return (
     <main>
       <Header />
-      <HomePage />
+      <Homepage />
     </main>
   );
 }

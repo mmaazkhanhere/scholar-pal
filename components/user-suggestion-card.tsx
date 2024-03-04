@@ -15,6 +15,10 @@ type Props = {
 
 const UserSuggestionCard = ({ suggestUser }: Props) => {
 
+    if (!suggestUser) {
+        return null;
+    }
+
     return (
         <Link
             href={`/user/${suggestUser.id}`}
@@ -26,8 +30,8 @@ const UserSuggestionCard = ({ suggestUser }: Props) => {
                     <Avatar
                         isNavigable={false}
                         isSuggestionAvatar
-                        userId={suggestUser?.id}
-                        profilePicture={suggestUser?.profilePicture}
+                        userId={suggestUser.id}
+                        profilePicture={suggestUser.profilePicture}
                     />
                 </div>
 
@@ -36,7 +40,7 @@ const UserSuggestionCard = ({ suggestUser }: Props) => {
 
                         {/*Suggested User name */}
                         <p className='lg:text-lg font-bold'>
-                            {suggestUser?.name}
+                            {suggestUser.name}
                         </p>
 
                         {/*Suggested User field of study */}
@@ -44,13 +48,13 @@ const UserSuggestionCard = ({ suggestUser }: Props) => {
                             className='text-sm lg:text-base text-[#1abc9c] 
                             font-medium'
                         >
-                            {suggestUser?.fieldOfStudy}
+                            {suggestUser.fieldOfStudy}
                         </span>
                     </div>
 
                     {/*username of the suggested user */}
                     <p className='text-sm lg:text-base text-[#343a40]/60 font-medium'>
-                        @{suggestUser?.username}
+                        @{suggestUser.username}
                     </p>
                 </div>
             </div>

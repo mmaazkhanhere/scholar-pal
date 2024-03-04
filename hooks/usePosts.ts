@@ -12,7 +12,11 @@ const usePosts = (userId?: string) => {
     const url: string = userId ? `/api/posts/user/${userId}` : '/api/posts';
     //api endpoint depending on the availability of the user id
 
-    const { data, error, isLoading, mutate } = useSWR(url, fetcher); //fetch posts
+    const { data, error, isLoading, mutate } = useSWR(url, fetcher, {
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false
+    }); //fetch posts
 
     return {
         data, error, isLoading, mutate //return the post and function to refetch the posts

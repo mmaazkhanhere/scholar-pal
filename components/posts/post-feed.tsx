@@ -32,17 +32,6 @@ const PostFeed = (props: Props) => {
 
     const router = useRouter(); //access the router object
 
-    /*a callback function that checks if the user is authenticated. if not
-    it is not, it open the login modal */
-    const onClick = useCallback((url: string) => {
-        if (session.status === 'unauthenticated') {
-            handleLoginModal.onOpen();
-        }
-        else {
-            router.push(url)
-        }
-    }, [handleLoginModal, router, session.status])
-
     if (isLoading) {
         //while data is being fetched, display a loading spinner 
         return <LoadingSpinner spinnerSize={70} isLoading={isLoading} />
@@ -54,7 +43,6 @@ const PostFeed = (props: Props) => {
                 posts.map((post: IPost) => (
                     <div
                         className='cursor-pointer'
-                        onClick={() => onClick(`/post/${post.id}?id=${user?.id}`)}
                         key={post.id}
                     >
                         <PostCard

@@ -17,8 +17,26 @@ export const GET = async (request: NextRequest) => {
 
         const allPosts = await prismadb.post.findMany({
             include: {
-                author: true,
-                comments: true,
+                author: {
+                    select: {
+                        name: true,
+                        username: true,
+                        profilePicture: true,
+                        id: true
+                    }
+                },
+                comments: {
+                    select: {
+                        author: {
+                            select: {
+                                name: true,
+                                username: true,
+                                profilePicture: true,
+                                id: true
+                            }
+                        }
+                    }
+                },
             },
             orderBy: {
                 createdAt: 'desc'/*order the post in descending order of the time 

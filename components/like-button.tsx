@@ -23,8 +23,8 @@ type Props = {
 
 const LikeButton = ({ post, user, isLoading, setIsLoading, handleLike }: Props) => {
 
-    const session = useSession(); //session of the current login user
-    const handleLoginModal = useLoginModal(); //custom hook to handle login modal
+    const { status } = useSession(); //status of the user accessing the component
+    const { onOpen } = useLoginModal(); //extract only specific function to open the login modal
 
     const [isLiked, setIsLiked] = useState(post?.likedBy?.includes(user?.id));
     /*a state variable that checks if the current user have already liked the post
@@ -33,23 +33,9 @@ const LikeButton = ({ post, user, isLoading, setIsLoading, handleLike }: Props) 
     useEffect(() => {
         // Update isLiked state when currentUser or post.likedBy changes
         setIsLiked(post?.likedBy?.includes(user?.id));
-    }, [user, post.likedBy]);
+    }, [user.id, post.likedBy]);
 
-    const onClick = useCallback(async () => {
-
-        if (session.status === 'unauthenticated') {
-            /*Checks if the user is authenticated or not. If the user is not
-            authenticated, the login modal is open to make the user login. This
-            indicates that only logged in user can like a post */
-            handleLoginModal.onOpen();
-            return;
-        }
-
-        setIsLiked((prevIsLiked) => !prevIsLiked); /*It updates the previous
-        status of like. If the previous state was false (that the post was not
-        liked), it updates it to true. If the was previous state was true (it
-        was liked by the user), it updates it to false */
-
+    const toggleLike = useCallback(async () => {
         try {
 
             setIsLoading(true); //the loading state of the button is set to true
@@ -64,7 +50,7 @@ const LikeButton = ({ post, user, isLoading, setIsLoading, handleLike }: Props) 
 
         } catch (error) {
 
-            setIsLiked((prevIsLiked) => !prevIsLiked);/*If any error occurs, the 
+            setIsLiked(!isLiked);/*If any error occurs, the 
             previous state is restored. */
 
             if (axios.isAxiosError(error) && error.response?.status === 500) {
@@ -75,7 +61,26 @@ const LikeButton = ({ post, user, isLoading, setIsLoading, handleLike }: Props) 
         } finally {
             setIsLoading(false); //the loading state is returned to false
         }
-    }, [session.status, handleLoginModal, setIsLoading, post?.id, user?.id, handleLike]);
+    }, [handleLike, isLiked, post.id, setIsLoading, user.id]);
+
+    const onClick = useCallback(async () => {
+
+        if (status === 'unauthenticated') {
+            /*Checks if the user is authenticated or not. If the user is not
+            authenticated, the login modal is open to make the user login. This
+            indicates that only logged in user can like a post */
+            onOpen();
+            return;
+        }
+
+        setIsLiked(!isLiked); /*It updates the previous
+        status of like. If the previous state was false (that the post was not
+        liked), it updates it to true. If the was previous state was true (it
+        was liked by the user), it updates it to false */
+
+        toggleLike(); // Perform the like/unlike action
+
+    }, [status, isLiked, toggleLike, onOpen]);
 
     return (
         <button

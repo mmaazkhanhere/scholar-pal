@@ -26,8 +26,27 @@ export const GET = async (request: NextRequest) => {
                 authorId: userId
             },
             include: {
-                author: true,
-                comments: true
+                author: {
+                    select: {
+                        name: true,
+                        username: true,
+                        profilePicture: true,
+                        id: true
+                    }
+                },
+                comments: {
+                    select: {
+                        author: {
+                            select: {
+                                name: true,
+                                username: true,
+                                profilePicture: true,
+                                id: true
+                            }
+                        }
+                    }
+                },
+
             },
             orderBy: {
                 createdAt: 'desc'

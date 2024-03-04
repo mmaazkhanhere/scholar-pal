@@ -19,7 +19,11 @@ const useUser = (userId?: string) => {
         ? `/api/user/${userId}` // Path to fetch data for a specific user by userId
         : (session && status === "authenticated" ? `/api/user/?userEmail=${userEmail}` : null); // Path to fetch current user data
 
-    const { data, error, mutate } = useSWR<IUser | null>(fetchUrl, fetcher); //fetch the user
+    const { data, error, mutate } = useSWR<IUser | null>(fetchUrl, fetcher, {
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false
+    }); //fetch the user
 
     return {
         user: data, //return the user

@@ -23,6 +23,9 @@ export const POST = async (request: NextRequest) => {
         const post = await prismadb.post.findUnique({
             where: {
                 id: postId
+            },
+            select: {
+                likedBy: true //fetch only the like of the posts
             }
         })
 
@@ -52,6 +55,10 @@ export const POST = async (request: NextRequest) => {
             },
             data: {
                 likedBy: postLikes
+            },
+            select: {
+                id: true,
+                likedBy: true
             }
         })
 

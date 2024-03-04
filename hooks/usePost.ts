@@ -9,11 +9,13 @@ import fetcher from "@/libs/fetcher"
 
 const usePost = (postId?: string) => {
 
-    console.log(postId)
+    const url = postId ? `/api/posts/${postId}` : null;
 
-    const url = `/api/posts/${postId}`
-
-    const { data, isLoading, error, mutate } = useSWR(url, fetcher);
+    const { data, isLoading, error, mutate } = useSWR(url, fetcher,
+        {
+            revalidateIfStale: false,
+            revalidateOnReconnect: false,
+        });
 
     return { data, isLoading, error, mutate };
 }

@@ -19,15 +19,22 @@ export const GET = async (request: NextRequest) => {
         }
 
         /*Find all the comments on post with postId and include the details of 
-        the author who made the comment */
+        the author who made the comment. Only fetching specific data to optimize
+        the performance */
         const postComment = await prismadb.comment.findMany({
-            where: {
-                postId: postId //get the post whose postId is same as postId passed
-            },
-            include: {
-                author: true //include the author details who made the comment
+            where: { postId: postId },
+            select: {
+                createdAt: true,
+                content: true,
+                author: {
+                    select: {
+                        name: true,
+                        profilePicture: true,
+                        username: true,
+                    }
+                }
             }
-        })
+        });
 
         return NextResponse.json(postComment) //return the comment made on the post
 
@@ -49,14 +56,29 @@ export const POST = async (request: NextRequest) => {
         }
 
         /*Creates a comment with prisma create parameter with the data passed
-        as an object using data query */
+        as an object using data query. Only data that is necessary is selected
+        to minimize the payload size */
         const comment = await prismadb.comment.create({
             data: {
                 postId: postId,
                 content: content,
                 authorId: currentUser
+            },
+            select: {
+                id: true,
+                content: true,
+                createdAt: true,
+                author: {
+                    select: {
+                        id: true,
+                        name: true,
+                        username: true,
+                        profilePicture: true
+                    }
+                }
             }
-        })
+        });
+
 
         return NextResponse.json(comment) //return the comment json response
 
