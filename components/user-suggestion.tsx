@@ -30,7 +30,7 @@ const UserSuggestion = (props: Props) => {
     return (
         <section
             className='flex flex-col items-center border border-[#343a40]/40
-        rounded-lg p-5 fixed w-full max-w-[440px]'
+        rounded-lg p-5 fixed w-full lg:max-w-[410px]'
         >
             {/*Heading */}
             <h2 className='text-center font-semibold lg:text-2xl'>

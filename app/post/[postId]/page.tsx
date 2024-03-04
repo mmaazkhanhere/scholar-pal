@@ -2,14 +2,15 @@ import React from 'react'
 import Link from 'next/link';
 
 import Header from '@/components/header'
-
-import { IoArrowBackCircleOutline } from "react-icons/io5";
 import PostDetail from '@/components/posts/post-detail';
 
+import { IoArrowBackCircleOutline } from "react-icons/io5";
 
 type Props = {}
 
 const PostPage = (props: Props) => {
+
+
     return (
         <main>
             <Header />

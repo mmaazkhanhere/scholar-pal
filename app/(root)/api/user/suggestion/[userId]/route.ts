@@ -12,10 +12,10 @@ export const GET = async (request: NextRequest) => {
 
         let suggestedUsers;
 
-        /*If there is no current user id, then return user that potentially can
-        include the current user. This is for homepage when a user is not logged
-        in */
-        if (!currentUserId) {
+        /*If there is no current user id, then return suggested users that 
+        potentially can include the current user. This is for homepage when 
+        a user is not logged in */
+        if (!currentUserId || currentUserId === "undefined") {
 
             suggestedUsers = await prismadb.user.findMany({
                 take: 3, //three users are selected

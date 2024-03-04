@@ -124,7 +124,7 @@ const PostCard = ({ user, post, isPostPage = false }: Props) => {
         finally {
             setIsLoading(false)
         }
-    }, [comment, user.id, mutate, mutatePost, post.id])
+    }, [comment, user?.id, mutate, mutatePost, post?.id])
 
 
     /*A function that calculates the time the post was created and return
