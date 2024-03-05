@@ -41,10 +41,12 @@ export const GET = async (request: NextRequest) => {
 
 export const PATCH = async (request: NextRequest) => {
 
-    try {
+    console.log('PATCH')
 
-        const currentUser = await getCurrentUser(); //get the currently signed in user
-        const body = await request.json(); //extract the body from the request
+    const currentUser = await getCurrentUser(); //get the currently signed in user
+    const body = await request.json(); //extract the body from the request
+
+    try {
 
         if (!currentUser) {
             //if no current user, return unauthorized response and error

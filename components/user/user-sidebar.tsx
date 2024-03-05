@@ -6,7 +6,7 @@ profile owner or another user.*/
 
 "use client"
 
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { usePathname } from 'next/navigation';
@@ -46,6 +46,17 @@ const UserSidebar = () => {
 
     const formattedDate = user?.createdAt ? format(new Date(user.createdAt), 'PPP') : '';
     //format the date when the user was created
+
+    const { isOpen } = useEditModal();
+
+    useEffect(() => {
+        // This assumes `isModalOpen` becomes `false` when the modal is closed
+        if (!isOpen) {
+            // `mutate` without arguments revalidates data
+            mutate(); // Re-fetch current user data
+            mutateTargetUser(userId); // Re-fetch target user data if necessary
+        }
+    }, [isOpen, mutate, mutateTargetUser, userId]);
 
     /*A function that is called when user clicks on follow button. It makes a
     POST HTTP request to specified api endpoint passing the userId in the
@@ -90,7 +101,7 @@ const UserSidebar = () => {
 
     //display a loading spinner while the data is being fetched
     if (isLoading || !user) {
-        return <LoadingSpinner spinnerSize={60} />
+        return null;
     }
 
     return (
@@ -129,7 +140,7 @@ const UserSidebar = () => {
                 text-[#343a40]/60 lg:text-base'
                 >
 
-                    {/*User userna,e */}
+                    {/*User username */}
                     <p className='font-semibold'>
                         @{user?.username}
                     </p>

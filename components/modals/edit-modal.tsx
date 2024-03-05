@@ -43,7 +43,14 @@ const EditModal = (props: Props) => {
     useEffect(() => {
         setName(user?.name as string);
         setProfilePicture(user?.profilePicture as string);
-    }, [user?.name, user?.profilePicture]) /*assign the user name and profile
+        setAge(user?.age as number);
+        setBio(user?.bio as string);
+        setFieldOfStudy(user?.fieldOfStudy as string);
+        setLinkedInProfile(user?.linkedInProfile as string);
+        setFacebookProfile(user?.facebookProfile as string);
+        setTwitterProfile(user?.twitterUrl as string);
+        setTutoringAvailable(user?.tutoringAvailable)
+    }, [user?.age, user?.bio, user?.facebookProfile, user?.fieldOfStudy, user?.linkedInProfile, user?.name, user?.profilePicture, user?.tutoringAvailable, user?.twitterUrl]) /*assign the user name and profile
     picture on initial render*/
 
 

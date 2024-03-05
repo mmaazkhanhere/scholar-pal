@@ -1,4 +1,3 @@
-'use client'
 
 /*A utility function designed to retrieve the current authenticated login user
 from database using Prisma query */
