@@ -1,13 +1,32 @@
 
-import React from 'react';
+import useGroupModal from '@/hooks/useGroupModal';
+import useLoginModal from '@/hooks/useLoginModal';
+import { useSession } from 'next-auth/react';
+import React, { useCallback } from 'react';
 import { IoAddCircleOutline } from 'react-icons/io5';
 
 type Props = {}
 
 const CreateGroupButton: React.FC<Props> = () => {
+
+    const { onOpen: openGroupModal } = useGroupModal();
+    const { onOpen: openLoginModal } = useLoginModal();
+    const { status } = useSession();
+
+    const onClick = useCallback(() => {
+        if (status == 'unauthenticated') {
+            openLoginModal();
+        }
+        else {
+            openGroupModal();
+        }
+    }, [openGroupModal, openLoginModal, status])
+
+
     return (
-        // Using TailwindCSS for styling
+
         <button
+            onClick={onClick}
             className="flex items-center justify-center gap-x-2
             bg-[#1bac9c] hover:bg-[#1abc9c]/80 hover:scale-95 text-[#fefefe] 
             py-2 px-6 rounded-lg lg:rounded-xl lg:shadow-lg 

@@ -1,30 +1,6 @@
-export interface ILoginModal {
+export interface IModal {
     isOpen: boolean;
     onOpen: () => void
-    onClose: () => void
-}
-
-export interface IRegisterModal {
-    isOpen: boolean;
-    onOpen: () => void
-    onClose: () => void
-}
-
-export interface IAIModal {
-    isOpen: boolean;
-    onOpen: () => void;
-    onClose: () => void
-}
-
-export interface IPostModal {
-    isOpen: boolean;
-    onOpen: () => void;
-    onClose: () => void
-}
-
-export interface IEditModal {
-    isOpen: boolean;
-    onOpen: () => void;
     onClose: () => void
 }
 

@@ -22,6 +22,7 @@ model User{
   profilePicture String? //profile picture of the user
   linkedInProfile String? //a link to the user LinkedIn profile
   facebookProfile String?  //a link to the user Facebook profile
+  twitterProfile String?  //a link to the user Facebook profile
   tutoringAvailable Boolean? @default(false) //is the user available for tutoring
   tutoringRating Float? @default(0) //rating of the tutor
   academicLevel String? //level that will be assigned to the user based on score
@@ -76,6 +77,7 @@ model StudyGroup {
   groupName   String   // Name of the group
   description String   // A short description about the group
   private     Boolean  @default(false) // Indicates if the group is private; public by default
+  groupAvatar String? //profile picture of the user
   subject     String?  // The main subject or area of focus for the study group
   createdAt   DateTime @default(now()) // When the group was created
   updatedAt   DateTime @updatedAt // When the group details were last updated
