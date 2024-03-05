@@ -64,6 +64,7 @@ export interface IStudyGroup {
     groupName: string;
     description: string;
     private: boolean;
+    groupAvatar?: string; // Optional field for the group's avatar/profile picture
     subject?: string;
     createdAt: Date;
     updatedAt: Date;
