@@ -11,6 +11,8 @@ import useLoginModal from '@/hooks/useLoginModal'
 import { useSession } from 'next-auth/react'
 import axios from 'axios'
 import { successNotification } from '@/helpers/success-notification'
+import useUser from '@/hooks/useUser'
+import { errorNotification } from '@/helpers/error-notification'
 
 type Props = {}
 
@@ -27,6 +29,9 @@ const CreateGroupModal = (props: Props) => {
     const { isOpen, onClose } = useGroupModal();
     const { onOpen: openLoginModal } = useLoginModal();
     const { status } = useSession();
+    const { user: currentUser } = useUser()
+
+    const currentUserId = currentUser?.id
 
     const handleToggle = () => {
         setIsPrivate(!isPrivate);
@@ -41,12 +46,14 @@ const CreateGroupModal = (props: Props) => {
                 openLoginModal();
             }
 
-            const request = await axios.post('/api/groups', {
-                groupName, description, groupAvatar, isPrivate, subject
+            const request = await axios.post('/api/group', {
+                groupName, description, groupAvatar, isPrivate, subject, currentUserId
             })
 
             if (request.status === 200) {
-                successNotification('Group Successfully Created')
+                successNotification('Group Successfully Created');
+                setLoading(false);
+                onClose();
             }
 
             setGroupName('');
@@ -59,6 +66,15 @@ const CreateGroupModal = (props: Props) => {
 
             console.error('CREATE_GROUP_MODAL_ERROR', error);
 
+            if (axios.isAxiosError(error) && error.response?.status == 400) {
+                errorNotification('Missing Details. Please fill out all fields')
+            }
+            else {
+                errorNotification('Something went wrong');
+            }
+        }
+        finally {
+            setLoading(false);
         }
     }
 
