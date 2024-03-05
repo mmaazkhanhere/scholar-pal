@@ -3,7 +3,6 @@
 "use client"
 
 import React, { useCallback, useState } from 'react'
-import { useSession } from 'next-auth/react'
 import axios from 'axios'
 
 import Modal from '../modal'
@@ -32,10 +31,10 @@ const NewPostModal = (props: Props) => {
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const session = useSession();
 
-    const { mutate } = usePosts();
     const { user: currentUser } = useUser();
+    const { mutate } = usePosts(currentUser?.id);
+    const { mutate: updateAllPosts } = usePosts();
 
     const handlePostModal = usePostModal();
     const handleLoginModal = useLoginModal();
@@ -62,6 +61,8 @@ const NewPostModal = (props: Props) => {
                 setTags([]);
 
                 mutate(); //manually fetch updated list of posts made
+                updateAllPosts();
+
                 setIsLoading(false);
 
                 handlePostModal.onClose(); //close the new post modal
@@ -87,7 +88,7 @@ const NewPostModal = (props: Props) => {
             }
         }
 
-    }, [handleLoginModal, handlePostModal, mutate, postContent, tags])
+    }, [handleLoginModal, handlePostModal, mutate, postContent, tags, updateAllPosts])
 
 
     //content of the modal

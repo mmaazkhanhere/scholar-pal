@@ -189,7 +189,7 @@ const EditModal = (props: Props) => {
             <div className="flex items-center gap-x-4 py-4">
                 <span className='lg:text-lg font-medium'>Available for Tutoring:</span>
                 <ToggleButton
-                    tutoringAvailable={tutoringAvailable!}
+                    variableToToggle={tutoringAvailable!}
                     onChange={toggleTutor}
                 />
             </div>

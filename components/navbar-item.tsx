@@ -18,7 +18,7 @@ const NavbarItems = (props: Props) => {
             {/*Link to study groups */}
             <Link
                 title='Groups'
-                href='/'
+                href='/groups'
                 aria-label='Groups'
             >
                 <FaUserGroup

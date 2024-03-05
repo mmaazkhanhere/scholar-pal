@@ -17,7 +17,6 @@ import FollowerDetail from './follower-detail';
 import Button from '../button';
 import SocialMediaLink from './social-media-link';
 import Avatar from '../avatar';
-import LoadingSpinner from '../loading-spinner';
 import FollowButton from '../follow-button';
 
 import { FaMedal, FaStar } from "react-icons/fa";

@@ -33,7 +33,7 @@ const MobileNavbar: React.FC<Props> = ({ toggleButton }) => {
 
                 {/*Link to study groups */}
                 <Link
-                    href="/"
+                    href="/groups"
                     className='flex justify-between items-center w-full'
                 >
                     <FaUserGroup

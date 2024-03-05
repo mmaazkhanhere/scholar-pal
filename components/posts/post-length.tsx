@@ -14,7 +14,7 @@ const calculateStrokeDashoffset = (currentLength: number, radius: number) => {
 // The main component that displays the circular progress indicator
 const PostLength: React.FC<PostLengthProps> = ({ currentLength }) => {
     // Define the default SVG size and circle radius
-    const circleRadius = 20; // The radius of the circle
+    const circleRadius = 25; // The radius of the circle
 
     // Calculate the total circumference of the circle (used for the stroke dash array)
     const strokeDasharray = 2 * Math.PI * circleRadius;
@@ -25,7 +25,7 @@ const PostLength: React.FC<PostLengthProps> = ({ currentLength }) => {
     // Render the component
     return (
         // Container div to position the text and SVG relative to each other
-        <div className='relative w-[50px] h-[50px] lg:w-[30px] lg:h-[30px]'>
+        <div className='relative w-[60px] h-[60px] lg:w-[40px] lg:h-[40px]'>
             <svg
                 width="100%" // Make SVG responsive by setting width to 100% of the container
                 height="100%" // Make SVG responsive by setting height to 100% of the container
@@ -48,7 +48,7 @@ const PostLength: React.FC<PostLengthProps> = ({ currentLength }) => {
                 className=
                 {`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
                 ${currentLength > 250 ? 'text-red-500' : 'text-green-500'}
-                text-sm`} // Set the size of the text
+                text-xs`} // Set the size of the text
             >
                 {/*Display the current length of the text content*/}
                 {currentLength}
