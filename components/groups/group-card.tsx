@@ -1,8 +1,17 @@
+"use client"
 
-import React from 'react'
+
+import React, { useCallback, useState } from 'react'
 import Avatar from '../avatar'
 import { IStudyGroup } from '@/interface-d'
 import useUser from '@/hooks/useUser'
+import axios from 'axios'
+import { successNotification } from '@/helpers/success-notification'
+import { errorNotification } from '@/helpers/error-notification'
+import { useSession } from 'next-auth/react'
+import useLoginModal from '@/hooks/useLoginModal'
+import useGroup from '@/hooks/useGroup'
+import { useGroups } from '@/hooks/useGroups'
 
 type Props = {
     groupDetail: IStudyGroup
@@ -10,7 +19,46 @@ type Props = {
 
 const GroupCard = ({ groupDetail }: Props) => {
 
-    const { user: currentUser } = useUser();
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const { status } = useSession();
+    const { onOpen: openLoginModal } = useLoginModal();
+    const { user: currentUser, mutate: updateCurrentUser } = useUser();
+    const { mutate: updateGroupList } = useGroups();
+    const { mutate: updateGroup } = useGroup(groupDetail.id);
+
+    const handleJoin = useCallback(async () => {
+
+        try {
+
+            setLoading(true);
+
+            if (status == 'unauthenticated') {
+                openLoginModal()
+            }
+
+            const request = await axios.post('/api/group/join', {
+                currentUserId: currentUser?.id,
+                groupId: groupDetail.id,
+                groupCreatorId: groupDetail.creatorId
+            })
+
+            if (request.status === 200) {
+                successNotification('Request successfully sent');
+                setLoading(false);
+                updateGroup();
+                updateCurrentUser();
+                updateGroupList();
+            }
+
+        } catch (error) {
+            console.error('GROUP_CARD_HANDLE_JOIN_FUNCTION_ERROR', error);
+            errorNotification('Something went wrong')
+        }
+        finally {
+            setLoading(false);
+        }
+    }, [currentUser?.id, groupDetail.creatorId, groupDetail.id, openLoginModal, status, updateCurrentUser, updateGroup, updateGroupList])
 
     return (
         <article
@@ -73,9 +121,10 @@ const GroupCard = ({ groupDetail }: Props) => {
                     </button>
                 ) : (
                     <button
+                        disabled={loading}
+                        onClick={handleJoin}
                         className="bg-[#1abc9c] hover:bg-[#1abc9c]/60 text-white 
-                    font-medium py-1 px-4 rounded text-sm"
-                        disabled
+                        font-medium py-1 px-4 rounded text-sm"
                     >
                         Join
                     </button>

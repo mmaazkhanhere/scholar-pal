@@ -147,6 +147,7 @@ model Notification {
 enum NotificationType {
   EVENT_INVITE
   NEW_POST
+  GROUP_JOINED
   GROUP_JOIN_REQUEST
   GROUP_JOIN_ACCEPTED
   LIKE
@@ -154,5 +155,4 @@ enum NotificationType {
   DOWNVOTE
   COMMENT
   FOLLOW_REQUEST
-  FOLLOW_REQUEST_ACCEPTED
 }

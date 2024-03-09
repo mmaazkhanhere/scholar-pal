@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import prismadb from '@/libs/prismadb'
 
 export const GET = async (request: NextRequest) => {
-
-
     try {
 
         const groupList = await prismadb.studyGroup.findMany({
