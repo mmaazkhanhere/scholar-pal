@@ -41,13 +41,26 @@ export const POST = async (request: NextRequest) => {
             return new NextResponse('Cannot find the group', { status: 404 })
         }
 
-        if (group?.members.includes(currentUserId)) {
-            return new NextResponse('User already have joined the study group', { status: 404 });
-        }
-
         let userMembership;
 
-        if (group.private) {
+        if (group?.members.some(member => member.userId == currentUserId)) {
+
+            await prismadb.membership.deleteMany({
+                where: {
+                    userId: currentUserId,
+                    groupId: groupId,
+                    NOT: {
+                        userId: group.creatorId
+                    }
+                },
+            });
+
+            const updatedGroupMembers = group.members.filter(
+                (userId) => userId !== currentUserId
+            );
+            return NextResponse.json(updatedGroupMembers);
+        }
+        else if (group.private) {
             userMembership = await prismadb.membership.create({
                 data: {
                     userId: currentUserId,

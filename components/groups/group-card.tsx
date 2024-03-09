@@ -27,6 +27,8 @@ const GroupCard = ({ groupDetail }: Props) => {
     const { mutate: updateGroupList } = useGroups();
     const { mutate: updateGroup } = useGroup(groupDetail.id);
 
+    const currentUserStatus = groupDetail.members.find(member => member.id)?.status
+
     const handleJoin = useCallback(async () => {
 
         try {
@@ -81,7 +83,7 @@ const GroupCard = ({ groupDetail }: Props) => {
                             Created by {groupDetail.creator.username}
                         </p>
                         {
-                            groupDetail.private == true ? (
+                            groupDetail.private ? (
                                 <p className='text-red-500 text-sm font-medium'>
                                     Private
                                 </p>
@@ -112,19 +114,26 @@ const GroupCard = ({ groupDetail }: Props) => {
 
             {
                 groupDetail.members.some(member => member.userId == currentUser?.id) ? (
+
                     <button
-                        className="bg-[#fefefe] text-[#343a40] border 
-                        border-[#343a40] font-medium py-1 px-4 rounded text-sm"
-                        disabled
+                        onClick={handleJoin}
+                        className={`
+                        ${currentUserStatus === 'ACCEPTED' && 'bg-red-500 text-[#f9fcfc]'}
+                        ${currentUserStatus === 'PENDING' && 'bg-[#f9fefe] border border-[#343a40]'}
+                        font-medium py-1 px-4 rounded text-sm
+                        `
+                        }
+                        disabled={loading || currentUserStatus === 'PENDING'}
                     >
-                        Already Member
+                        Leave Group
                     </button>
                 ) : (
+
                     <button
                         disabled={loading}
                         onClick={handleJoin}
                         className="bg-[#1abc9c] hover:bg-[#1abc9c]/60 text-white 
-                        font-medium py-1 px-4 rounded text-sm"
+                        font-medium py-1 px-6 rounded text-sm"
                     >
                         Join
                     </button>

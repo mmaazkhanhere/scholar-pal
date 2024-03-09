@@ -38,7 +38,7 @@ const CreateGroupButton: React.FC<Props> = () => {
             />
 
             {/* Text */}
-            <span className='lg:text-lg font-medium'>
+            <span className='text-sm lg:text-base font-medium'>
                 Create Study Group
             </span>
 
