@@ -10,8 +10,11 @@ export const GET = async (request: NextRequest) => {
 
     try {
 
-        const userEmail = request.nextUrl.searchParams.get('userEmail')/*
+        const encodedEmail = request.nextUrl.searchParams.get('userEmail')/*
         get the email of the currently sign in user */
+
+        const userEmail = decodeURIComponent(encodedEmail as string);
+
 
         if (!userEmail) {
             //if email doesn't exist, return an unauthorized response

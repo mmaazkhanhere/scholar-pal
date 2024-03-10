@@ -78,9 +78,29 @@ export const POST = async (request: NextRequest) => {
             pending members that want to join the group */
 
             if (pendingMembers.includes(currentUserId)) {
-                /*If the pending list consist the current user id, return
-                the message */
-                return NextResponse.json({ message: 'Request is already pending' });
+
+                const updatedPendingMembers = pendingMembers.filter(userId => userId !== currentUserId);
+
+                // Update the group's pending members
+                const updatedGroup = await prismadb.studyGroup.update({
+                    where: {
+                        id: groupId,
+                    },
+                    data: {
+                        pendingMembers: updatedPendingMembers
+                    }
+                });
+
+                // Delete the user's pending membership
+                await prismadb.membership.deleteMany({
+                    where: {
+                        userId: currentUserId,
+                        groupId: groupId,
+                        status: MembershipStatus.PENDING,
+                    },
+                });
+
+                return NextResponse.json(updatedGroup);
             }
             else {
                 /*If user doesn't exist in the pending list, then add the user in
@@ -123,7 +143,7 @@ export const POST = async (request: NextRequest) => {
                     groupId: groupId,
                     status: MembershipStatus.ACCEPTED
                 }
-            });
+            }); //update the current user membership status
 
             await prismadb.notification.create({
                 data: {
@@ -131,7 +151,7 @@ export const POST = async (request: NextRequest) => {
                     body: `${currentUserData.name} has joined your study group ${group.groupName}`,
                     type: NotificationType.GROUP_JOINED
                 }
-            });
+            }); //creating notification to group admin that user has joined the study group
         }
 
         return NextResponse.json(userMembership);

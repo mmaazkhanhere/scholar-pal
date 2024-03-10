@@ -27,11 +27,10 @@ const GroupCard = ({ groupDetail }: Props) => {
     const { mutate: updateGroupList } = useGroups();
     const { mutate: updateGroup } = useGroup(groupDetail.id);
 
-    const currentUserStatus = groupDetail.members.find(member => member.id)?.status
+
     const groupPendingUsers = groupDetail.pendingMembers;
 
     console.log(groupPendingUsers);
-    console.log(currentUserStatus)
 
     const handleJoin = useCallback(async () => {
 
@@ -117,8 +116,7 @@ const GroupCard = ({ groupDetail }: Props) => {
             </div>
 
             {
-                groupDetail.members.some(member => member.userId == currentUser?.id && currentUserStatus === 'ACCEPTED') ? (
-
+                groupDetail.members.some(member => member.userId == currentUser?.id && groupDetail.pendingMembers?.includes(currentUser.id) == false) ? (
                     <button
                         onClick={handleJoin}
                         className="bg-red-500 text-[#f9fcfc] font-medium py-1 px-4 rounded text-sm"
@@ -126,23 +124,27 @@ const GroupCard = ({ groupDetail }: Props) => {
                     >
                         Leave Group
                     </button>
-                ) : groupPendingUsers?.includes(currentUser?.id as string) ? (
-                    <button
-                        className="bg-[#f9fefe] border border-[#343a40] font-medium py-1 px-4 rounded text-sm"
-                        disabled={true}
-                    >
-                        Request Pending
-                    </button>
-                ) : (
-                    <button
-                        disabled={loading}
-                        onClick={handleJoin}
-                        className="bg-[#1abc9c] hover:bg-[#1abc9c]/60 text-white 
-            font-medium py-1 px-6 rounded text-sm"
-                    >
-                        Join
-                    </button>
-                )
+                ) : groupDetail.members.some(member => member.userId == currentUser?.id && groupDetail.pendingMembers?.includes(currentUser.id) == true) ?
+                    (
+                        <button
+                            onClick={handleJoin}
+                            className="bg-[#f9fefe] border border-[#343a40] font-medium py-1 px-4 rounded text-sm"
+                            disabled={loading}
+                        >
+                            Request Pending
+                        </button>
+                    )
+                    :
+                    (
+                        <button
+                            onClick={handleJoin}
+                            className="bg-[#1abc9c] hover:bg-[#1abc9c]/60 text-white 
+                        font-medium py-1 px-6 rounded text-sm"
+                            disabled={loading}
+                        >
+                            Join Group
+                        </button>
+                    )
             }
 
         </article>

@@ -15,9 +15,11 @@ const useUser = (userId?: string) => {
 
     const userEmail = session?.user?.email //extract the user email from the session
 
+    const encodedEmail = encodeURIComponent(userEmail as string)
+
     const fetchUrl = userId
         ? `/api/user/${userId}` // Path to fetch data for a specific user by userId
-        : (session && status === "authenticated" ? `/api/user/?userEmail=${userEmail}` : null); // Path to fetch current user data
+        : (session && status === "authenticated" ? `/api/user/?userEmail=${encodedEmail}` : null); // Path to fetch current user data
 
     const { data, error, mutate } = useSWR<IUser | null>(fetchUrl, fetcher, {
         revalidateIfStale: false,
