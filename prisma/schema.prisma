@@ -31,10 +31,12 @@ model User{
   followerIds String[] @db.ObjectId //ids of the users that the user follows
   createdAt DateTime @default(now()) //when the user has signed up with the application
   updatedAt DateTime @updatedAt //when the user details were updated
+  
   posts Post[] //1-many relation b/w user and post (a user can have more than one post)
   comments Comment[] //1-many relation b/w user and comment
   notifications Notification[] //1-many relation b/w user and notifications
   createdGroups StudyGroup[] @relation("groupCreator") //1-many relation b/w user and study group 
+
   membership Membership[] //1-many relation b/w user and membership (user can be a member
                           // of more than one group)
   event Event[] //1-many relation b/w user and event (user can be attending more than one event)
@@ -82,8 +84,10 @@ model StudyGroup {
   createdAt   DateTime @default(now()) // When the group was created
   updatedAt   DateTime @updatedAt // When the group details were last updated
   creatorId   String   @db.ObjectId // ID of the creator who created the group
-
+  pendingMembers   String[] // IDs of users with pending membership requests
   creator   User         @relation("groupCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+
+
   members   Membership[] // More than one user can be a member of the group
   posts     Post[]       // A group can have more than one post related to its subject
   events    Event[]      // A group can have more than one event
@@ -101,7 +105,6 @@ model Membership {
   userId String           @db.ObjectId // ID of the user who requested to join the group
   groupId String          @db.ObjectId // ID of the group for which membership is requested
   status MembershipStatus @default(PENDING) // Status of the user's request to join a private group
-
   user   User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   group  StudyGroup  @relation(fields: [groupId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now()) // When the membership request was created

@@ -13,6 +13,7 @@ import axios from 'axios'
 import { successNotification } from '@/helpers/success-notification'
 import useUser from '@/hooks/useUser'
 import { errorNotification } from '@/helpers/error-notification'
+import { useGroups } from '@/hooks/useGroups'
 
 type Props = {}
 
@@ -30,6 +31,7 @@ const CreateGroupModal = (props: Props) => {
     const { onOpen: openLoginModal } = useLoginModal();
     const { status } = useSession();
     const { user: currentUser } = useUser()
+    const { mutate: updateGroupList } = useGroups();
 
     const currentUserId = currentUser?.id
 
@@ -52,6 +54,7 @@ const CreateGroupModal = (props: Props) => {
 
             if (request.status === 200) {
                 successNotification('Group Successfully Created');
+                updateGroupList();
                 setLoading(false);
                 onClose();
             }

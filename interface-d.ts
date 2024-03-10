@@ -70,6 +70,7 @@ export interface IStudyGroup {
     updatedAt: Date;
     creatorId: string;
     creator: IUser;
+    pendingMembers?: string[];
     members: IMembership[];
     posts: IPost[];
     events: IEvent[];
@@ -125,8 +126,10 @@ export enum MembershipStatus {
 export enum NotificationType {
     EVENT_INVITE = "EVENT_INVITE",
     NEW_POST = "NEW_POST",
+    GROUP_JOINED = 'GROUP_JOINED',
     GROUP_JOIN_REQUEST = "GROUP_JOIN_REQUEST",
     GROUP_JOIN_ACCEPTED = "GROUP_JOIN_ACCEPTED",
+    GROUP_JOIN_REQUEST_REJECTED = "GROUP_JOIN_REQUEST_REJECTED",
     LIKE = "LIKE",
     UPVOTE = "UPVOTE",
     DOWNVOTE = "DOWNVOTE",

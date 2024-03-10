@@ -36,7 +36,7 @@ export const POST = async (request: NextRequest) => {
 
     try {
 
-        if (!groupName || !description || isPrivate || !subject || !currentUserId) {
+        if (!groupName || !description || !subject || !currentUserId) {
             return new NextResponse('Missing Required Fields', { status: 400 })
         }
 
@@ -51,7 +51,7 @@ export const POST = async (request: NextRequest) => {
             }
         })
 
-        const addUser = await prismadb.membership.create({
+        await prismadb.membership.create({
             data: {
                 userId: currentUserId,
                 groupId: studyGroup.id,

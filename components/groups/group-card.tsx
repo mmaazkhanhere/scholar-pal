@@ -28,6 +28,10 @@ const GroupCard = ({ groupDetail }: Props) => {
     const { mutate: updateGroup } = useGroup(groupDetail.id);
 
     const currentUserStatus = groupDetail.members.find(member => member.id)?.status
+    const groupPendingUsers = groupDetail.pendingMembers;
+
+    console.log(groupPendingUsers);
+    console.log(currentUserStatus)
 
     const handleJoin = useCallback(async () => {
 
@@ -108,38 +112,38 @@ const GroupCard = ({ groupDetail }: Props) => {
                 </span>
                 <span className="bg-[#343a40]/10 rounded-full px-3 py-1 text-sm 
                     font-semibold text-gray-700">
-                    {groupDetail.members.length} Members
+                    {groupDetail.members.filter(member => member.status === 'ACCEPTED').length} Members
                 </span>
             </div>
 
             {
-                groupDetail.members.some(member => member.userId == currentUser?.id) ? (
+                groupDetail.members.some(member => member.userId == currentUser?.id && currentUserStatus === 'ACCEPTED') ? (
 
                     <button
                         onClick={handleJoin}
-                        className={`
-                        ${currentUserStatus === 'ACCEPTED' && 'bg-red-500 text-[#f9fcfc]'}
-                        ${currentUserStatus === 'PENDING' && 'bg-[#f9fefe] border border-[#343a40]'}
-                        font-medium py-1 px-4 rounded text-sm
-                        `
-                        }
-                        disabled={loading || currentUserStatus === 'PENDING'}
+                        className="bg-red-500 text-[#f9fcfc] font-medium py-1 px-4 rounded text-sm"
+                        disabled={loading}
                     >
                         Leave Group
                     </button>
+                ) : groupPendingUsers?.includes(currentUser?.id as string) ? (
+                    <button
+                        className="bg-[#f9fefe] border border-[#343a40] font-medium py-1 px-4 rounded text-sm"
+                        disabled={true}
+                    >
+                        Request Pending
+                    </button>
                 ) : (
-
                     <button
                         disabled={loading}
                         onClick={handleJoin}
                         className="bg-[#1abc9c] hover:bg-[#1abc9c]/60 text-white 
-                        font-medium py-1 px-6 rounded text-sm"
+            font-medium py-1 px-6 rounded text-sm"
                     >
                         Join
                     </button>
                 )
             }
-
 
         </article>
 
