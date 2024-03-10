@@ -3,12 +3,8 @@ import prismadb from "@/libs/prismadb"
 
 export const GET = async (request: NextRequest) => {
 
-    console.log('API called');
-
     try {
         const userId = request.nextUrl.pathname.split('/').pop()
-
-        console.log(userId)
 
         if (!userId || typeof userId !== 'string') {
             return new NextResponse('Invalid UserId', { status: 404 });

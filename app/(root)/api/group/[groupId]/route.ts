@@ -3,8 +3,7 @@ import prismadb from '@/libs/prismadb'
 
 export const GET = async (request: NextRequest) => {
 
-    const groupIdEncoded = await request.nextUrl.searchParams.get('groupId');
-    const groupId = decodeURIComponent(groupIdEncoded!)
+    const groupId = await request.nextUrl.pathname.split('/').pop();
 
     try {
 
@@ -17,12 +16,7 @@ export const GET = async (request: NextRequest) => {
                 id: groupId,
             },
             include: {
-                creator: {
-                    select: {
-                        id: true,
-                        username: true
-                    }
-                },
+                creator: true,
                 members: true,
                 posts: true
             }

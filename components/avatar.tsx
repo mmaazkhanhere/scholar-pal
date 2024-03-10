@@ -30,7 +30,7 @@ const Avatar: React.FC<Props> = ({ isProfileAvatar, isPostAvatar, isHeaderAvatar
 
 
     const onClick = useCallback(() => {
-        if (!isNavigable) {
+        if (isNavigable == true) {
             if (!session.data?.user) {
                 /*If no current session (if user is not logged in), open login modal */
                 return handleLogin.onOpen();

@@ -12,6 +12,7 @@ import { useSession } from 'next-auth/react'
 import useLoginModal from '@/hooks/useLoginModal'
 import useGroup from '@/hooks/useGroup'
 import { useGroups } from '@/hooks/useGroups'
+import { useRouter } from 'next/navigation'
 
 type Props = {
     groupDetail: IStudyGroup
@@ -24,12 +25,11 @@ const GroupCard = ({ groupDetail }: Props) => {
     const { status } = useSession();
     const { onOpen: openLoginModal } = useLoginModal();
     const { user: currentUser, mutate: updateCurrentUser } = useUser();
-    const { user, mutate: updateGroupCreatorUser } = useUser(groupDetail.creatorId);
+    const { mutate: updateGroupCreatorUser } = useUser(groupDetail.creatorId);
     const { mutate: updateGroupList } = useGroups();
     const { mutate: updateGroup } = useGroup(groupDetail.id);
 
-
-    const groupPendingUsers = groupDetail.pendingMembers;
+    const router = useRouter();
 
     const handleJoin = useCallback(async () => {
 
@@ -65,11 +65,20 @@ const GroupCard = ({ groupDetail }: Props) => {
         }
     }, [currentUser?.id, groupDetail.creatorId, groupDetail.id, openLoginModal, status, updateCurrentUser, updateGroup, updateGroupCreatorUser, updateGroupList])
 
+    const onClick = () => {
+        if (status == 'unauthenticated') {
+            openLoginModal();
+        }
+        else {
+            router.push(`/groups/${groupDetail.id}`)
+        }
+    }
+
     return (
         <article
             className="max-w-sm rounded shadow-lg bg-[#fefefe] 
-            hover:bg-gray-100/70 transition duration-300 cursor-pointer
-            p-5 flex flex-col items-start gap-y-5"
+            hover:bg-gray-100/70 transition duration-300 p-5 flex flex-col 
+            items-start gap-y-5"
         >
 
             <div className="flex items-start gap-x-4">
@@ -78,9 +87,11 @@ const GroupCard = ({ groupDetail }: Props) => {
                     isSuggestionAvatar
                 />
                 <div className='flex flex-col items-start'>
-                    <span className='font-bold text-xl'>
+                    <button
+                        onClick={onClick}
+                        className='hover:underline hover:text-[#1abc9c] font-bold text-xl'>
                         {groupDetail.groupName}
-                    </span>
+                    </button>
                     <div className='flex items-center gap-x-5'>
                         <p className='text-sm text-[#343a40]/60'>
                             Created by {groupDetail.creator.username}
