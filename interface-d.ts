@@ -110,12 +110,14 @@ export interface IEvent {
 
 export interface INotification {
     id: string;
-    type: NotificationType;
     body: string;
+    type: NotificationType;
     createdAt: Date;
     read: boolean;
-    userId: string;
-    user: IUser;
+    receiverId: string;
+    senderId: string;
+    receiver: IUser;
+    sender: IUser;
 }
 
 export enum MembershipStatus {

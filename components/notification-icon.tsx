@@ -1,6 +1,5 @@
-import useNotifications from '@/hooks/useNotifications'
+import useNotificationModal from '@/hooks/useNotificationModal'
 import useUser from '@/hooks/useUser'
-import Link from 'next/link'
 import React from 'react'
 import { BsDot } from 'react-icons/bs'
 import { IoMdNotifications } from 'react-icons/io'
@@ -10,11 +9,11 @@ type Props = {}
 const NotificationIcon = (props: Props) => {
 
     const { user } = useUser();
-    console.log(user?.hasNotifications)
+    const { onOpen: openNotificationModal } = useNotificationModal();
 
     return (
-        <Link
-            href='/notification'
+        <button
+            onClick={openNotificationModal}
             className='cursor-pointer relative'
         >
             <IoMdNotifications className='hidden lg:block w-7 h-7' />
@@ -24,7 +23,7 @@ const NotificationIcon = (props: Props) => {
                     size={60}
                 />
             }
-        </Link>
+        </button>
     )
 }
 

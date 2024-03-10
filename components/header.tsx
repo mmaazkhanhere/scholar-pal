@@ -22,7 +22,7 @@ import useAIModal from '@/hooks/useAIModal'
 import useLoginModal from '@/hooks/useLoginModal'
 import { useSession } from 'next-auth/react'
 import useUser from '@/hooks/useUser'
-import NotificationIcon from './notification/notification-icon'
+import NotificationIcon from './notification-icon'
 
 
 type Props = {}

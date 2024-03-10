@@ -127,6 +127,7 @@ export const POST = async (request: NextRequest) => {
                 await prismadb.notification.create({
                     data: {
                         userId: groupCreatorDetail.id,
+                        senderId: currentUserId,
                         body: `${currentUserData.name} has requested to join your study group ${group.groupName}`,
                         type: NotificationType.GROUP_JOIN_REQUEST,
                     },
@@ -157,6 +158,7 @@ export const POST = async (request: NextRequest) => {
             await prismadb.notification.create({
                 data: {
                     userId: groupCreatorDetail.id,
+                    senderId: currentUserId,
                     body: `${currentUserData.name} has joined your study group ${group.groupName}`,
                     type: NotificationType.GROUP_JOINED
                 }

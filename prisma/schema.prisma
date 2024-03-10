@@ -36,8 +36,9 @@ model User{
   posts Post[] //1-many relation b/w user and post (a user can have more than one post)
   comments Comment[] //1-many relation b/w user and comment
   notifications Notification[] //1-many relation b/w user and notifications
-  createdGroups StudyGroup[] @relation("groupCreator") //1-many relation b/w user and study group 
+  sentNotifications Notification[] @relation("NotificationSender") //1-many relation b/w user and notifications
 
+  createdGroups StudyGroup[] @relation("groupCreator") //1-many relation b/w user and study group 
   membership Membership[] //1-many relation b/w user and membership (user can be a member
                           // of more than one group)
   event Event[] //1-many relation b/w user and event (user can be attending more than one event)
@@ -144,8 +145,10 @@ model Notification {
   createdAt   DateTime @default(now()) // When the notification was created
   read        Boolean  @default(false) // Indicates whether the notification has been read
   userId      String   @db.ObjectId // ID of the user who will receive the notification
+  senderId    String   @db.ObjectId // ID of the user who triggered the notification
 
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sender      User     @relation("NotificationSender", fields: [senderId], references: [id], onDelete: Cascade)
 }
 
 enum NotificationType {
