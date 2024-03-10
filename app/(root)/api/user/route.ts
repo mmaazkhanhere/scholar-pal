@@ -80,6 +80,7 @@ export const PATCH = async (request: NextRequest) => {
                 profilePicture: profilePicture,
                 linkedInProfile: linkedInProfile,
                 facebookProfile: facebookProfile,
+                twitterProfile: twitterProfile,
                 tutoringAvailable: tutoringAvailable
             }
         })

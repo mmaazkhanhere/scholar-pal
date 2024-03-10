@@ -132,6 +132,15 @@ export const POST = async (request: NextRequest) => {
                     },
                 }) /*create a notification to the group creator that the user has requested to join the study group*/
 
+                await prismadb.user.update({
+                    where: {
+                        id: groupCreatorId
+                    },
+                    data: {
+                        hasNotifications: true,
+                    }
+                }) //the user has now a notification
+
                 return NextResponse.json(updatedGroup)
             }
         }
@@ -152,6 +161,15 @@ export const POST = async (request: NextRequest) => {
                     type: NotificationType.GROUP_JOINED
                 }
             }); //creating notification to group admin that user has joined the study group
+
+            await prismadb.user.update({
+                where: {
+                    id: groupCreatorId
+                },
+                data: {
+                    hasNotifications: true,
+                }
+            }) //the user has now a notification
         }
 
         return NextResponse.json(userMembership);

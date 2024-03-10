@@ -26,6 +26,7 @@ export interface IUser {
     followerIds: string[];
     createdAt: Date;
     updatedAt: Date;
+    hasNotifications?: boolean;
     posts: IPost[];
     comments: IComment[];
     notifications: INotification[];

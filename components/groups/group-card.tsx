@@ -24,13 +24,12 @@ const GroupCard = ({ groupDetail }: Props) => {
     const { status } = useSession();
     const { onOpen: openLoginModal } = useLoginModal();
     const { user: currentUser, mutate: updateCurrentUser } = useUser();
+    const { user, mutate: updateGroupCreatorUser } = useUser(groupDetail.creatorId);
     const { mutate: updateGroupList } = useGroups();
     const { mutate: updateGroup } = useGroup(groupDetail.id);
 
 
     const groupPendingUsers = groupDetail.pendingMembers;
-
-    console.log(groupPendingUsers);
 
     const handleJoin = useCallback(async () => {
 
@@ -53,6 +52,7 @@ const GroupCard = ({ groupDetail }: Props) => {
                 setLoading(false);
                 updateGroup();
                 updateCurrentUser();
+                updateGroupCreatorUser();
                 updateGroupList();
             }
 
@@ -63,7 +63,7 @@ const GroupCard = ({ groupDetail }: Props) => {
         finally {
             setLoading(false);
         }
-    }, [currentUser?.id, groupDetail.creatorId, groupDetail.id, openLoginModal, status, updateCurrentUser, updateGroup, updateGroupList])
+    }, [currentUser?.id, groupDetail.creatorId, groupDetail.id, openLoginModal, status, updateCurrentUser, updateGroup, updateGroupCreatorUser, updateGroupList])
 
     return (
         <article

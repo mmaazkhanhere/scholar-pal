@@ -22,6 +22,7 @@ import useAIModal from '@/hooks/useAIModal'
 import useLoginModal from '@/hooks/useLoginModal'
 import { useSession } from 'next-auth/react'
 import useUser from '@/hooks/useUser'
+import NotificationIcon from './notification/notification-icon'
 
 
 type Props = {}
@@ -108,7 +109,7 @@ const Header = (props: Props) => {
                 <div className='flex items-center justify-start gap-5 lg:gap-8'>
                     <NavbarItems />
 
-                    <IoMdNotifications className='hidden lg:block w-7 h-7' />
+                    <NotificationIcon />
 
                     <Avatar
                         isHeaderAvatar
