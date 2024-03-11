@@ -112,6 +112,7 @@ const Header = (props: Props) => {
                     <NotificationIcon />
 
                     <Avatar
+                        isNavigable={true}
                         isHeaderAvatar
                         userId={user?.id}
                         profilePicture={user?.profilePicture}

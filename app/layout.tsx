@@ -11,6 +11,7 @@ import NewPostModal from "@/components/modals/new-post-modal";
 import EditModal from "@/components/modals/edit-modal";
 import CreateGroupModal from "@/components/modals/create-group-modal";
 import NotificationDisplayModal from "@/components/modals/notification-display-modal";
+import UserCardModal from "@/components/modals/user-cards-modal";
 
 
 export const metadata: Metadata = {
@@ -37,6 +38,7 @@ export default function RootLayout({
           <EditModal />
           <CreateGroupModal />
           <NotificationDisplayModal />
+          <UserCardModal />
           {children}
         </AuthContext>
       </body>
