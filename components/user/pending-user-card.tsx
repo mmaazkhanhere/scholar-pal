@@ -1,14 +1,16 @@
 import React from 'react'
 import Avatar from '../avatar'
-import { IMembership, IUser } from '@/interface-d'
-import Button from '../button'
+import { IMembership } from '@/interface-d'
 import FollowButton from '../follow-button'
+import useUser from '@/hooks/useUser'
 
 type Props = {
-    member: IMembership
+    userId: string
 }
 
-const UserCard = ({ member }: Props) => {
+const PendingUserCard = ({ userId }: Props) => {
+
+    const { user } = useUser(userId);
 
     return (
         <article
@@ -16,8 +18,8 @@ const UserCard = ({ member }: Props) => {
         border border-[#343a40]/20 p-2 gap-x-2 lg:gap-x-5 max-w-lg'
         >
             <Avatar
-                profilePicture={member.user?.profilePicture}
-                userId={member.user?.id}
+                profilePicture={user?.profilePicture}
+                userId={user?.id}
                 isSuggestionAvatar
                 isNavigable={true}
             />
@@ -28,25 +30,29 @@ const UserCard = ({ member }: Props) => {
                     <div className='lg:flex items-center gap-x-2'>
                         {/*User name */}
                         <p className='text-sm lg:text-lg font-bold'>
-                            {member.user?.name}
+                            {user?.name}
                         </p>
 
                         {/*Username */}
                         <p className='hidden md:block md:text-base text-[#343a40]/60'>
-                            @{member.user?.username}
+                            @{user?.username}
                         </p>
                     </div>
 
                     {/*Field of Study */}
                     <p className='text-sm lg:text-base text-[#1abc9c] md:font-medium'>
-                        {member.user?.fieldOfStudy}
+                        {user?.fieldOfStudy}
                     </p>
                 </div>
-                <div >
-                    <FollowButton
-                        targetUserId={member.user.id}
-                        className='w-16 md:w-20 lg:w-24 text-xs lg:text-sm'
-                    />
+                <div>
+                    <button
+                        title='Accept User Request'
+                        aria-label='Accept User Request Button'
+                        className='hover:bg-[#1abc9c]/70 bg-[#1abc9c] 
+                        text-[#fefefe] px-4 py-1 rounded-xl'
+                    >
+                        Accept
+                    </button>
                 </div>
             </div>
 
@@ -54,4 +60,4 @@ const UserCard = ({ member }: Props) => {
     )
 }
 
-export default UserCard
+export default PendingUserCard

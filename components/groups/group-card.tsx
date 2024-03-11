@@ -65,14 +65,24 @@ const GroupCard = ({ groupDetail }: Props) => {
         }
     }, [currentUser?.id, groupDetail.creatorId, groupDetail.id, openLoginModal, status, updateCurrentUser, updateGroup, updateGroupCreatorUser, updateGroupList])
 
+    const acceptedMembers = groupDetail.members.filter(member => member.status === 'ACCEPTED');
+
     const onClick = () => {
-        if (status == 'unauthenticated' && groupDetail.members.some(member => member.userId == currentUser?.id)) {
-            openLoginModal();
-        }
-        else {
-            router.push(`/groups/${groupDetail.id}`)
+        const isAcceptedMember = acceptedMembers.some(member => member.userId === currentUser?.id);
+
+        // Check if the group is private and the user is not an accepted member
+        if (groupDetail.private && !isAcceptedMember) {
+            errorNotification('Cannot open private groups');
+            if (status === 'unauthenticated') {
+                // If the user is also unauthenticated, prompt them to log in
+                openLoginModal();
+            }
+        } else {
+            // If the group is not private or the user is an accepted member, proceed to the group
+            router.push(`/groups/${groupDetail.id}`);
         }
     }
+
 
     return (
         <article

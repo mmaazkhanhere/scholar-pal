@@ -1,12 +1,12 @@
 import useLoginModal from '@/hooks/useLoginModal';
 import useUser from '@/hooks/useUser';
-import useUserCardModal from '@/hooks/useUserCardsModal';
 import { IMembership, IUser } from '@/interface-d'
 import { useSession } from 'next-auth/react';
 import React from 'react'
 
 import { FaUserClock } from "react-icons/fa";
 import { FaUserCheck } from "react-icons/fa";
+import useAcceptUserCard from '@/hooks/useUserCard';
 
 
 type Props = {
@@ -20,19 +20,28 @@ type Props = {
 const GroupMemberDetails = ({ members, pendingMembers, groupCreatorId, isPrivate }: Props) => {
 
     const { user: currentUser } = useUser();
-    const userCardModal = useUserCardModal();
+    const userCardModal = useAcceptUserCard();
     const { onOpen: openLoginModal } = useLoginModal();
     const { status } = useSession();
 
     const addedMembers = members.filter(member => member.status === 'ACCEPTED');
 
-    const handleClick = (userList: any) => {
+    const handleAcceptedMembers = (userList: any, title: string = 'Members Joined') => {
         if (status === 'unauthenticated') {
             openLoginModal();
         } else {
-            userCardModal.onOpen(userList);
+            userCardModal.onOpen(title, false, userList, null);
         }
     };
+
+    const handlePendingMembers = (pendingMembers: any, title: string = 'Members waiting to join') => {
+        if (status === 'unauthenticated') {
+            openLoginModal();
+        }
+        else {
+            userCardModal.onOpen(title, true, null, pendingMembers);
+        }
+    }
 
     return (
         <div className='flex items-center gap-x-5 w-full'>
@@ -41,7 +50,7 @@ const GroupMemberDetails = ({ members, pendingMembers, groupCreatorId, isPrivate
                     <button
                         title='List of Pending Members'
                         aria-label='Button to open list of pending members'
-                        onClick={() => handleClick(pendingMembers)}
+                        onClick={() => handlePendingMembers(pendingMembers)}
                         className='flex items-center gap-x-4 border rounded-xl
                         border-[#343a40]/20 py-1 px-4 hover:opacity-80'
                     >
@@ -55,7 +64,7 @@ const GroupMemberDetails = ({ members, pendingMembers, groupCreatorId, isPrivate
             <button
                 title='List of accepted members'
                 aria-label='Button to open list of accepted members'
-                onClick={() => handleClick(members)}
+                onClick={() => handleAcceptedMembers(addedMembers)}
                 className='flex items-center gap-x-4 border rounded-xl
                 border-[#343a40]/20 py-1 px-4 hover:opacity-80'
             >

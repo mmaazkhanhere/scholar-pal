@@ -15,7 +15,7 @@ const GroupPage = (props: Props) => {
                 className='flex flex-col items-start pt-24 max-w-[1600px] mx-auto
                 lg:px-2 px-4'
             >
-                <Link href='/'>
+                <Link href='/groups'>
                     <IoArrowBackCircleOutline className='w-10 h-10' />
                 </Link>
                 <div className='grid grid-cols-1 lg:grid-cols-7 w-full'>

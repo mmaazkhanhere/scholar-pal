@@ -4,7 +4,7 @@ import useGroup from '@/hooks/useGroup';
 import { usePathname } from 'next/navigation';
 import React, { useState } from 'react'
 import Avatar from '../avatar';
-import GroupMemberDetails from './group-membder-details';
+import GroupMemberDetails from './group-member-details';
 
 type Props = {}
 
@@ -23,7 +23,7 @@ const GroupSidebar = (props: Props) => {
     return (
         <section
             className='lg:col-span-2 flex flex-col items-start justify-center text-[#343a40]
-            p-6 border rounded-lg gap-y-5 w-full'
+            p-6 border rounded-lg gap-y-5 w-full mt-10'
         >
             <Avatar
                 isNavigable={false}

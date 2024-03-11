@@ -25,8 +25,7 @@ const GroupList = (props: Props) => {
 
     return (
         <section
-            className='lg:col-span-5 w-full border border-black
-        flex flex-col items-start gap-y-4'
+            className='lg:col-span-5 w-full flex flex-col items-start gap-y-4'
         >
             <div className='flex items-center justify-between w-full'>
                 <CreateGroupButton />
@@ -35,7 +34,7 @@ const GroupList = (props: Props) => {
                     onChange={toggleGroups}
                 />
             </div>
-            <div className='grid grid-cols-1 md:grid-cols-2 w-full mt-5'>
+            <div className='grid grid-cols-1 md:grid-cols-2 w-full mt-5 gap-8'>
                 {
                     groups.map((group) => (
                         <GroupCard

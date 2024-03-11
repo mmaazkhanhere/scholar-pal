@@ -74,24 +74,27 @@ const FollowButton = ({ className, targetUserId }: Props) => {
             {/*If the current user already follows the target user, then display
             an unfollow button. Else display a follow button */}
             {
-                isFollowing ? (
-                    <Button
-                        label='Unfollow'
-                        ariaLabel='Unfollow Button'
-                        onClick={handleFollow}
-                        className={`${className} w-full bg-red-500 text-[#fefefe] 
+                currentUser?.id != targetUser?.id && (
+                    isFollowing ? (
+                        <Button
+                            label='Unfollow'
+                            ariaLabel='Unfollow Button'
+                            onClick={handleFollow}
+                            className={`${className} w-full bg-red-500 text-[#fefefe] 
                         hover:bg-red-400 md:py-2.5 md:text-base`}
-                        disabled={loading}
-                    />
-                ) : (
-                    <Button
-                        label='Follow'
-                        ariaLabel='Follow Button'
-                        onClick={handleFollow}
-                        className={`${className} w-full md:py-2.5 md:text-base`}
-                        disabled={loading}
-                    />
+                            disabled={loading}
+                        />
+                    ) : (
+                        <Button
+                            label='Follow'
+                            ariaLabel='Follow Button'
+                            onClick={handleFollow}
+                            className={`${className} w-full md:py-2.5 md:text-base`}
+                            disabled={loading}
+                        />
+                    )
                 )
+
             }
         </div>
     )
