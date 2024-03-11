@@ -73,6 +73,7 @@ const GroupSidebar = (props: Props) => {
                     pendingMembers={groupDetail.pendingMembers}
                     groupCreatorId={groupDetail.creatorId}
                     isPrivate={groupDetail.private}
+                    groupId={groupDetail.id}
                 />
 
             </div>

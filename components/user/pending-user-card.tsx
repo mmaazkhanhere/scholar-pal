@@ -3,14 +3,39 @@ import Avatar from '../avatar'
 import { IMembership } from '@/interface-d'
 import FollowButton from '../follow-button'
 import useUser from '@/hooks/useUser'
+import axios from 'axios'
+import { successNotification } from '@/helpers/success-notification'
+import useGroup from '@/hooks/useGroup'
+import { errorNotification } from '@/helpers/error-notification'
 
 type Props = {
     userId: string
+    groupId: string
 }
 
-const PendingUserCard = ({ userId }: Props) => {
+const PendingUserCard = ({ userId, groupId }: Props) => {
+
+    console.log(groupId)
 
     const { user } = useUser(userId);
+    const { data, mutate: updateGroup } = useGroup(groupId)
+
+    const handleAcceptRequest = async () => {
+
+        try {
+            const request = await axios.patch(`/api/group/accept-request`, {
+                groupId, targetUserId: userId
+            })
+
+            if (request.status === 200) {
+                successNotification('User added')
+                updateGroup();
+            }
+        } catch (error) {
+            console.error('HANDLE_ACCEPT_REQUEST_FUNCTION_ERROR', error);
+            errorNotification('Something went wrong')
+        }
+    }
 
     return (
         <article
@@ -48,6 +73,7 @@ const PendingUserCard = ({ userId }: Props) => {
                     <button
                         title='Accept User Request'
                         aria-label='Accept User Request Button'
+                        onClick={handleAcceptRequest}
                         className='hover:bg-[#1abc9c]/70 bg-[#1abc9c] 
                         text-[#fefefe] px-4 py-1 rounded-xl'
                     >

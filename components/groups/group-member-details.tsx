@@ -6,7 +6,7 @@ import React from 'react'
 
 import { FaUserClock } from "react-icons/fa";
 import { FaUserCheck } from "react-icons/fa";
-import useAcceptUserCard from '@/hooks/useUserCard';
+import useUserCard from '@/hooks/useUserCard';
 
 
 type Props = {
@@ -15,12 +15,13 @@ type Props = {
     groupCreatorId: string /*display pending members only if the currently sign
     in user is the group creator*/
     isPrivate?: boolean
+    groupId?: string
 }
 
-const GroupMemberDetails = ({ members, pendingMembers, groupCreatorId, isPrivate }: Props) => {
+const GroupMemberDetails = ({ members, pendingMembers, groupCreatorId, isPrivate, groupId }: Props) => {
 
     const { user: currentUser } = useUser();
-    const userCardModal = useAcceptUserCard();
+    const userCardModal = useUserCard();
     const { onOpen: openLoginModal } = useLoginModal();
     const { status } = useSession();
 
@@ -30,7 +31,7 @@ const GroupMemberDetails = ({ members, pendingMembers, groupCreatorId, isPrivate
         if (status === 'unauthenticated') {
             openLoginModal();
         } else {
-            userCardModal.onOpen(title, false, userList, null);
+            userCardModal.onOpen(title, false, userList, null, '');
         }
     };
 
@@ -39,7 +40,7 @@ const GroupMemberDetails = ({ members, pendingMembers, groupCreatorId, isPrivate
             openLoginModal();
         }
         else {
-            userCardModal.onOpen(title, true, null, pendingMembers);
+            userCardModal.onOpen(title, true, null, pendingMembers, groupId);
         }
     }
 

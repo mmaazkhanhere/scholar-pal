@@ -26,6 +26,7 @@ const UserCardModal = (props: Props) => {
                             className=' flex flex-col items-start gap-y-2'>
                             <PendingUserCard
                                 userId={userId}
+                                groupId={handleUserCardModal.groupId}
                             />
                         </div>
 
