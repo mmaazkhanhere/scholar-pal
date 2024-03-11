@@ -7,23 +7,26 @@ import React from 'react'
 import { FaUserClock } from "react-icons/fa";
 import { FaUserCheck } from "react-icons/fa";
 import useUserCard from '@/hooks/useUserCard';
+import usePendingUsers from '@/hooks/usePendingUsers';
 
 
 type Props = {
     members: IMembership[], //array of all members
-    pendingMembers?: string[], //array of all pending members
     groupCreatorId: string /*display pending members only if the currently sign
     in user is the group creator*/
     isPrivate?: boolean
     groupId?: string
 }
 
-const GroupMemberDetails = ({ members, pendingMembers, groupCreatorId, isPrivate, groupId }: Props) => {
+const GroupMemberDetails = ({ members, groupCreatorId, isPrivate, groupId }: Props) => {
 
     const { user: currentUser } = useUser();
     const userCardModal = useUserCard();
     const { onOpen: openLoginModal } = useLoginModal();
+    const { data: pendingList = [] } = usePendingUsers(groupId);
     const { status } = useSession();
+
+    console.log(pendingList)
 
     const addedMembers = members.filter(member => member.status === 'ACCEPTED');
 
@@ -35,12 +38,12 @@ const GroupMemberDetails = ({ members, pendingMembers, groupCreatorId, isPrivate
         }
     };
 
-    const handlePendingMembers = (pendingMembers: any, title: string = 'Members waiting to join') => {
+    const handlePendingMembers = (pendingList: any, title: string = 'Members waiting to join') => {
         if (status === 'unauthenticated') {
             openLoginModal();
         }
         else {
-            userCardModal.onOpen(title, true, null, pendingMembers, groupId);
+            userCardModal.onOpen(title, true, null, pendingList, groupId);
         }
     }
 
@@ -51,13 +54,13 @@ const GroupMemberDetails = ({ members, pendingMembers, groupCreatorId, isPrivate
                     <button
                         title='List of Pending Members'
                         aria-label='Button to open list of pending members'
-                        onClick={() => handlePendingMembers(pendingMembers)}
+                        onClick={() => handlePendingMembers(pendingList)}
                         className='flex items-center gap-x-4 border rounded-xl
                         border-[#343a40]/20 py-1 px-4 hover:opacity-80'
                     >
                         <FaUserClock className='w-6 lg:w-8 h-6 lg:h-8' />
                         <span className='text-lg font-medium'>
-                            {pendingMembers?.length}
+                            {pendingList?.length}
                         </span>
                     </button>
                 )

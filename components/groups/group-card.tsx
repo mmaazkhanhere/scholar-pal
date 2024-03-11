@@ -13,6 +13,7 @@ import useLoginModal from '@/hooks/useLoginModal'
 import useGroup from '@/hooks/useGroup'
 import { useGroups } from '@/hooks/useGroups'
 import { useRouter } from 'next/navigation'
+import usePendingUsers from '@/hooks/usePendingUsers'
 
 type Props = {
     groupDetail: IStudyGroup
@@ -28,6 +29,7 @@ const GroupCard = ({ groupDetail }: Props) => {
     const { mutate: updateGroupCreatorUser } = useUser(groupDetail.creatorId);
     const { mutate: updateGroupList } = useGroups();
     const { mutate: updateGroup } = useGroup(groupDetail.id);
+    const { data: pendingList, mutate: updatePendingList } = usePendingUsers(groupDetail.id)
 
     const router = useRouter();
 
@@ -54,6 +56,7 @@ const GroupCard = ({ groupDetail }: Props) => {
                 updateCurrentUser();
                 updateGroupCreatorUser();
                 updateGroupList();
+                updatePendingList();
             }
 
         } catch (error) {
@@ -63,7 +66,7 @@ const GroupCard = ({ groupDetail }: Props) => {
         finally {
             setLoading(false);
         }
-    }, [currentUser?.id, groupDetail.creatorId, groupDetail.id, openLoginModal, status, updateCurrentUser, updateGroup, updateGroupCreatorUser, updateGroupList])
+    }, [currentUser?.id, groupDetail.creatorId, groupDetail.id, openLoginModal, status, updateCurrentUser, updateGroup, updateGroupCreatorUser, updateGroupList, updatePendingList])
 
     const acceptedMembers = groupDetail.members.filter(member => member.status === 'ACCEPTED');
 
@@ -137,7 +140,7 @@ const GroupCard = ({ groupDetail }: Props) => {
             </div>
 
             {
-                groupDetail.members.some(member => member.userId == currentUser?.id && groupDetail.pendingMembers?.includes(currentUser.id) == false) ? (
+                groupDetail.members.some(member => member.userId == currentUser?.id && pendingList?.includes(currentUser.id) == false) ? (
                     <button
                         onClick={handleJoin}
                         className="bg-red-500 text-[#f9fcfc] font-medium py-1 px-4 rounded text-sm"
@@ -145,7 +148,7 @@ const GroupCard = ({ groupDetail }: Props) => {
                     >
                         Leave Group
                     </button>
-                ) : groupDetail.members.some(member => member.userId == currentUser?.id && groupDetail.pendingMembers?.includes(currentUser.id) == true) ?
+                ) : groupDetail.members.some(member => member.userId == currentUser?.id && pendingList?.includes(currentUser.id) == true) ?
                     (
                         <button
                             onClick={handleJoin}

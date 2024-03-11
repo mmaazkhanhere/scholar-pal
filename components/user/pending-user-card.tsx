@@ -7,6 +7,7 @@ import axios from 'axios'
 import { successNotification } from '@/helpers/success-notification'
 import useGroup from '@/hooks/useGroup'
 import { errorNotification } from '@/helpers/error-notification'
+import usePendingUsers from '@/hooks/usePendingUsers'
 
 type Props = {
     userId: string
@@ -15,10 +16,9 @@ type Props = {
 
 const PendingUserCard = ({ userId, groupId }: Props) => {
 
-    console.log(groupId)
-
     const { user } = useUser(userId);
-    const { data, mutate: updateGroup } = useGroup(groupId)
+    const { data, mutate: updateGroup } = useGroup(groupId);
+    const { mutate: updatePendingList } = usePendingUsers(groupId);
 
     const handleAcceptRequest = async () => {
 
@@ -30,6 +30,8 @@ const PendingUserCard = ({ userId, groupId }: Props) => {
             if (request.status === 200) {
                 successNotification('User added')
                 updateGroup();
+                await updateGroup(groupId);
+                updatePendingList();
             }
         } catch (error) {
             console.error('HANDLE_ACCEPT_REQUEST_FUNCTION_ERROR', error);

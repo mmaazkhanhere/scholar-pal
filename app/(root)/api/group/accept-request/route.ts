@@ -20,6 +20,7 @@ export const PATCH = async (request: NextRequest) => {
                 groupName: true,
                 creatorId: true,
                 pendingMembers: true,
+                members: true,
             }
         })
 
@@ -34,14 +35,35 @@ export const PATCH = async (request: NextRequest) => {
 
         let pendingMembersList = group?.pendingMembers;
 
+        // Remove the user from the pending list
         if (pendingMembersList?.includes(targetUserId)) {
-            pendingMembersList = pendingMembersList.filter(member => member != targetUserId)
+            pendingMembersList = pendingMembersList.filter(member => member != targetUserId);
+            await prismadb.studyGroup.update({
+                where: {
+                    id: groupId,
+                },
+                data: {
+                    pendingMembers: pendingMembersList,
+                },
+            });
         }
 
-        const updatedGroup = await prismadb.studyGroup.update({
-            where: { id: groupId },
-            data: { pendingMembers: pendingMembersList },
+        await prismadb.membership.deleteMany({
+            where: {
+                userId: targetUserId,
+                groupId: groupId,
+            },
         });
+
+        // Create a new membership status for the user
+        const membership = await prismadb.membership.create({
+            data: {
+                userId: targetUserId,
+                groupId: groupId,
+                status: 'ACCEPTED',
+            },
+        });
+
 
         await prismadb.notification.create({
             data: {
@@ -52,27 +74,6 @@ export const PATCH = async (request: NextRequest) => {
             }
         });
 
-        const membership = await prismadb.membership.deleteMany({
-            where: {
-                userId: targetUserId as string,
-            },
-        });
-
-        // Check if membership exists
-        if (!membership) {
-            throw new Error('Membership not found');
-        }
-
-        // Update the membership
-        await prismadb.notification.create({
-            data: {
-                userId: currentUser.id as string,
-                senderId: targetUser.id,
-                body: `${targetUser.name} has joined your study group ${group?.groupName}`,
-                type: 'GROUP_JOINED',
-            },
-        })
-
         await prismadb.user.update({
             where: {
                 id: group?.creatorId
@@ -82,7 +83,7 @@ export const PATCH = async (request: NextRequest) => {
             }
         }) //the user has now a notification
 
-        return NextResponse.json(updatedGroup)
+        return NextResponse.json(membership)
 
     } catch (error) {
         console.error('ACCEPT_REQUEST_API_ERROR', error)
