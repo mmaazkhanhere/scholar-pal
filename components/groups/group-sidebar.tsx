@@ -69,7 +69,6 @@ const GroupSidebar = (props: Props) => {
                 </p>
 
                 <GroupMemberDetails
-                    members={groupDetail.members}
                     groupCreatorId={groupDetail.creatorId}
                     isPrivate={groupDetail.private}
                     groupId={groupDetail.id}

@@ -1,13 +1,12 @@
 import React from 'react'
 import Avatar from '../avatar'
-import { IMembership } from '@/interface-d'
-import FollowButton from '../follow-button'
 import useUser from '@/hooks/useUser'
 import axios from 'axios'
 import { successNotification } from '@/helpers/success-notification'
 import useGroup from '@/hooks/useGroup'
 import { errorNotification } from '@/helpers/error-notification'
 import usePendingUsers from '@/hooks/usePendingUsers'
+import useGroupMembers from '@/hooks/useGroupMembers'
 
 type Props = {
     userId: string
@@ -19,6 +18,7 @@ const PendingUserCard = ({ userId, groupId }: Props) => {
     const { user } = useUser(userId);
     const { data, mutate: updateGroup } = useGroup(groupId);
     const { mutate: updatePendingList } = usePendingUsers(groupId);
+    const { mutate: updateGroupMembers } = useGroupMembers(groupId);
 
     const handleAcceptRequest = async () => {
 
@@ -30,7 +30,8 @@ const PendingUserCard = ({ userId, groupId }: Props) => {
             if (request.status === 200) {
                 successNotification('User added')
                 updateGroup();
-                await updateGroup(groupId);
+                updateGroup(groupId);
+                updateGroupMembers(groupId);
                 updatePendingList();
             }
         } catch (error) {

@@ -43,7 +43,7 @@ const AddedUserCard = ({ member }: Props) => {
                 </div>
                 <div >
                     <FollowButton
-                        targetUserId={member.user.id}
+                        targetUserId={member.user?.id}
                         className='w-16 md:w-20 lg:w-24 text-xs lg:text-sm'
                     />
                 </div>

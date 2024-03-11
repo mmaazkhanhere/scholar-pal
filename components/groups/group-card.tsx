@@ -14,6 +14,7 @@ import useGroup from '@/hooks/useGroup'
 import { useGroups } from '@/hooks/useGroups'
 import { useRouter } from 'next/navigation'
 import usePendingUsers from '@/hooks/usePendingUsers'
+import useGroupMembers from '@/hooks/useGroupMembers'
 
 type Props = {
     groupDetail: IStudyGroup
@@ -30,6 +31,7 @@ const GroupCard = ({ groupDetail }: Props) => {
     const { mutate: updateGroupList } = useGroups();
     const { mutate: updateGroup } = useGroup(groupDetail.id);
     const { data: pendingList, mutate: updatePendingList } = usePendingUsers(groupDetail.id)
+    const { data: groupMembers, mutate: updateGroupMembers } = useGroupMembers(groupDetail.id)
 
     const router = useRouter();
 
@@ -56,6 +58,7 @@ const GroupCard = ({ groupDetail }: Props) => {
                 updateCurrentUser();
                 updateGroupCreatorUser();
                 updateGroupList();
+                updateGroupMembers();
                 updatePendingList();
             }
 
@@ -66,12 +69,12 @@ const GroupCard = ({ groupDetail }: Props) => {
         finally {
             setLoading(false);
         }
-    }, [currentUser?.id, groupDetail.creatorId, groupDetail.id, openLoginModal, status, updateCurrentUser, updateGroup, updateGroupCreatorUser, updateGroupList, updatePendingList])
+    }, [currentUser?.id, groupDetail.creatorId, groupDetail.id, openLoginModal, status, updateCurrentUser, updateGroup, updateGroupCreatorUser, updateGroupList, updateGroupMembers, updatePendingList])
 
-    const acceptedMembers = groupDetail.members.filter(member => member.status === 'ACCEPTED');
+    const acceptedMembers = groupMembers?.filter(member => member.status === 'ACCEPTED');
 
     const onClick = () => {
-        const isAcceptedMember = acceptedMembers.some(member => member.userId === currentUser?.id);
+        const isAcceptedMember = acceptedMembers?.some(member => member.userId === currentUser?.id);
 
         // Check if the group is private and the user is not an accepted member
         if (groupDetail.private && !isAcceptedMember) {
@@ -135,12 +138,12 @@ const GroupCard = ({ groupDetail }: Props) => {
                 </span>
                 <span className="bg-[#343a40]/10 rounded-full px-3 py-1 text-sm 
                     font-semibold text-gray-700">
-                    {groupDetail.members.filter(member => member.status === 'ACCEPTED').length} Members
+                    {groupMembers?.filter(member => member.status === 'ACCEPTED').length} Members
                 </span>
             </div>
 
             {
-                groupDetail.members.some(member => member.userId == currentUser?.id && pendingList?.includes(currentUser.id) == false) ? (
+                groupMembers?.some(member => member.userId == currentUser?.id && pendingList?.includes(currentUser.id) == false) ? (
                     <button
                         onClick={handleJoin}
                         className="bg-red-500 text-[#f9fcfc] font-medium py-1 px-4 rounded text-sm"
@@ -148,7 +151,7 @@ const GroupCard = ({ groupDetail }: Props) => {
                     >
                         Leave Group
                     </button>
-                ) : groupDetail.members.some(member => member.userId == currentUser?.id && pendingList?.includes(currentUser.id) == true) ?
+                ) : groupMembers?.some(member => member.userId == currentUser?.id && pendingList?.includes(currentUser.id) == true) ?
                     (
                         <button
                             onClick={handleJoin}

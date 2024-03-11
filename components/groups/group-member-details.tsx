@@ -8,27 +8,32 @@ import { FaUserClock } from "react-icons/fa";
 import { FaUserCheck } from "react-icons/fa";
 import useUserCard from '@/hooks/useUserCard';
 import usePendingUsers from '@/hooks/usePendingUsers';
+import useGroupMembers from '@/hooks/useGroupMembers';
 
 
 type Props = {
-    members: IMembership[], //array of all members
     groupCreatorId: string /*display pending members only if the currently sign
     in user is the group creator*/
     isPrivate?: boolean
     groupId?: string
 }
 
-const GroupMemberDetails = ({ members, groupCreatorId, isPrivate, groupId }: Props) => {
+const GroupMemberDetails = ({ groupCreatorId, isPrivate, groupId }: Props) => {
 
     const { user: currentUser } = useUser();
     const userCardModal = useUserCard();
     const { onOpen: openLoginModal } = useLoginModal();
     const { data: pendingList = [] } = usePendingUsers(groupId);
+    const { data: members = [] } = useGroupMembers(groupId);
     const { status } = useSession();
 
-    console.log(pendingList)
+    if (!pendingList || !members || !currentUser) {
+        return null;
+    }
 
     const addedMembers = members.filter(member => member.status === 'ACCEPTED');
+
+
 
     const handleAcceptedMembers = (userList: any, title: string = 'Members Joined') => {
         if (status === 'unauthenticated') {
