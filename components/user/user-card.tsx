@@ -1,39 +1,55 @@
 import React from 'react'
 import Avatar from '../avatar'
-import { IUser } from '@/interface-d'
+import { IMembership, IUser } from '@/interface-d'
 import Button from '../button'
 import FollowButton from '../follow-button'
 
 type Props = {
-    user: IUser
+    member: IMembership
 }
 
-const UserCard = ({ user }: Props) => {
+const UserCard = ({ member }: Props) => {
+
     return (
         <article
-            className='flex items-center max-w-80 w-full rounded-xl
-        border border-[#343a40]/20'
+            className='flex items-center w-full rounded-xl
+        border border-[#343a40]/20 p-2 gap-x-2 lg:gap-x-5 max-w-lg'
         >
             <Avatar
-                profilePicture={user.profilePicture}
-                userId={user.id}
-                isHeaderAvatar
+                profilePicture={member.user?.profilePicture}
+                userId={member.user?.id}
+                isSuggestionAvatar
                 isNavigable={true}
             />
-            <div className='flex items-center justify-between w-full'>
-                <div className='flex flex-col items-start justify-center gap-y-1'>
-                    <div className='flex items-center gap-x-2'>
-                        <p>{user.name}</p>
-                        <p>@{user.username}</p>
+            <div className='flex items-center w-full '>
+                <div className='flex flex-col items-start justify-center w-full'>
+
+                    {/*User name and username */}
+                    <div className='lg:flex items-center gap-x-2'>
+                        {/*User name */}
+                        <p className='text-sm lg:text-lg font-bold'>
+                            {member.user?.name}
+                        </p>
+
+                        {/*Username */}
+                        <p className='hidden md:block md:text-base text-[#343a40]/60'>
+                            @{member.user?.username}
+                        </p>
                     </div>
-                    <p>
-                        {user.fieldOfStudy}
+
+                    {/*Field of Study */}
+                    <p className='text-sm lg:text-base text-[#1abc9c] md:font-medium'>
+                        {member.user?.fieldOfStudy}
                     </p>
                 </div>
-                <FollowButton
-                    onClick={() => console.log('')}
-                />
+                <div >
+                    <FollowButton
+                        targetUserId={member.user.id}
+                        className='w-16 md:w-20 lg:w-24 text-xs lg:text-sm'
+                    />
+                </div>
             </div>
+
         </article>
     )
 }

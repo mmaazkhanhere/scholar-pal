@@ -17,7 +17,11 @@ export const GET = async (request: NextRequest) => {
             },
             include: {
                 creator: true,
-                members: true,
+                members: {
+                    include: {
+                        user: true,
+                    }
+                },
                 posts: true
             }
         })

@@ -55,7 +55,7 @@ const GroupMemberDetails = ({ members, pendingMembers, groupCreatorId, isPrivate
             <button
                 title='List of accepted members'
                 aria-label='Button to open list of accepted members'
-                onClick={() => handleClick(addedMembers)}
+                onClick={() => handleClick(members)}
                 className='flex items-center gap-x-4 border rounded-xl
                 border-[#343a40]/20 py-1 px-4 hover:opacity-80'
             >

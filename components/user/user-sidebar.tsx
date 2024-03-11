@@ -57,47 +57,6 @@ const UserSidebar = () => {
         }
     }, [isOpen, mutate, mutateTargetUser, userId]);
 
-    /*A function that is called when user clicks on follow button. It makes a
-    POST HTTP request to specified api endpoint passing the userId in the
-    body. If the response status is 200 (successful), a success notification
-    is displayed. An updated users are fetched. */
-    const handleFollow = useCallback(async () => {
-        try {
-
-            setLoading(true);
-
-            if (!currentUser) {
-                handleLoginModal.onOpen()
-            };
-
-            const request = await axios.post('/api/user/follow', {
-                userId: userId
-            });
-
-            if (request.status == 200) {
-                successNotification('User followed')
-                mutate(); //fetch the updated current user
-                mutateTargetUser(userId); //fetch the updated target user
-                setLoading(false);
-            }
-        } catch (error) {
-
-            console.error('FOLLOW_FUNCTION_ERROR', error);
-
-            /*handling potential errors and displaying error notifications */
-            if (axios.isAxiosError(error) && error.response?.status == 400) {
-                errorNotification('You cannot follow yourself')
-            }
-            else {
-                errorNotification('Something went wrong');
-            }
-        }
-        finally {
-            setLoading(false);
-        }
-
-    }, [currentUser, handleLoginModal, mutate, mutateTargetUser, userId])
-
     //display a loading spinner while the data is being fetched
     if (isLoading || !user) {
         return null;
@@ -211,10 +170,7 @@ const UserSidebar = () => {
                     />
                 ) : (
                     <FollowButton
-                        currentUser={currentUser!}
-                        targetUser={user!}
-                        onClick={handleFollow}
-                        loading={loading}
+                        targetUserId={userId}
                     />
                 )
             }

@@ -9,11 +9,11 @@ import getCurrentUser from "@/actions/getCurrentUser";
 
 export const POST = async (request: NextRequest) => {
 
-    try {
+    const body = await request.json(); //extract the body from the request
+    const currentUser = await getCurrentUser(); // Get the currently logged-in user
+    const { userId } = body; // The ser to follow/unfollow
 
-        const body = await request.json(); //extract the body from the request
-        const currentUser = await getCurrentUser(); // Get the currently logged-in user
-        const { userId } = body; // The user to follow/unfollow
+    try {
 
         if (!currentUser || !userId) {
             //if the current user or the target user id doesn't exist, return 401 status
@@ -64,7 +64,7 @@ export const POST = async (request: NextRequest) => {
         }
 
         //update the target user data and its follower list
-        const updateFollower = await prismadb.user.update({
+        await prismadb.user.update({
             where: {
                 id: userId
             },

@@ -66,7 +66,7 @@ const GroupCard = ({ groupDetail }: Props) => {
     }, [currentUser?.id, groupDetail.creatorId, groupDetail.id, openLoginModal, status, updateCurrentUser, updateGroup, updateGroupCreatorUser, updateGroupList])
 
     const onClick = () => {
-        if (status == 'unauthenticated') {
+        if (status == 'unauthenticated' && groupDetail.members.some(member => member.userId == currentUser?.id)) {
             openLoginModal();
         }
         else {

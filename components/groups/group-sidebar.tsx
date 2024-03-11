@@ -20,8 +20,6 @@ const GroupSidebar = (props: Props) => {
         return null;
     }
 
-    console.log(groupDetail)
-
     return (
         <section
             className='lg:col-span-2 flex flex-col items-start justify-center text-[#343a40]

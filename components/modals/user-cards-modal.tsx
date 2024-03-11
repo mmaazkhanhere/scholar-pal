@@ -2,31 +2,30 @@
 
 import React, { useState } from 'react'
 import Modal from '../modal';
-import { IUser } from '@/interface-d';
+import { IMembership, IUser } from '@/interface-d';
 import useUserCardModal from '@/hooks/useUserCardsModal';
 import UserCard from '../user/user-card';
 
 type Props = {
     title?: string;
-    userList?: IUser[]
+    userList?: IMembership[]
 }
 
 const UserCardModal = ({ title, userList }: Props) => {
 
     const [loading, setLoading] = useState<boolean>(false);
     const handleUserCardModal = useUserCardModal();
-    console.log(handleUserCardModal)
 
     const modalBody: React.ReactNode = (
         <div>
             {
-                handleUserCardModal.data?.map((user: IUser) => (
+                handleUserCardModal.data?.map((user: IMembership) => (
                     <div
                         key={user.id}
                         className='flex flex-col items-start gap-y-1'
                     >
                         <UserCard
-                            user={user}
+                            member={user}
                         />
                     </div>
                 ))
