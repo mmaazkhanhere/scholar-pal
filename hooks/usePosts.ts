@@ -4,7 +4,6 @@ or specific to a user, from an API endpoint using the SWR */
 "use client"
 
 import useSWR from 'swr';
-
 import fetcher from '@/libs/fetcher';
 
 const usePosts = (userId?: string) => {

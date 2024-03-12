@@ -7,7 +7,6 @@ import { useSession } from 'next-auth/react'
 
 import Avatar from '../avatar'
 
-import usePostModal from '@/hooks/usePostModal'
 import useLoginModal from '@/hooks/useLoginModal'
 import useUser from '@/hooks/useUser'
 import useGroupPostModal from '@/hooks/useGroupPostModal'
@@ -17,7 +16,7 @@ type Props = {}
 const GroupPostButton = (props: Props) => {
 
     const { onOpen: openGroupPostModal } = useGroupPostModal() //custom hook to handle visibility of post modal
-    const { onOpen: openLoginModal } = useLoginModal() //custom hook to handle visibility of login modal
+    const { onOpen: openLoginModal, isOpen } = useLoginModal() //custom hook to handle visibility of login modal
 
     const { status } = useSession() //get the current user authentication status
     const { user: currentUser } = useUser(); //get the current user
