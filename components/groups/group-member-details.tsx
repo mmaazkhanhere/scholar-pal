@@ -24,16 +24,12 @@ const GroupMemberDetails = ({ groupCreatorId, isPrivate, groupId }: Props) => {
     const userCardModal = useUserCard();
     const { onOpen: openLoginModal } = useLoginModal();
     const { data: pendingList = [] } = usePendingUsers(groupId);
-    const { data: members = [] } = useGroupMembers(groupId);
+    const { data: groupMembers = [] } = useGroupMembers(groupId);
     const { status } = useSession();
 
-    if (!pendingList || !members || !currentUser) {
+    if (!pendingList || !groupMembers || !currentUser) {
         return null;
     }
-
-    const addedMembers = members.filter(member => member.status === 'ACCEPTED');
-
-
 
     const handleAcceptedMembers = (userList: any, title: string = 'Members Joined') => {
         if (status === 'unauthenticated') {
@@ -73,13 +69,13 @@ const GroupMemberDetails = ({ groupCreatorId, isPrivate, groupId }: Props) => {
             <button
                 title='List of accepted members'
                 aria-label='Button to open list of accepted members'
-                onClick={() => handleAcceptedMembers(addedMembers)}
+                onClick={() => handleAcceptedMembers(groupMembers)}
                 className='flex items-center gap-x-4 border rounded-xl
                 border-[#343a40]/20 py-1 px-4 hover:opacity-80'
             >
                 <FaUserCheck className='w-6 lg:w-8 h-6 lg:h-8' />
                 <span className='text-lg font-medium'>
-                    {addedMembers.length}
+                    {groupMembers.length}
                 </span>
             </button>
         </div>

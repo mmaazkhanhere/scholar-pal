@@ -31,9 +31,12 @@ const GroupCard = ({ groupDetail }: Props) => {
     const { mutate: updateGroupList } = useGroups();
     const { mutate: updateGroup } = useGroup(groupDetail.id);
     const { data: pendingList, mutate: updatePendingList } = usePendingUsers(groupDetail.id)
-    const { data: groupMembers, mutate: updateGroupMembers } = useGroupMembers(groupDetail.id)
+    const { data: groupMembers = [], mutate: updateGroupMembers } = useGroupMembers(groupDetail.id)
 
     const router = useRouter();
+
+    console.log(Array.isArray(groupMembers))
+    console.log(groupMembers)
 
     const handleJoin = useCallback(async () => {
 
@@ -71,10 +74,9 @@ const GroupCard = ({ groupDetail }: Props) => {
         }
     }, [currentUser?.id, groupDetail.creatorId, groupDetail.id, openLoginModal, status, updateCurrentUser, updateGroup, updateGroupCreatorUser, updateGroupList, updateGroupMembers, updatePendingList])
 
-    const acceptedMembers = groupMembers?.filter(member => member.status === 'ACCEPTED');
 
     const onClick = () => {
-        const isAcceptedMember = acceptedMembers?.some(member => member.userId === currentUser?.id);
+        const isAcceptedMember = groupMembers?.includes(currentUser?.id as any);
 
         // Check if the group is private and the user is not an accepted member
         if (groupDetail.private && !isAcceptedMember) {
@@ -87,6 +89,10 @@ const GroupCard = ({ groupDetail }: Props) => {
             // If the group is not private or the user is an accepted member, proceed to the group
             router.push(`/groups/${groupDetail.id}`);
         }
+    }
+
+    if (!currentUser || !pendingList || !groupMembers) {
+        return null;
     }
 
 
@@ -138,12 +144,12 @@ const GroupCard = ({ groupDetail }: Props) => {
                 </span>
                 <span className="bg-[#343a40]/10 rounded-full px-3 py-1 text-sm 
                     font-semibold text-gray-700">
-                    {groupMembers?.filter(member => member.status === 'ACCEPTED').length} Members
+                    {groupMembers?.length} Members
                 </span>
             </div>
 
             {
-                groupMembers?.some(member => member.userId == currentUser?.id && pendingList?.includes(currentUser.id) == false) ? (
+                groupMembers?.includes(currentUser?.id as any) && !pendingList?.includes(currentUser.id) ? (
                     <button
                         onClick={handleJoin}
                         className="bg-red-500 text-[#f9fcfc] font-medium py-1 px-4 rounded text-sm"
@@ -151,7 +157,7 @@ const GroupCard = ({ groupDetail }: Props) => {
                     >
                         Leave Group
                     </button>
-                ) : groupMembers?.some(member => member.userId == currentUser?.id && pendingList?.includes(currentUser.id) == true) ?
+                ) : pendingList?.includes(currentUser.id) ?
                     (
                         <button
                             onClick={handleJoin}
@@ -166,13 +172,14 @@ const GroupCard = ({ groupDetail }: Props) => {
                         <button
                             onClick={handleJoin}
                             className="bg-[#1abc9c] hover:bg-[#1abc9c]/60 text-white 
-                        font-medium py-1 px-6 rounded text-sm"
+            font-medium py-1 px-6 rounded text-sm"
                             disabled={loading}
                         >
                             Join Group
                         </button>
                     )
             }
+
 
         </article>
 

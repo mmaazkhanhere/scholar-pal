@@ -95,13 +95,6 @@ model StudyGroup {
   events    Event[]      // A group can have more than one event
 }
 
-enum MembershipStatus{
-  //status of user request to join a private group
-  PENDING
-  ACCEPTED
-  REJECTED
-}
-
 model Membership {
   id     String           @id @default(auto()) @map("_id") @db.ObjectId
   userId String           @db.ObjectId // ID of the user who requested to join the group
@@ -162,4 +155,10 @@ enum NotificationType {
   DOWNVOTE
   COMMENT
   FOLLOW_REQUEST
+}
+
+enum MembershipStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
 }

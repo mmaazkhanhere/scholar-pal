@@ -3,30 +3,24 @@ import prismadb from '@/libs/prismadb'
 
 export const GET = async (request: NextRequest) => {
 
-    const groupId = request.nextUrl.pathname.split('/').pop();
-
     try {
 
+        const groupId = request.nextUrl.pathname.split('/').pop();
         if (!groupId) {
             return new NextResponse('Missing groupId', { status: 400 })
         };
 
-        const groupMembers = await prismadb.studyGroup.findUnique({
+        const groupMembers = await prismadb.membership.findMany({
             where: {
-                id: groupId,
+                groupId: groupId,
+                status: 'ACCEPTED', // Assuming you want only approved members
             },
-            select: {
-                members: true,
-            }
         });
 
-        console.log(groupMembers?.members);
-
-        return NextResponse.json(groupMembers?.members)
+        return NextResponse.json(groupMembers.map(member => member.userId));
 
     } catch (error) {
         console.error('GET_GROUP_MEMBERS_API_ERROR', error);
         return new NextResponse('Internal Server Error', { status: 500 })
     }
-
 }

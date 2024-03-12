@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import Avatar from '../avatar'
 import useUser from '@/hooks/useUser'
 import axios from 'axios'
@@ -16,12 +16,12 @@ type Props = {
 const PendingUserCard = ({ userId, groupId }: Props) => {
 
     const { user } = useUser(userId);
-    const { data, mutate: updateGroup } = useGroup(groupId);
+    const { mutate: updateGroup } = useGroup(groupId);
     const { mutate: updatePendingList } = usePendingUsers(groupId);
     const { mutate: updateGroupMembers } = useGroupMembers(groupId);
 
-    const handleAcceptRequest = async () => {
 
+    const handleAcceptRequest = useCallback(async () => {
         try {
             const request = await axios.patch(`/api/group/accept-request`, {
                 groupId, targetUserId: userId
@@ -38,7 +38,7 @@ const PendingUserCard = ({ userId, groupId }: Props) => {
             console.error('HANDLE_ACCEPT_REQUEST_FUNCTION_ERROR', error);
             errorNotification('Something went wrong')
         }
-    }
+    }, [groupId, updateGroup, updateGroupMembers, updatePendingList, userId])
 
     return (
         <article

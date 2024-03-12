@@ -37,7 +37,7 @@ export const PATCH = async (request: NextRequest) => {
 
         // Remove the user from the pending list
         if (pendingMembersList?.includes(targetUserId)) {
-            pendingMembersList = pendingMembersList.filter(member => member != targetUserId);
+            pendingMembersList = pendingMembersList.filter(member => member !== targetUserId);
             await prismadb.studyGroup.update({
                 where: {
                     id: groupId,
@@ -67,10 +67,10 @@ export const PATCH = async (request: NextRequest) => {
 
         await prismadb.notification.create({
             data: {
-                userId: currentUser?.id as string,
+                userId: currentUser?.id,
                 body: `${targetUser?.name} has joined your group ${group?.groupName}`,
                 type: 'GROUP_JOINED',
-                senderId: targetUser?.id as string
+                senderId: targetUser?.id
             }
         });
 

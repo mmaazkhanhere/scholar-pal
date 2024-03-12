@@ -16,6 +16,8 @@ const UserCardModal = (props: Props) => {
     const [loading, setLoading] = useState<boolean>(false);
     const handleUserCardModal = useUserCard();
 
+    const groupMembersList = handleUserCardModal.acceptedList
+
     const modalBody: React.ReactNode = (
         <div>
             {
@@ -32,7 +34,7 @@ const UserCardModal = (props: Props) => {
 
                     ))
                 ) : (
-                    handleUserCardModal.acceptedList?.map((user: IMembership) => (
+                    groupMembersList?.map((user: any) => (
                         <div
                             key={user.id}
                             className='flex flex-col items-start gap-y-1'

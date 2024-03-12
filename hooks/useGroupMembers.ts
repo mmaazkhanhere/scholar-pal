@@ -11,8 +11,10 @@ const useGroupMembers = (groupId?: string) => {
     const { data, error, isLoading, mutate } = useSWR<IMembership[]>(url, fetcher, {
         revalidateIfStale: false,
         revalidateOnFocus: false,
+        revalidateOnReconnect: false
     });
 
+    console.log(data)
     console.log(Array.isArray(data))
 
     return { data, error, isLoading, mutate };
