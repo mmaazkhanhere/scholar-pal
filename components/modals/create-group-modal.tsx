@@ -102,14 +102,25 @@ const CreateGroupModal = (props: Props) => {
                 <p className='lg:text-lg font-medium'>
                     Description
                 </p>
-                <textarea
-                    className="w-full min-h-[100px] p-2 overflow-auto rounded-lg 
+                <div className='flex flex-col items-start w-full'>
+                    <textarea
+                        className="w-full min-h-[100px] p-2 overflow-auto rounded-lg 
                     border outline-none focus:border-[#1abc9c] disabled:opacity-70
                     disabled:cursor-not-allowed"
-                    value={description}
-                    onChange={(event) => setDescription(event.target.value)}
-                    placeholder="Purpose of the Study Group"
-                />
+                        value={description}
+                        onChange={(event) => setDescription(event.target.value)}
+                        placeholder="Purpose of the Study Group"
+                        maxLength={150}
+                    />
+                    <p
+                        className='text-xs self-end'>
+                        <span className={`${description.length <= 150 ? 'text-green-500' : 'text-red-500'} `}>
+                            {description.length}
+                        </span>
+                        /150
+                    </p>
+                </div>
+
             </div>
 
             <Input

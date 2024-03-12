@@ -2,19 +2,67 @@
 
 import useGroup from '@/hooks/useGroup';
 import { usePathname } from 'next/navigation';
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import Avatar from '../avatar';
 import GroupMemberDetails from './group-member-details';
+import useGroupMembers from '@/hooks/useGroupMembers';
+import useUser from '@/hooks/useUser';
+import { useSession } from 'next-auth/react';
+import useLoginModal from '@/hooks/useLoginModal';
+import { useGroups } from '@/hooks/useGroups';
+import axios from 'axios';
+import { successNotification } from '@/helpers/success-notification';
+import { errorNotification } from '@/helpers/error-notification';
 
 type Props = {}
 
 const GroupSidebar = (props: Props) => {
 
-    const [loading, isLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const groupId = usePathname().split('/groups').pop();
 
+    const { status } = useSession();
+    const { onOpen: openLoginModal } = useLoginModal();
+    const { user: currentUser, mutate: updateCurrentUser } = useUser();
+    const { mutate: updateGroupList } = useGroups();
     const { data: groupDetail, mutate: updateGroup } = useGroup(groupId as string)
+    const { data: groupMembers = [], mutate: updateGroupMembers } = useGroupMembers(groupDetail?.id)
+
+    const isGroupMember = groupMembers?.includes(currentUser?.id as any);
+
+    const handleJoin = useCallback(async () => {
+        try {
+
+            setLoading(true);
+
+            if (status == 'unauthenticated') {
+                openLoginModal()
+            }
+
+            const request = await axios.post('/api/group/join', {
+                currentUserId: currentUser?.id,
+                groupId: groupId,
+                groupCreatorId: groupDetail?.creatorId
+            })
+
+            if (request.status === 200) {
+                successNotification('Request successfully sent');
+                setLoading(false);
+                updateGroup();
+                updateCurrentUser();
+                updateGroupList();
+                updateGroupMembers();
+            }
+
+        } catch (error) {
+            console.error('GROUP_CARD_HANDLE_JOIN_FUNCTION_ERROR', error);
+            errorNotification('Something went wrong')
+        }
+        finally {
+            setLoading(false);
+        }
+    }, [currentUser?.id, groupDetail?.creatorId, groupId, openLoginModal, status, updateCurrentUser, updateGroup, updateGroupList, updateGroupMembers])
 
     if (!groupDetail) {
         return null;
@@ -73,6 +121,15 @@ const GroupSidebar = (props: Props) => {
                     isPrivate={groupDetail.private}
                     groupId={groupDetail.id}
                 />
+
+                <button
+                    onClick={handleJoin}
+                    className={`${isGroupMember ? 'bg-red-500' : 'bg-[#1abc9c] hover:bg-[#1abc9c]/60 '} text-[#f9fcfc] font-medium py-1.5 px-4 rounded text-sm w-full mt-2`}
+                >
+                    {
+                        isGroupMember ? 'Leave Group' : 'Join Group'
+                    }
+                </button>
 
             </div>
         </section>

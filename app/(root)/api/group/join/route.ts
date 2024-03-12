@@ -5,10 +5,12 @@ import { MembershipStatus, NotificationType } from "@prisma/client";
 export const POST = async (request: NextRequest) => {
 
     const body = await request.json();
-    const { currentUserId, groupId, groupCreatorId } = body;
+    const { currentUserId, groupCreatorId } = body;
+
+    let { groupId } = body;
+    groupId = groupId.split('/').pop();
 
     try {
-
         if (!currentUserId || !groupId || !groupCreatorId) {
             //handle missing data 
             return new NextResponse('Missing required details', { status: 404 });

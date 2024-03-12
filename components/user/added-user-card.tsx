@@ -1,6 +1,5 @@
 import React from 'react'
 import Avatar from '../avatar'
-import { IMembership } from '@/interface-d'
 import FollowButton from '../follow-button'
 import useUser from '@/hooks/useUser'
 
@@ -19,7 +18,7 @@ const AddedUserCard = ({ member }: Props) => {
     return (
         <article
             className='flex items-center w-full rounded-xl
-        border border-[#343a40]/20 p-2 gap-x-2 lg:gap-x-5 max-w-lg'
+        border border-[#343a40]/20 p-2 gap-x-2 lg:gap-x-5 max-w-lg mt-2'
         >
             <Avatar
                 profilePicture={user?.profilePicture}

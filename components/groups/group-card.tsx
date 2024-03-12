@@ -35,9 +35,6 @@ const GroupCard = ({ groupDetail }: Props) => {
 
     const router = useRouter();
 
-    console.log(Array.isArray(groupMembers))
-    console.log(groupMembers)
-
     const handleJoin = useCallback(async () => {
 
         try {

@@ -1,3 +1,4 @@
+import GroupPostBar from '@/components/groups/group-post-bar';
 import GroupSidebar from '@/components/groups/group-sidebar';
 import Header from '@/components/header'
 import Link from 'next/link'
@@ -20,6 +21,7 @@ const GroupPage = (props: Props) => {
                 </Link>
                 <div className='grid grid-cols-1 lg:grid-cols-7 w-full'>
                     <GroupSidebar />
+                    <GroupPostBar />
                 </div>
             </section>
         </main>

@@ -37,7 +37,7 @@ const UserCardModal = (props: Props) => {
                     groupMembersList?.map((user: any) => (
                         <div
                             key={user.id}
-                            className='flex flex-col items-start gap-y-1'
+                            className='flex flex-col items-start'
                         >
                             <AddedUserCard
                                 member={user}
