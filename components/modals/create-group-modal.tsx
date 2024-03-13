@@ -97,7 +97,7 @@ const CreateGroupModal = (props: Props) => {
                 onChange={(event) => setGroupName(event.target.value)}
                 disabled={loading}
             />
-
+            
             <div className='flex flex-col items-start gap-y-2 w-full'>
                 <p className='lg:text-lg font-medium'>
                     Description

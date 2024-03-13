@@ -50,11 +50,9 @@ export const GET = async (request: NextRequest) => {
 
 export const POST = async (request: NextRequest) => {
 
-    const groupId = request.nextUrl.pathname.split('/').pop()
-
     const body = await request.json(); //extract body from request
-    const { postContent, tags } = body; //destruct the body
-
+    const { postContent, tags, groupId, creatorId } = body; //destruct the body
+    const currentUser = await getCurrentUser();
 
     try {
         if (!groupId) {
@@ -73,6 +71,15 @@ export const POST = async (request: NextRequest) => {
             return new NextResponse('No Content', { status: 404 });
         }
 
+        const group = await prismadb.studyGroup.findUnique({
+            where: {
+                id: groupId
+            },
+            select: {
+                groupName: true,
+            }
+        })
+
         const newPost = await prismadb.post.create({
             data: {
                 content: postContent,
@@ -82,6 +89,24 @@ export const POST = async (request: NextRequest) => {
                 likedBy: [] //likes list is set to empty array indicating no one have like did
             },
         });
+
+        await prismadb.notification.create({
+            data: {
+                userId: creatorId,
+                senderId: currentUser.id,
+                body: `${currentUser.name} has made a new post in ${group?.groupName}`,
+                type: 'NEW_POST'
+            }
+        })
+
+        await prismadb.user.update({
+            where: {
+                id: creatorId,
+            },
+            data: {
+                hasNotifications: true,
+            }
+        })
 
         return NextResponse.json(newPost);
 

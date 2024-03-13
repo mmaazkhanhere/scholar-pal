@@ -23,7 +23,8 @@ export const GET = async (request: NextRequest) => {
 
         const posts = await prismadb.post.findMany({
             where: {
-                authorId: userId
+                authorId: userId,
+                studyGroup: null,
             },
             include: {
                 author: {

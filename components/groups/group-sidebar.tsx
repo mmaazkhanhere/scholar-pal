@@ -13,6 +13,7 @@ import { useGroups } from '@/hooks/useGroups';
 import axios from 'axios';
 import { successNotification } from '@/helpers/success-notification';
 import { errorNotification } from '@/helpers/error-notification';
+import LoadingSpinner from '../loading-spinner';
 
 type Props = {}
 
@@ -65,7 +66,7 @@ const GroupSidebar = (props: Props) => {
     }, [currentUser?.id, groupDetail?.creatorId, groupId, openLoginModal, status, updateCurrentUser, updateGroup, updateGroupList, updateGroupMembers])
 
     if (!groupDetail) {
-        return null;
+        return <LoadingSpinner spinnerSize={50} />;
     }
 
     return (

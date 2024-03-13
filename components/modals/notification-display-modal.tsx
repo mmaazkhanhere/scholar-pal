@@ -13,12 +13,13 @@ type Props = {}
 const NotificationDisplayModal = (props: Props) => {
 
     const { user: currentUser, mutate: updateCurrentUser } = useUser();
-    const { data: notifications = [] } = useNotifications(currentUser?.id);
+    const { data: notifications = [], mutate: updateNotifications } = useNotifications(currentUser?.id);
     const handleNotificationModal = useNotificationModal();
 
     useEffect(() => {
         updateCurrentUser();
-    }, [updateCurrentUser])
+        updateNotifications();
+    }, [updateCurrentUser, updateNotifications])
 
     const modalBody: React.ReactNode = (
         <div className='flex flex-col w-full'>

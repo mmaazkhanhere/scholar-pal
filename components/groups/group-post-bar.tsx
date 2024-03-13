@@ -5,6 +5,7 @@ import GroupPostButton from './group-post-button'
 import useGroupMembers from '@/hooks/useGroupMembers'
 import useUser from '@/hooks/useUser'
 import { usePathname } from 'next/navigation'
+import GroupPosts from './group-posts'
 
 type Props = {}
 
@@ -22,8 +23,9 @@ const GroupPostBar = (props: Props) => {
                 {
                     groupMembers?.includes(currentUser?.id as any) && <GroupPostButton />
                 }
-
             </div>
+
+            <GroupPosts />
         </section>
     )
 }

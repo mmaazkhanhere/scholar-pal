@@ -16,6 +16,9 @@ export const GET = async (request: NextRequest) => {
         are ordered in descending order, placing the latest post on the top */
 
         const allPosts = await prismadb.post.findMany({
+            where: {
+                studyGroup: null,
+            },
             include: {
                 author: {
                     select: {
