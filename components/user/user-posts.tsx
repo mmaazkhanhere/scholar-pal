@@ -35,7 +35,7 @@ const UserPosts = (props: Props) => {
     return (
         <section className='max-w-4xl w-full'>
             {
-                posts.length == 0 ? (
+                posts?.length == 0 ? (
                     <div className='mt-10 flex justify-center text-xl lg:text-2xl font-medium'>
                         No posts available
                     </div>

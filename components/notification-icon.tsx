@@ -11,6 +11,8 @@ const NotificationIcon = (props: Props) => {
     const { user } = useUser();
     const { onOpen: openNotificationModal } = useNotificationModal();
 
+    console.log(user?.hasNotifications)
+
     return (
         <button
             onClick={openNotificationModal}

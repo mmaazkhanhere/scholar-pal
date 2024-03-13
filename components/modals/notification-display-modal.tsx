@@ -13,7 +13,7 @@ type Props = {}
 const NotificationDisplayModal = (props: Props) => {
 
     const { user: currentUser, mutate: updateCurrentUser } = useUser();
-    const { data: notifications = [], mutate: updateNotifications } = useNotifications(currentUser?.id);
+    const { data: notifications = [] } = useNotifications(currentUser?.id);
     const handleNotificationModal = useNotificationModal();
 
     useEffect(() => {
@@ -24,7 +24,7 @@ const NotificationDisplayModal = (props: Props) => {
         <div className='flex flex-col w-full'>
             {
                 notifications.length === 0 ? (
-                    <p>No notifications</p>
+                    <p>No new notifications</p>
                 ) : (
                     notifications.map((notification: INotification) => (
                         <div

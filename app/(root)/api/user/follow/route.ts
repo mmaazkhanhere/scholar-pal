@@ -61,6 +61,15 @@ export const POST = async (request: NextRequest) => {
 
             //add the target user to the currently sign in user following list
             currentUserFollowing.push(targetUser.id);
+
+            await prismadb.notification.create({
+                data: {
+                    userId: userId,
+                    senderId: currentUser.id,
+                    type: 'FOLLOW_REQUEST',
+                    body: `${currentUser.name} has send you a follow request`
+                }
+            })
         }
 
         //update the target user data and its follower list
@@ -73,11 +82,13 @@ export const POST = async (request: NextRequest) => {
             }
         })
 
+
         //update current user data and its following list
         const updatedCurrentUser = await prismadb.user.update({
             where: { id: currentUser.id },
             data: {
-                followingIds: currentUserFollowing
+                followingIds: currentUserFollowing,
+                hasNotifications: true
             }
         });
 

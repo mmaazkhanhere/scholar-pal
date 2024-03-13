@@ -23,6 +23,8 @@ const CommentCard = ({ comment }: Props) => {
         return formatDistanceToNowStrict(new Date(comment.createdAt)) + 'ago';
     }, [comment.createdAt])
 
+
+    console.log(comment.authorId)
     return (
         <article
             className='flex items-start justify-start gap-x-4 w-full
@@ -33,6 +35,8 @@ const CommentCard = ({ comment }: Props) => {
                 <Avatar
                     profilePicture={comment.author.profilePicture}
                     isHeaderAvatar
+                    userId={comment.authorId}
+                    isNavigable={true}
                 />
             </div>
 

@@ -124,7 +124,7 @@ const PostCard = ({ user, post, isPostPage = false }: Props) => {
         finally {
             setIsLoading(false)
         }
-    }, [comment, user?.id, mutate, mutatePost, post?.id])
+    }, [post.id, post.authorId, user?.id, comment, mutate, mutatePost])
 
 
     /*A function that calculates the time the post was created and return
@@ -152,6 +152,7 @@ const PostCard = ({ user, post, isPostPage = false }: Props) => {
                         userId={post.author?.id}
                         profilePicture={post.author?.profilePicture}
                         isPostAvatar
+                        isNavigable={true}
                     />
                 </div>
 
