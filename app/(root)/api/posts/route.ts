@@ -89,6 +89,50 @@ export const POST = async (request: NextRequest) => {
             }
         })
 
+        const userFollowers = await prismadb.user.findUnique({
+            where: {
+                id: currentUser.id
+            },
+            select: {
+                followerIds: true
+            }
+        });
+
+        for (const follower of userFollowers?.followerIds!) {
+
+            const user = await prismadb.user.findUnique({
+                where: {
+                    id: follower
+                },
+                select: {
+                    id: true,
+                    hasNotifications: true
+                }
+            })
+
+            if (!user) {
+                return;
+            }
+
+            await prismadb.notification.create({
+                data: {
+                    type: 'NEW_POST',
+                    userId: user.id,
+                    senderId: currentUser.id,
+                    body: `${currentUser.name} has made a new post`
+                }
+            })
+
+            await prismadb.user.update({
+                where: {
+                    id: user.id
+                },
+                data: {
+                    hasNotifications: true
+                }
+            })
+        }
+
         return NextResponse.json(post) //return the post in json
 
     } catch (error) {

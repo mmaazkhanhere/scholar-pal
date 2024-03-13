@@ -1,6 +1,8 @@
 
+import useGroupJoined from '@/hooks/useGroupJoined';
 import useGroupModal from '@/hooks/useGroupModal';
 import useLoginModal from '@/hooks/useLoginModal';
+import useUser from '@/hooks/useUser';
 import { useSession } from 'next-auth/react';
 import React, { useCallback } from 'react';
 import { IoAddCircleOutline } from 'react-icons/io5';
@@ -11,6 +13,7 @@ const CreateGroupButton: React.FC<Props> = () => {
 
     const { onOpen: openGroupModal } = useGroupModal();
     const { onOpen: openLoginModal } = useLoginModal();
+
     const { status } = useSession();
 
     const onClick = useCallback(() => {

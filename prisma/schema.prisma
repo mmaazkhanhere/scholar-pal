@@ -43,6 +43,8 @@ model User{
                           // of more than one group)
   event Event[] //1-many relation b/w user and event (user can be attending more than one event)
   eventAttendance EventAttendance[] // Reference to EventAttendance records
+  questions Question[]
+  answers Answer[]
 }                         
 
 
@@ -161,4 +163,30 @@ enum MembershipStatus {
   PENDING
   ACCEPTED
   REJECTED
+}
+
+model Question {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String   // Title of the question
+  body        String   // Detailed description of the question
+  createdAt   DateTime @default(now()) // When the question was created
+  updatedAt   DateTime @updatedAt // When the question was last updated
+  authorId    String   @db.ObjectId // ID of the user who asked the question
+
+  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  answers     Answer[] // A question can have multiple answers
+}
+
+model Answer {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  body        String   // Detailed answer to the question
+  createdAt   DateTime @default(now()) // When the answer was created
+  updatedAt   DateTime @updatedAt // When the answer was last updated
+  authorId    String   @db.ObjectId // ID of the user who answered the question
+  questionId  String   @db.ObjectId // ID of the question being answered
+  upvotes     String[] @db.ObjectId // IDs of users who upvoted the answer
+  downvotes   String[] @db.ObjectId // IDs of users who downvoted the answer
+
+  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 }

@@ -6,14 +6,18 @@ import ToggleButton from '../toggle-button'
 import GroupCard from './group-card'
 import { useGroups } from '@/hooks/useGroups'
 import LoadingSpinner from '../loading-spinner'
+import useUser from '@/hooks/useUser'
+import useGroupJoined from '@/hooks/useGroupJoined'
 
 type Props = {}
 
 const GroupList = (props: Props) => {
 
-    const [showGroupJoined, setShowGroupJoined] = useState(false);
+    const [showGroupJoined, setShowGroupJoined] = useState(true);
 
     const { data: groups, isLoading } = useGroups();
+    const { user: currentUser } = useUser();
+    const { data: groupJoined } = useGroupJoined(currentUser?.id)
 
     const toggleGroups = () => {
         setShowGroupJoined(!showGroupJoined);
@@ -35,14 +39,25 @@ const GroupList = (props: Props) => {
                 />
             </div>
             <div className='grid grid-cols-1 md:grid-cols-2 w-full mt-5 gap-8'>
+
                 {
-                    groups.map((group) => (
-                        <GroupCard
-                            key={group.id}
-                            groupDetail={group}
-                        />
-                    ))
+                    showGroupJoined ? (
+                        groupJoined?.map((group) => (
+                            <GroupCard
+                                key={group.id}
+                                groupDetail={group}
+                            />
+                        ))
+                    ) : (
+                        groups.map((group) => (
+                            <GroupCard
+                                key={group.id}
+                                groupDetail={group}
+                            />
+                        ))
+                    )
                 }
+
             </div>
 
         </section>

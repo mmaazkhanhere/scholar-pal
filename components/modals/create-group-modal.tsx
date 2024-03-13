@@ -14,6 +14,7 @@ import { successNotification } from '@/helpers/success-notification'
 import useUser from '@/hooks/useUser'
 import { errorNotification } from '@/helpers/error-notification'
 import { useGroups } from '@/hooks/useGroups'
+import useGroupJoined from '@/hooks/useGroupJoined'
 
 type Props = {}
 
@@ -32,6 +33,7 @@ const CreateGroupModal = (props: Props) => {
     const { status } = useSession();
     const { user: currentUser } = useUser()
     const { mutate: updateGroupList } = useGroups();
+    const { mutate: updateGroupJoined } = useGroupJoined(currentUser?.id);
 
     const currentUserId = currentUser?.id
 
@@ -55,6 +57,7 @@ const CreateGroupModal = (props: Props) => {
             if (request.status === 200) {
                 successNotification('Group Successfully Created');
                 updateGroupList();
+                updateGroupJoined();
                 setLoading(false);
                 onClose();
             }
@@ -97,7 +100,7 @@ const CreateGroupModal = (props: Props) => {
                 onChange={(event) => setGroupName(event.target.value)}
                 disabled={loading}
             />
-            
+
             <div className='flex flex-col items-start gap-y-2 w-full'>
                 <p className='lg:text-lg font-medium'>
                     Description
