@@ -6,7 +6,7 @@ import useSWR from "swr"
 
 const useNotifications = (userId?: string) => {
 
-    const url = `/api/notifications/${userId}`
+    const url = userId ? `/api/notifications/${userId}` : null;
 
     const { data, error, isLoading, mutate } = useSWR<INotification[]>(url, fetcher, {
         revalidateIfStale: false,

@@ -4,6 +4,7 @@ the user in the liked id list. */
 
 import { NextRequest, NextResponse } from "next/server";
 import prismadb from "@/libs/prismadb"
+import getCurrentUser from "@/actions/getCurrentUser";
 
 
 export const POST = async (request: NextRequest) => {
@@ -12,6 +13,12 @@ export const POST = async (request: NextRequest) => {
 
         const body = await request.json(); //extract the body from the request
         const { postId, userId } = body; //destruct the body
+
+        const currentUser = await getCurrentUser();
+
+        if (!currentUser) {
+            return new NextResponse('Unauthenticated', { status: 401 })
+        }
 
         if (!postId || !userId) {
             //If there is no user id or post id, it return error 400 response
@@ -25,13 +32,14 @@ export const POST = async (request: NextRequest) => {
                 id: postId
             },
             select: {
-                likedBy: true //fetch only the like of the posts
+                likedBy: true, //fetch only the like of the posts
+                authorId: true,
             }
         })
 
         if (!post) {
             //if there is no post id, it return error 400 response
-            return new NextResponse('No post found', { status: 400 })
+            return new NextResponse('No post found', { status: 400 });
         }
 
         let postLikes: string[] = [...post.likedBy] || [] /*It creates a shallow
@@ -60,7 +68,27 @@ export const POST = async (request: NextRequest) => {
                 id: true,
                 likedBy: true
             }
-        })
+        });
+
+        /*Create a notification to the post creator that their post has been liked */
+        await prismadb.notification.create({
+            data: {
+                userId: post.authorId,
+                senderId: currentUser?.id,
+                body: `${currentUser.name} has liked your post`,
+                type: 'LIKE'
+            }
+        });
+
+        /*Update the post author notification status to true */
+        await prismadb.user.update({
+            where: {
+                id: post.authorId,
+            },
+            data: {
+                hasNotifications: true,
+            }
+        });
 
         return NextResponse.json(updatedPost) //the updated post is returned in response
 

@@ -17,9 +17,8 @@ const NotificationDisplayModal = (props: Props) => {
     const handleNotificationModal = useNotificationModal();
 
     useEffect(() => {
-        updateCurrentUser();
-        updateNotifications();
-    }, [updateCurrentUser, updateNotifications])
+        updateCurrentUser(); //manually refetch the current user data
+    }, [updateCurrentUser]);
 
     const modalBody: React.ReactNode = (
         <div className='flex flex-col w-full'>

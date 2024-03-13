@@ -53,7 +53,7 @@ const GroupPostModal = (props: Props) => {
                 updateGroupPosts();
                 updateGroup();
                 setIsLoading(false);
-                closeGroupPostModal;
+                closeGroupPostModal();
             }
 
         }

@@ -47,12 +47,12 @@ export const GET = async (request: NextRequest) => {
 export const POST = async (request: NextRequest) => {
 
     const body = await request.json(); //extract the body from the request
-    const { currentUser, postId, content } = body //destruct the body
+    const { currentUserId, postAuthorId, postId, content } = body //destruct the body
 
     try {
-        if (!currentUser || !postId) {
+        if (!currentUserId || !postId || !postAuthorId) {
             //if there is no user or postId, return an empty response
-            return new NextResponse('Missing data', { status: 404 })
+            return new NextResponse('Missing data', { status: 400 })
         }
 
         /*Creates a comment with prisma create parameter with the data passed
@@ -62,7 +62,7 @@ export const POST = async (request: NextRequest) => {
             data: {
                 postId: postId,
                 content: content,
-                authorId: currentUser
+                authorId: currentUserId
             },
             select: {
                 id: true,
@@ -79,6 +79,23 @@ export const POST = async (request: NextRequest) => {
             }
         });
 
+        await prismadb.notification.create({
+            data: {
+                userId: postAuthorId,
+                senderId: comment.author.id,
+                body: `${comment.author.name} has made a comment on your post`,
+                type: 'COMMENT'
+            }
+        }) //create notification to the post author that a comment has been made 
+
+        await prismadb.user.update({
+            where: {
+                id: postAuthorId,
+            },
+            data: {
+                hasNotifications: true,
+            }
+        }) //update the post author notification status indicating that they have notification
 
         return NextResponse.json(comment) //return the comment json response
 

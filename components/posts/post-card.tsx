@@ -91,7 +91,8 @@ const PostCard = ({ user, post, isPostPage = false }: Props) => {
 
             const result = await axios.post('/api/comment', {
                 postId: post.id,
-                currentUser: user.id,
+                postAuthorId: post.authorId,
+                currentUserId: user.id,
                 content: comment
             });
 
