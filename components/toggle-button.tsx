@@ -12,6 +12,8 @@ const ToggleButton = ({ onChange, variableToToggle }: Props) => {
 
     return (
         <button
+            aria-label='Button to fetch groups joined by user'
+            title='Button to fetch group joined by user'
             onClick={onChange}
             className={`relative inline-flex items-center justify-start 
             w-12 h-6 rounded-full p-1 duration-300 ease-in-out

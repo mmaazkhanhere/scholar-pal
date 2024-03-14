@@ -15,6 +15,8 @@ const NotificationIcon = (props: Props) => {
 
     return (
         <button
+            aria-label='Notification Button'
+            title='Notifications'
             onClick={openNotificationModal}
             className='cursor-pointer relative'
         >

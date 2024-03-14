@@ -79,6 +79,7 @@ const Modal: React.FC<Props> =
                     {
                         buttonLabel && (
                             <Button
+                                ariaLabel='Submit Button'
                                 onClick={handleSubmit}
                                 disabled={disabled}
                                 label={buttonLabel}

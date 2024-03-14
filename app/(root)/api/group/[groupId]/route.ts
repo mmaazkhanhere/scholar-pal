@@ -3,8 +3,7 @@ import prismadb from '@/libs/prismadb'
 
 export const GET = async (request: NextRequest) => {
 
-    const groupId = await request.nextUrl.pathname.split('/').pop();
-
+    const groupId = request.nextUrl.pathname.split('/').pop();
     try {
 
         if (!groupId) {

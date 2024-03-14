@@ -55,6 +55,8 @@ const LogoutButton = ({ label }: Props) => {
             {
                 session?.user?.email && (
                     <button
+                        aria-label='Logout Button'
+                        title='Logout Current User'
                         disabled={isLoading}
                         onClick={() => {
                             handleLogout()

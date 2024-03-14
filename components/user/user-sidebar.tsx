@@ -10,7 +10,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { usePathname } from 'next/navigation';
-import axios from 'axios';
 
 import FollowerDetail from './follower-detail';
 
@@ -24,10 +23,6 @@ import { FaMedal, FaStar } from "react-icons/fa";
 import useUser from '@/hooks/useUser';
 import useEditModal from '@/hooks/useEditModal';
 import useLoginModal from '@/hooks/useLoginModal';
-
-import { successNotification } from '@/helpers/success-notification';
-import { errorNotification } from '@/helpers/error-notification';
-
 
 const UserSidebar = () => {
 

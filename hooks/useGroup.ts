@@ -6,7 +6,6 @@ import { IStudyGroup } from "@/interface-d";
 
 const useGroup = (groupId: string) => {
 
-    const encodedGroupId = encodeURIComponent(groupId);
     const url: string = `/api/group/${groupId}`
 
     const { data, isLoading, error, mutate } = useSWR<IStudyGroup>(url, fetcher, {

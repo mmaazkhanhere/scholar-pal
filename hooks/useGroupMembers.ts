@@ -14,9 +14,6 @@ const useGroupMembers = (groupId?: string) => {
         revalidateOnReconnect: false
     });
 
-    console.log(data)
-    console.log(Array.isArray(data))
-
     return { data, error, isLoading, mutate };
 }
 

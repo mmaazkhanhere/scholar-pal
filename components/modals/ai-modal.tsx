@@ -125,6 +125,8 @@ const AIModal = (props: Props) => {
 
                             {/*Send button */}
                             <button
+                                aria-label='Ask AI Button'
+                                title='Ask AI'
                                 onClick={chatFunction}
                                 type='submit'
                                 className=' self-end w-16 lg:w-24 bg-[#1abc9c] font-semibold

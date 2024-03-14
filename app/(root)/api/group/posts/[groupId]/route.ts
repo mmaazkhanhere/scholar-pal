@@ -6,6 +6,8 @@ export const GET = async (request: NextRequest) => {
 
     const groupId = request.nextUrl.pathname.split('/').pop()
 
+    console.log(groupId);
+
     try {
 
         const groupPosts = await prismadb.post.findMany({
@@ -52,7 +54,6 @@ export const POST = async (request: NextRequest) => {
 
     const body = await request.json(); //extract body from request
     const { postContent, tags, groupId, creatorId } = body; //destruct the body
-    const currentUser = await getCurrentUser();
 
     try {
         if (!groupId) {

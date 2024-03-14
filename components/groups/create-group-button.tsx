@@ -1,8 +1,6 @@
 
-import useGroupJoined from '@/hooks/useGroupJoined';
 import useGroupModal from '@/hooks/useGroupModal';
 import useLoginModal from '@/hooks/useLoginModal';
-import useUser from '@/hooks/useUser';
 import { useSession } from 'next-auth/react';
 import React, { useCallback } from 'react';
 import { IoAddCircleOutline } from 'react-icons/io5';
@@ -29,6 +27,8 @@ const CreateGroupButton: React.FC<Props> = () => {
     return (
 
         <button
+            aria-label='Button to Create New Group'
+            title='Create New Group'
             onClick={onClick}
             className="flex items-center justify-center gap-x-2
             bg-[#1bac9c] hover:bg-[#1abc9c]/80 hover:scale-95 text-[#fefefe] 

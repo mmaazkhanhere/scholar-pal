@@ -12,11 +12,10 @@ import NavbarItems from './navbar-item'
 import MobileNavbar from './mobile-navbar'
 import Avatar from './avatar'
 
-import { FaMagic, FaMedal } from 'react-icons/fa'
+import { FaMagic } from 'react-icons/fa'
 import { RiRobot2Fill } from 'react-icons/ri'
-import { IoMdNotifications, IoMdMenu } from "react-icons/io";
+import { IoMdMenu } from "react-icons/io";
 
-import { IUser } from '@/interface-d'
 import LogoutButton from './logout-button'
 import useAIModal from '@/hooks/useAIModal'
 import useLoginModal from '@/hooks/useLoginModal'

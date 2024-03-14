@@ -15,6 +15,7 @@ import { useGroups } from '@/hooks/useGroups'
 import { useRouter } from 'next/navigation'
 import usePendingUsers from '@/hooks/usePendingUsers'
 import useGroupMembers from '@/hooks/useGroupMembers'
+import useGroupJoined from '@/hooks/useGroupJoined'
 
 type Props = {
     groupDetail: IStudyGroup
@@ -30,6 +31,7 @@ const GroupCard = ({ groupDetail }: Props) => {
     const { mutate: updateGroupCreatorUser } = useUser(groupDetail.creatorId);
     const { mutate: updateGroupList } = useGroups();
     const { mutate: updateGroup } = useGroup(groupDetail.id);
+    const { mutate: updateJoinedGroup } = useGroupJoined(groupDetail.id);
     const { data: pendingList, mutate: updatePendingList } = usePendingUsers(groupDetail.id)
     const { data: groupMembers = [], mutate: updateGroupMembers } = useGroupMembers(groupDetail.id)
 
@@ -60,6 +62,7 @@ const GroupCard = ({ groupDetail }: Props) => {
                 updateGroupList();
                 updateGroupMembers();
                 updatePendingList();
+                updateJoinedGroup();
             }
 
         } catch (error) {
@@ -69,7 +72,7 @@ const GroupCard = ({ groupDetail }: Props) => {
         finally {
             setLoading(false);
         }
-    }, [currentUser?.id, groupDetail.creatorId, groupDetail.id, openLoginModal, status, updateCurrentUser, updateGroup, updateGroupCreatorUser, updateGroupList, updateGroupMembers, updatePendingList])
+    }, [currentUser?.id, groupDetail.creatorId, groupDetail.id, openLoginModal, status, updateCurrentUser, updateGroup, updateGroupCreatorUser, updateGroupList, updateGroupMembers, updateJoinedGroup, updatePendingList])
 
 
     const onClick = () => {
@@ -107,6 +110,8 @@ const GroupCard = ({ groupDetail }: Props) => {
                 />
                 <div className='flex flex-col items-start'>
                     <button
+                        aria-label='Group Name Link'
+                        title='Group Name'
                         onClick={onClick}
                         className='hover:underline hover:text-[#1abc9c] font-bold text-xl'>
                         {groupDetail.groupName}
@@ -148,6 +153,8 @@ const GroupCard = ({ groupDetail }: Props) => {
             {
                 groupMembers?.includes(currentUser?.id as any) && !pendingList?.includes(currentUser.id) ? (
                     <button
+                        aria-label='Group to Leave Button'
+                        title='Leave Group'
                         onClick={handleJoin}
                         className="bg-red-500 text-[#f9fcfc] font-medium py-1 px-4 rounded text-sm"
                         disabled={loading}
@@ -157,6 +164,8 @@ const GroupCard = ({ groupDetail }: Props) => {
                 ) : pendingList?.includes(currentUser.id) ?
                     (
                         <button
+                            title='Group request pending'
+                            aria-label='Request pending'
                             onClick={handleJoin}
                             className="bg-[#f9fefe] border border-[#343a40] font-medium py-1 px-4 rounded text-sm"
                             disabled={loading}
@@ -167,9 +176,11 @@ const GroupCard = ({ groupDetail }: Props) => {
                     :
                     (
                         <button
+                            aria-label='Join group button'
+                            title='Join Group'
                             onClick={handleJoin}
                             className="bg-[#1abc9c] hover:bg-[#1abc9c]/60 text-white 
-            font-medium py-1 px-6 rounded text-sm"
+                            font-medium py-1 px-6 rounded text-sm"
                             disabled={loading}
                         >
                             Join Group

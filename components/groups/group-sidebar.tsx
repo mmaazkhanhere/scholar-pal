@@ -14,6 +14,7 @@ import axios from 'axios';
 import { successNotification } from '@/helpers/success-notification';
 import { errorNotification } from '@/helpers/error-notification';
 import LoadingSpinner from '../loading-spinner';
+import useGroupJoined from '@/hooks/useGroupJoined';
 
 type Props = {}
 
@@ -29,6 +30,7 @@ const GroupSidebar = (props: Props) => {
     const { mutate: updateGroupList } = useGroups();
     const { data: groupDetail, mutate: updateGroup } = useGroup(groupId as string)
     const { data: groupMembers = [], mutate: updateGroupMembers } = useGroupMembers(groupDetail?.id)
+    const { mutate: updateGroupJoined } = useGroupJoined(groupDetail?.id)
 
     const isGroupMember = groupMembers?.includes(currentUser?.id as any);
 
@@ -54,6 +56,7 @@ const GroupSidebar = (props: Props) => {
                 updateCurrentUser();
                 updateGroupList();
                 updateGroupMembers();
+                updateGroupJoined();
             }
 
         } catch (error) {
@@ -63,7 +66,7 @@ const GroupSidebar = (props: Props) => {
         finally {
             setLoading(false);
         }
-    }, [currentUser?.id, groupDetail?.creatorId, groupId, openLoginModal, status, updateCurrentUser, updateGroup, updateGroupList, updateGroupMembers])
+    }, [currentUser?.id, groupDetail?.creatorId, groupId, openLoginModal, status, updateCurrentUser, updateGroup, updateGroupJoined, updateGroupList, updateGroupMembers])
 
     if (!groupDetail) {
         return <LoadingSpinner spinnerSize={50} />;
@@ -124,6 +127,8 @@ const GroupSidebar = (props: Props) => {
                 />
 
                 <button
+                    aria-label='Button to join or leave group'
+                    title='Join/Leave Button'
                     onClick={handleJoin}
                     className={`${isGroupMember ? 'bg-red-500' : 'bg-[#1abc9c] hover:bg-[#1abc9c]/60 '} text-[#f9fcfc] font-medium py-1.5 px-4 rounded text-sm w-full mt-2`}
                 >

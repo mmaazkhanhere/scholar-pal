@@ -225,6 +225,7 @@ const PostCard = ({ user, post, isPostPage = false }: Props) => {
                     disabled={isLoading}
                     onClick={handleOpenComment}
                     aria-label='Comment Button'
+                    title='Comment'
                 >
                     <FaRegCommentAlt
                         className='w-5 h-5 hover:text-black/70

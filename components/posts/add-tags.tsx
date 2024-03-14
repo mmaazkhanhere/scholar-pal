@@ -58,6 +58,8 @@ const AddTags = ({ tags, setTags }: Props) => {
 
                         {/* Button to remove a tag */}
                         <button
+                            aria-label='Button to Remove Tag'
+                            title='Remove Tag'
                             onClick={() => removeTag(index)}
                             className="text-sm lg:text-base text-[#343abc] 
                             bg-[#fefefe] rounded-full p-0.5"
@@ -80,6 +82,8 @@ const AddTags = ({ tags, setTags }: Props) => {
                         className="border p-1 rounded flex-1 text-sm lg:text-base"
                     />
                     <button
+                        aria-label='Add Tag Button'
+                        title='Add Tag'
                         onClick={handleAddTagClick}
                         className="bg-[#1abc9c] px-2 lg:px-4 lg:py-1
                         text-white text-sm lg:text-base rounded"

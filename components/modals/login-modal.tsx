@@ -115,7 +115,8 @@ const LoginModal = (props: Props) => {
 
             {/*Toggle button */}
             <button
-                aria-label='Register User'
+                aria-label='Register User Button'
+                title='Register User'
                 onClick={toggleModal}
                 className='underline hover:text-[#343a40]/90 cursor-pointer'
             >
