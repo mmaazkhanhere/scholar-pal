@@ -6,13 +6,12 @@ profile owner or another user.*/
 
 "use client"
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { usePathname } from 'next/navigation';
 
 import FollowerDetail from './follower-detail';
-
 import Button from '../button';
 import SocialMediaLink from './social-media-link';
 import Avatar from '../avatar';

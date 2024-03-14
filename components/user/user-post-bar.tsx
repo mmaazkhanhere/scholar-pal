@@ -6,8 +6,8 @@ import React from 'react'
 import { usePathname } from 'next/navigation'
 
 import NewPostButton from '../posts/new-post-button'
-
 import UserPosts from './user-posts'
+
 import useUser from '@/hooks/useUser'
 
 type Props = {}

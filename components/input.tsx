@@ -1,7 +1,7 @@
 /*A react input component that takes optional parameters to control its
 appearance */
 
-import React, { ChangeEventHandler } from 'react'
+import React from 'react'
 
 type Props = {
     placeholder?: string;

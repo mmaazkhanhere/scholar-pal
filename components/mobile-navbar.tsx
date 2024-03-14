@@ -3,11 +3,13 @@
 import React from 'react';
 import Link from 'next/link';
 
+import LogoutButton from './logout-button';
+
 import { FaUserGroup } from "react-icons/fa6";
 import { BsPersonWorkspace } from 'react-icons/bs';
 import { MdForum, MdOutlineClose } from 'react-icons/md';
 import { IoMdNotifications } from 'react-icons/io';
-import LogoutButton from './logout-button';
+
 
 type Props = {
     toggleButton(): void; //function that closes the mobile options
@@ -54,7 +56,7 @@ const MobileNavbar: React.FC<Props> = ({ toggleButton }) => {
                 </Link>
 
                 {/*Link to forums */}
-                <Link href="/"
+                <Link href="/forums"
                     className='flex justify-between items-center w-full'
                 >
                     <MdForum

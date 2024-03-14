@@ -1,13 +1,18 @@
 /*A logout button that logs out the user from the application using the next auth
 functions */
 
-import useLoginModal from '@/hooks/useLoginModal';
-import { successNotification } from '@/helpers/success-notification';
+
 import { signOut, useSession } from 'next-auth/react';
 import React, { useCallback, useState } from 'react';
-import { TbLogout } from 'react-icons/tb';
-import useUser from '@/hooks/useUser';
 import { useRouter } from 'next/navigation';
+
+import { TbLogout } from 'react-icons/tb';
+
+import useUser from '@/hooks/useUser';
+import useLoginModal from '@/hooks/useLoginModal';
+
+import { successNotification } from '@/helpers/success-notification';
+
 
 type Props = {
     label?: boolean; //an optional parameter for text displayed next to icon

@@ -1,3 +1,5 @@
+/*A custom react hook that fetches a list uof groups user have joined. */
+
 "use client"
 
 import { IStudyGroup } from "@/interface-d";

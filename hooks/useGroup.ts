@@ -1,3 +1,6 @@
+/*The provided JavaScript code is a custom React hook named useGroup. 
+This hook is designed to fetch data about a specific study group in an application.  */
+
 "use client";
 
 import useSWR from "swr";

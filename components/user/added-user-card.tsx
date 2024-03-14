@@ -1,6 +1,8 @@
 import React from 'react'
+
 import Avatar from '../avatar'
 import FollowButton from '../follow-button'
+
 import useUser from '@/hooks/useUser'
 
 type Props = {

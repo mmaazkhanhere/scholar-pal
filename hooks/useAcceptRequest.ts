@@ -1,3 +1,7 @@
+/*A custom hook is designed to handle a user’s request to join a group in an 
+application. The hook uses the useSWR function from the swr library to send 
+a request to a specific API endpoint, constructed using the provided userId */
+
 "use client"
 
 import useSWR from "swr"

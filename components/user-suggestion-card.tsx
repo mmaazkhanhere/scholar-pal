@@ -2,15 +2,15 @@
 basic information about a suggested user, including their avatar, name, field
 of study and user name */
 
-import Link from 'next/link'
-
 import React from 'react'
-import Avatar from './avatar'
-
-import { IUser } from '@/interface-d'
-import useLoginModal from '@/hooks/useLoginModal'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+
+import Avatar from './avatar'
+
+import useLoginModal from '@/hooks/useLoginModal'
+
+import { IUser } from '@/interface-d'
 
 type Props = {
     suggestUser: IUser
@@ -19,13 +19,17 @@ type Props = {
 const UserSuggestionCard = ({ suggestUser }: Props) => {
 
     const router = useRouter()
-    const { onOpen } = useLoginModal();
-    const { status } = useSession()
+    const { onOpen } = useLoginModal(); //open login modal
+    const { status } = useSession() //get the current user authentication status
 
     if (!suggestUser) {
+        //if no user for suggestion, display nothing
         return null;
     }
 
+    /*function that is called when user clicks on the card. It checks if the user
+    is authenticated. If not a login modal is opened else user is navigated
+    to the suggested user profile*/
     const onClick = () => {
         if (status == 'unauthenticated') {
             onOpen();

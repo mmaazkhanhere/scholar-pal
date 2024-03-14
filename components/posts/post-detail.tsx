@@ -1,3 +1,6 @@
+/*A react component that displays the detail version of a post where more comments
+are displayed */
+
 "use client"
 
 import { usePathname, useSearchParams } from 'next/navigation'

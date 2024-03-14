@@ -1,6 +1,8 @@
-import useNotificationModal from '@/hooks/useNotificationModal'
-import useUser from '@/hooks/useUser'
 import React from 'react'
+
+import useUser from '@/hooks/useUser'
+import useNotificationModal from '@/hooks/useNotificationModal'
+
 import { BsDot } from 'react-icons/bs'
 import { IoMdNotifications } from 'react-icons/io'
 
@@ -10,8 +12,6 @@ const NotificationIcon = (props: Props) => {
 
     const { user } = useUser();
     const { onOpen: openNotificationModal } = useNotificationModal();
-
-    console.log(user?.hasNotifications)
 
     return (
         <button

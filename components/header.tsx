@@ -6,22 +6,24 @@ to enhance user interaction and navigation within the application */
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState, useCallback } from 'react'
-
+import { useSession } from 'next-auth/react'
 
 import NavbarItems from './navbar-item'
 import MobileNavbar from './mobile-navbar'
 import Avatar from './avatar'
+import NotificationIcon from './notification-icon'
+import LogoutButton from './logout-button'
 
 import { FaMagic } from 'react-icons/fa'
 import { RiRobot2Fill } from 'react-icons/ri'
 import { IoMdMenu } from "react-icons/io";
 
-import LogoutButton from './logout-button'
+
 import useAIModal from '@/hooks/useAIModal'
 import useLoginModal from '@/hooks/useLoginModal'
-import { useSession } from 'next-auth/react'
 import useUser from '@/hooks/useUser'
-import NotificationIcon from './notification-icon'
+
+
 
 
 type Props = {}

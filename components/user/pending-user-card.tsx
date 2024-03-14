@@ -1,12 +1,15 @@
 import React, { useCallback } from 'react'
-import Avatar from '../avatar'
-import useUser from '@/hooks/useUser'
 import axios from 'axios'
-import { successNotification } from '@/helpers/success-notification'
+
+import Avatar from '../avatar'
+
 import useGroup from '@/hooks/useGroup'
-import { errorNotification } from '@/helpers/error-notification'
 import usePendingUsers from '@/hooks/usePendingUsers'
 import useGroupMembers from '@/hooks/useGroupMembers'
+import useUser from '@/hooks/useUser'
+
+import { successNotification } from '@/helpers/success-notification'
+import { errorNotification } from '@/helpers/error-notification'
 
 type Props = {
     userId: string

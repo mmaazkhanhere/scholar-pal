@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
 
 import { MdOutlineClose } from "react-icons/md";
+
 import Button from './button';
 
 type Props = {
