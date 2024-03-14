@@ -1,21 +1,29 @@
+/*A react component which represents a card for displaying information about a
+study group. It displays the name of the group, the username of the group creator,
+a short description, number of members, subject of focus of the study group
+and a button to join or leave or request to join a study group */
+
 "use client"
 
-
 import React, { useCallback, useState } from 'react'
-import Avatar from '../avatar'
-import { IStudyGroup } from '@/interface-d'
-import useUser from '@/hooks/useUser'
-import axios from 'axios'
-import { successNotification } from '@/helpers/success-notification'
-import { errorNotification } from '@/helpers/error-notification'
+import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
+import axios from 'axios'
+
+import Avatar from '../avatar'
+
+import useUser from '@/hooks/useUser'
 import useLoginModal from '@/hooks/useLoginModal'
 import useGroup from '@/hooks/useGroup'
 import { useGroups } from '@/hooks/useGroups'
-import { useRouter } from 'next/navigation'
 import usePendingUsers from '@/hooks/usePendingUsers'
 import useGroupMembers from '@/hooks/useGroupMembers'
 import useGroupJoined from '@/hooks/useGroupJoined'
+
+import { successNotification } from '@/helpers/success-notification'
+import { errorNotification } from '@/helpers/error-notification'
+
+import { IStudyGroup } from '@/interface-d'
 
 type Props = {
     groupDetail: IStudyGroup
@@ -25,28 +33,51 @@ const GroupCard = ({ groupDetail }: Props) => {
 
     const [loading, setLoading] = useState<boolean>(false);
 
-    const { status } = useSession();
-    const { onOpen: openLoginModal } = useLoginModal();
-    const { user: currentUser, mutate: updateCurrentUser } = useUser();
-    const { mutate: updateGroupCreatorUser } = useUser(groupDetail.creatorId);
-    const { mutate: updateGroupList } = useGroups();
-    const { mutate: updateGroup } = useGroup(groupDetail.id);
-    const { mutate: updateJoinedGroup } = useGroupJoined(groupDetail.id);
+    const { status } = useSession(); //status of the current login user
+    const { onOpen: openLoginModal } = useLoginModal(); //hook to open login modal
+
+    const { user: currentUser, mutate: updateCurrentUser } = useUser();/* custom
+    hook to fetch the current user details and mutate function to update the user */
+
+    const { mutate: updateGroupCreatorUser } = useUser(groupDetail.creatorId);/* a
+    custom hook to fetch the detail for group creator and mutate function to update
+    the group creator user details */
+
+    const { mutate: updateGroupList } = useGroups();/*hook with mutate function to
+    fetch updated group list */
+
+    const { mutate: updateGroup } = useGroup(groupDetail.id);/*hook with mutate
+    function to fetch updated group of specific group id */
+
+    const { mutate: updateJoinedGroup } = useGroupJoined(groupDetail.id);/*hook
+    with function to fetch updated list of groups user have joined */
+
     const { data: pendingList, mutate: updatePendingList } = usePendingUsers(groupDetail.id)
+    /*custom hook to fetch list of pending members of a group and a mutate 
+    function to fetch updated list of pending members */
+
     const { data: groupMembers = [], mutate: updateGroupMembers } = useGroupMembers(groupDetail.id)
+    /*custom hook to fetch list of group members and a mutate function to fetch
+    updated list of group members */
 
-    const router = useRouter();
+    const router = useRouter(); //access the router object for navigation
 
+    /*function that is triggered when user clicks on the join/leave/pending request
+    button. It first checks if the user is authenticated to perform the request.
+    If so, a POST request is send to specified API endpoint with relevant data.
+    If the status is 200, a success notification is displayed else relevant
+    error notification is displayed */
     const handleJoin = useCallback(async () => {
 
         try {
 
             setLoading(true);
 
-            if (status == 'unauthenticated') {
-                openLoginModal()
+            if (status == 'unauthenticated') {//checks the user authentication
+                openLoginModal() //if not authenticated, open login modal
             }
 
+            //post request to API endpoint
             const request = await axios.post('/api/group/join', {
                 currentUserId: currentUser?.id,
                 groupId: groupDetail.id,
@@ -56,13 +87,13 @@ const GroupCard = ({ groupDetail }: Props) => {
             if (request.status === 200) {
                 successNotification('Request successfully sent');
                 setLoading(false);
-                updateGroup();
-                updateCurrentUser();
-                updateGroupCreatorUser();
-                updateGroupList();
-                updateGroupMembers();
-                updatePendingList();
-                updateJoinedGroup();
+                updateGroup(); //update the specific group
+                updateCurrentUser(); //update current user
+                updateGroupCreatorUser(); //update group creator
+                updateGroupList(); //update group list
+                updateGroupMembers(); //update group members
+                updatePendingList(); //update group pending list
+                updateJoinedGroup(); //update user joined group list
             }
 
         } catch (error) {
@@ -75,6 +106,11 @@ const GroupCard = ({ groupDetail }: Props) => {
     }, [currentUser?.id, groupDetail.creatorId, groupDetail.id, openLoginModal, status, updateCurrentUser, updateGroup, updateGroupCreatorUser, updateGroupList, updateGroupMembers, updateJoinedGroup, updatePendingList])
 
 
+    /*function that takes the user to the group details when clicked on. It checks
+    if the group user is accessing is a private group and user is member of the
+    group. If not, an error notification is displayed informing user that they
+    cannot access the private group unless they are members of the private
+    group*/
     const onClick = () => {
         const isAcceptedMember = groupMembers?.includes(currentUser?.id as any);
 
@@ -92,6 +128,7 @@ const GroupCard = ({ groupDetail }: Props) => {
     }
 
     if (!currentUser || !pendingList || !groupMembers) {
+        //display nothing if the data is not available
         return null;
     }
 
@@ -104,11 +141,17 @@ const GroupCard = ({ groupDetail }: Props) => {
         >
 
             <div className="flex items-start gap-x-4">
+
+                {/*Avatar of the Group */}
                 <Avatar
                     profilePicture={groupDetail.groupAvatar}
                     isSuggestionAvatar
                 />
+
+                {/*Group name and private/open indicator */}
                 <div className='flex flex-col items-start'>
+
+                    {/*Group Name */}
                     <button
                         aria-label='Group Name Link'
                         title='Group Name'
@@ -116,10 +159,14 @@ const GroupCard = ({ groupDetail }: Props) => {
                         className='hover:underline hover:text-[#1abc9c] font-bold text-xl'>
                         {groupDetail.groupName}
                     </button>
+
+                    {/*Group creator username */}
                     <div className='flex items-center gap-x-5'>
                         <p className='text-sm text-[#343a40]/60'>
                             Created by {groupDetail.creator.username}
                         </p>
+
+                        {/*Private (red text) or open (green text) */}
                         {
                             groupDetail.private ? (
                                 <p className='text-red-500 text-sm font-medium'>
@@ -135,15 +182,22 @@ const GroupCard = ({ groupDetail }: Props) => {
                 </div>
             </div>
 
+            {/*Group description */}
             <p className="text-base">
                 {groupDetail.description}
             </p>
+
+            {/*Group subject and member number */}
             <div className="flex items-center gap-x-4">
+
+                {/*Group subject */}
                 <span
                     className="bg-[#343a40]/10 rounded-full px-3 py-1 text-sm 
                     font-semibold text-gray-700">
                     {groupDetail.subject}
                 </span>
+
+                {/*Number of group members */}
                 <span className="bg-[#343a40]/10 rounded-full px-3 py-1 text-sm 
                     font-semibold text-gray-700">
                     {groupMembers?.length} Members
@@ -152,6 +206,8 @@ const GroupCard = ({ groupDetail }: Props) => {
 
             {
                 groupMembers?.includes(currentUser?.id as any) && !pendingList?.includes(currentUser.id) ? (
+                    /*If user is present the group member list and is not present in
+                    the pending list, a group leave button is displayed */
                     <button
                         aria-label='Group to Leave Button'
                         title='Leave Group'
@@ -163,6 +219,8 @@ const GroupCard = ({ groupDetail }: Props) => {
                     </button>
                 ) : pendingList?.includes(currentUser.id) ?
                     (
+                        /*If user is included in the pending list, a request
+                        pending button is displayed */
                         <button
                             title='Group request pending'
                             aria-label='Request pending'
@@ -175,6 +233,9 @@ const GroupCard = ({ groupDetail }: Props) => {
                     )
                     :
                     (
+                        /*If user is not a member of the group and neither is 
+                        present in the pending member list, a join button is
+                        displayed */
                         <button
                             aria-label='Join group button'
                             title='Join Group'

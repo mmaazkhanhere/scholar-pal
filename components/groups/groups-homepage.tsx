@@ -1,3 +1,4 @@
+/*Home page of the group page route */
 import React from 'react'
 import GroupList from './group-list'
 

@@ -10,27 +10,27 @@ import Avatar from '../avatar'
 import useLoginModal from '@/hooks/useLoginModal'
 import useUser from '@/hooks/useUser'
 import useGroupPostModal from '@/hooks/useGroupPostModal'
-import { usePathname } from 'next/navigation'
+
 
 type Props = {}
 
 const GroupPostButton = (props: Props) => {
 
-    const groupId = usePathname().split('/').pop();
+    const { onOpen: openGroupPostModal } = useGroupPostModal() //hook to open group post modal
+    const { onOpen: openLoginModal } = useLoginModal() //hook to open login modal
 
-    const { onOpen: openGroupPostModal } = useGroupPostModal()
-    const { onOpen: openLoginModal } = useLoginModal()
-
-    const { status } = useSession()
-    const { user: currentUser } = useUser();
+    const { status } = useSession() //status of current user
+    const { user: currentUser } = useUser(); //get the current user data
 
     const handleClick = useCallback(() => {
+        /*function that checks if user is authenticated; if they are post modal
+        is opened else login modal will be opened */
         if (status !== 'authenticated') {
             openLoginModal();
         } else {
             openGroupPostModal();
         }
-    }, [status, openLoginModal, openGroupPostModal, groupId])
+    }, [status, openLoginModal, openGroupPostModal])
 
     return (
         <section
@@ -39,11 +39,15 @@ const GroupPostButton = (props: Props) => {
             border-[#343a40]/40 w-full lg:max-w-4xl gap-x-2.5 md:gap-x-5 shadow-md
             hover:scale-95 transition duration-500 cursor-pointer'
         >
+
+            {/*Avatar */}
             <Avatar
                 profilePicture={currentUser?.profilePicture}
                 isPostAvatar
                 userId={currentUser?.id}
             />
+
+            {/*text span */}
             <span
                 className='border border-[#343a40]/30 w-full py-1 md:py-2 px-6 
                 rounded-3xl lg:text-xl text-[#343a40]/60 hover:scale-100'

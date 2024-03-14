@@ -1,20 +1,25 @@
+/*A react component that represents a modal for creating a new study group.
+It uses custom hook to fetch and update relative data. */
+
 "use client"
 
 import React, { useState } from 'react'
+import { useSession } from 'next-auth/react'
+import axios from 'axios'
 
 import Input from '../input'
 import ImageUpload from '../image-upload'
 import ToggleButton from '../toggle-button'
 import Modal from '../modal'
+
 import useGroupModal from '@/hooks/useGroupModal'
 import useLoginModal from '@/hooks/useLoginModal'
-import { useSession } from 'next-auth/react'
-import axios from 'axios'
-import { successNotification } from '@/helpers/success-notification'
 import useUser from '@/hooks/useUser'
-import { errorNotification } from '@/helpers/error-notification'
 import { useGroups } from '@/hooks/useGroups'
 import useGroupJoined from '@/hooks/useGroupJoined'
+
+import { successNotification } from '@/helpers/success-notification'
+import { errorNotification } from '@/helpers/error-notification'
 
 type Props = {}
 
@@ -22,25 +27,32 @@ const CreateGroupModal = (props: Props) => {
 
     const [loading, setLoading] = useState<boolean>(false);
 
+    // state variables for managing modal data
     const [groupName, setGroupName] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [groupAvatar, setGroupAvatar] = useState<string>('');
     const [isPrivate, setIsPrivate] = useState<boolean>(false);
     const [subject, setSubject] = useState<string>('');
 
-    const { isOpen, onClose } = useGroupModal();
-    const { onOpen: openLoginModal } = useLoginModal();
-    const { status } = useSession();
-    const { user: currentUser } = useUser()
-    const { mutate: updateGroupList } = useGroups();
-    const { mutate: updateGroupJoined } = useGroupJoined(currentUser?.id);
 
-    const currentUserId = currentUser?.id
+    const { isOpen, onClose } = useGroupModal(); //hook to group modal for creating group
+    const { onOpen: openLoginModal } = useLoginModal(); //hook to login modal
+    const { status } = useSession(); //current status of login user
+    const { user: currentUser } = useUser() //fetch current user
+    const { mutate: updateGroupList } = useGroups(); //fetch all users
+    const { mutate: updateGroupJoined } = useGroupJoined(currentUser?.id);/*hook
+    with mutate function to fetch updated list of groups user have joined */
+
+    const currentUserId = currentUser?.id //current user id
 
     const handleToggle = () => {
+        //a toggle button to set if the group is private
         setIsPrivate(!isPrivate);
     }
 
+    /*a submit function that is called when user clicks on create button, a POST 
+    request with relative payload is send at specified endpoint. A success
+    notification is received if the request is successful*/
     const handleSubmit = async () => {
         try {
 
@@ -52,16 +64,17 @@ const CreateGroupModal = (props: Props) => {
 
             const request = await axios.post('/api/group', {
                 groupName, description, groupAvatar, isPrivate, subject, currentUserId
-            })
+            }) //POST Request at the specified endpoint
 
             if (request.status === 200) {
                 successNotification('Group Successfully Created');
-                updateGroupList();
-                updateGroupJoined();
+                updateGroupList(); //update group list
+                updateGroupJoined(); //update list of groups user has joined
                 setLoading(false);
-                onClose();
+                onClose(); //close the modal
             }
 
+            //reset the state variable values
             setGroupName('');
             setDescription('');
             setGroupAvatar('');
@@ -69,6 +82,8 @@ const CreateGroupModal = (props: Props) => {
             setSubject('');
 
         } catch (error) {
+
+            //handle relative error and display error notification
 
             console.error('CREATE_GROUP_MODAL_ERROR', error);
 
@@ -84,9 +99,11 @@ const CreateGroupModal = (props: Props) => {
         }
     }
 
+    /*Body of the modal */
     const modalBody: React.ReactNode = (
         <div className='flex flex-col items-start gap-y-5 mt-2'>
 
+            {/*Dropzone to upload file for group avatar */}
             <ImageUpload
                 value={groupAvatar}
                 disabled={loading}
@@ -94,6 +111,7 @@ const CreateGroupModal = (props: Props) => {
                 label='Upload Avatar for Group'
             />
 
+            {/*Name of study group */}
             <Input
                 label='Name of Study Group'
                 value={groupName}
@@ -102,6 +120,8 @@ const CreateGroupModal = (props: Props) => {
             />
 
             <div className='flex flex-col items-start gap-y-2 w-full'>
+
+                {/*Description */}
                 <p className='lg:text-lg font-medium'>
                     Description
                 </p>
@@ -115,6 +135,8 @@ const CreateGroupModal = (props: Props) => {
                         placeholder="Purpose of the Study Group"
                         maxLength={150}
                     />
+
+                    {/*Maximum length of description */}
                     <p
                         className='text-xs self-end'>
                         <span className={`${description.length <= 150 ? 'text-green-500' : 'text-red-500'} `}>
@@ -126,6 +148,7 @@ const CreateGroupModal = (props: Props) => {
 
             </div>
 
+            {/*Subject */}
             <Input
                 label='Subject in Focus'
                 value={subject}
@@ -134,6 +157,7 @@ const CreateGroupModal = (props: Props) => {
                 placeholder='Mathematics'
             />
 
+            {/*Group Private */}
             <div className='flex items-center gap-x-4'>
                 <p className='lg:text-lg font-medium'>
                     Is the Group Private?
@@ -143,8 +167,6 @@ const CreateGroupModal = (props: Props) => {
                     onChange={handleToggle}
                 />
             </div>
-
-
         </div>
     )
 

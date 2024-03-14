@@ -1,20 +1,26 @@
+/*A react component that represents the modal to create post in a specific group */
+
 "use client"
 
 import React, { useCallback, useState } from 'react'
+import axios from 'axios'
+import { usePathname } from 'next/navigation'
+
 import Modal from '../modal'
-import useGroupPostModal from '@/hooks/useGroupPostModal'
-import useUser from '@/hooks/useUser'
 import Avatar from '../avatar'
 import AddTags from '../posts/add-tags'
 import NewPostFooter from '../posts/new-post-footer'
 import PostLength from '../posts/post-length'
+
 import useLoginModal from '@/hooks/useLoginModal'
-import axios from 'axios'
-import { successNotification } from '@/helpers/success-notification'
 import useGroupPosts from '@/hooks/useGroupPosts'
 import useGroup from '@/hooks/useGroup'
+import useGroupPostModal from '@/hooks/useGroupPostModal'
+import useUser from '@/hooks/useUser'
+
+import { successNotification } from '@/helpers/success-notification'
 import { errorNotification } from '@/helpers/error-notification'
-import { usePathname } from 'next/navigation'
+
 
 type Props = {}
 
@@ -26,14 +32,23 @@ const GroupPostModal = (props: Props) => {
     to the post */
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const groupId = usePathname().split('/').pop();
+    const groupId = usePathname().split('/').pop(); //get the group id from the url path
 
-    const { user: currentUser } = useUser();
-    const { isOpen, onClose: closeGroupPostModal } = useGroupPostModal();
+    const { user: currentUser } = useUser(); //fetch current user
+    const { isOpen, onClose: closeGroupPostModal } = useGroupPostModal(); /*hook
+    to open and close the group post modal */
+
     const { data: groupDetail, mutate: updateGroup } = useGroup(groupId as string)
-    const { mutate: updateGroupPosts } = useGroupPosts(groupId as string);
-    const { onOpen: openLoginModal } = useLoginModal();
+    //hook to fetch group detail and mutate function to update the group
 
+    const { mutate: updateGroupPosts } = useGroupPosts(groupId as string);
+    //hook with mutate function to fetch the group update posts
+
+    const { onOpen: openLoginModal } = useLoginModal(); //open login modal
+
+    /*function that is called with post button is clicked on. It makes a POST
+    HTTP request at specified endpoint to create a post. AFter successful 
+    posting, a success notification is displayed with updated data being fetched */
     const handleSubmit = useCallback(async () => {
 
         try {
@@ -46,18 +61,23 @@ const GroupPostModal = (props: Props) => {
 
             if (result.status == 200) {
 
-                successNotification('Post successfully')
+                successNotification('Post successfully') //success notification
 
+                //reset state variables
                 setPostContent('');
                 setTags([]);
+                setIsLoading(false);
+
+                //fetch updated data
                 updateGroupPosts();
                 updateGroup();
-                setIsLoading(false);
                 closeGroupPostModal();
             }
 
         }
         catch (error) {
+
+            //handle error and display error notifications
 
             setIsLoading(false)
             console.error('NEW_POST_MODAL_ERROR', error)
@@ -78,6 +98,7 @@ const GroupPostModal = (props: Props) => {
 
     }, [closeGroupPostModal, groupDetail?.creatorId, groupId, openLoginModal, postContent, tags, updateGroup, updateGroupPosts])
 
+    /*Body of the modal */
     const modalBody: React.ReactNode = (
         <div className='flex flex-col gap-y-5'>
 

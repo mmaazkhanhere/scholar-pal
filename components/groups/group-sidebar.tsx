@@ -1,20 +1,27 @@
+/*A react component that is the sidebar of the group page where details
+of the group is displayed */
+
 "use client"
 
-import useGroup from '@/hooks/useGroup';
+
 import { usePathname } from 'next/navigation';
 import React, { useCallback, useState } from 'react'
+import { useSession } from 'next-auth/react';
+import axios from 'axios';
+
 import Avatar from '../avatar';
 import GroupMemberDetails from './group-member-details';
+import LoadingSpinner from '../loading-spinner';
+
 import useGroupMembers from '@/hooks/useGroupMembers';
 import useUser from '@/hooks/useUser';
-import { useSession } from 'next-auth/react';
 import useLoginModal from '@/hooks/useLoginModal';
 import { useGroups } from '@/hooks/useGroups';
-import axios from 'axios';
+import useGroup from '@/hooks/useGroup';
+import useGroupJoined from '@/hooks/useGroupJoined';
+
 import { successNotification } from '@/helpers/success-notification';
 import { errorNotification } from '@/helpers/error-notification';
-import LoadingSpinner from '../loading-spinner';
-import useGroupJoined from '@/hooks/useGroupJoined';
 
 type Props = {}
 
@@ -22,24 +29,36 @@ const GroupSidebar = (props: Props) => {
 
     const [loading, setLoading] = useState<boolean>(false);
 
-    const groupId = usePathname().split('/groups').pop();
+    const groupId = usePathname().split('/groups').pop(); //get group id from url path
 
-    const { status } = useSession();
-    const { onOpen: openLoginModal } = useLoginModal();
-    const { user: currentUser, mutate: updateCurrentUser } = useUser();
-    const { mutate: updateGroupList } = useGroups();
+    const { status } = useSession(); //status of the current user
+    const { onOpen: openLoginModal } = useLoginModal(); //hook to open login modal
+    const { user: currentUser, mutate: updateCurrentUser } = useUser(); /*fetch
+    current user and mutate function to update the current user */
+
+    const { mutate: updateGroupList } = useGroups();/*mutate function to update
+    the group list */
+
     const { data: groupDetail, mutate: updateGroup } = useGroup(groupId as string)
+    // fetch the group detail and mutate function to update the group
+
     const { data: groupMembers = [], mutate: updateGroupMembers } = useGroupMembers(groupDetail?.id)
-    const { mutate: updateGroupJoined } = useGroupJoined(groupDetail?.id)
+    /*fetch the group members and mutate function to update the group members */
 
-    const isGroupMember = groupMembers?.includes(currentUser?.id as any);
+    const { mutate: updateGroupJoined } = useGroupJoined(groupDetail?.id)/*mutate
+    function to fetch updated list of group joined by user */
 
+    const isGroupMember = groupMembers?.includes(currentUser?.id as any);/*
+    get list of all group members */
+
+    /*A function that is called when user wants to join or leave the group */
     const handleJoin = useCallback(async () => {
         try {
 
             setLoading(true);
 
             if (status == 'unauthenticated') {
+                //open the login modal if the user is not authenticated
                 openLoginModal()
             }
 
@@ -47,16 +66,16 @@ const GroupSidebar = (props: Props) => {
                 currentUserId: currentUser?.id,
                 groupId: groupId,
                 groupCreatorId: groupDetail?.creatorId
-            })
+            }) //post request to API endpoint
 
             if (request.status === 200) {
                 successNotification('Request successfully sent');
                 setLoading(false);
-                updateGroup();
-                updateCurrentUser();
-                updateGroupList();
-                updateGroupMembers();
-                updateGroupJoined();
+                updateGroup();//update the current group
+                updateCurrentUser(); //update current user
+                updateGroupList(); //update group list
+                updateGroupMembers(); //update group members
+                updateGroupJoined(); //update list of groups joined by user
             }
 
         } catch (error) {
@@ -69,6 +88,7 @@ const GroupSidebar = (props: Props) => {
     }, [currentUser?.id, groupDetail?.creatorId, groupId, openLoginModal, status, updateCurrentUser, updateGroup, updateGroupJoined, updateGroupList, updateGroupMembers])
 
     if (!groupDetail) {
+        //if group detail is not fetched, loading spinner is displayed
         return <LoadingSpinner spinnerSize={50} />;
     }
 
