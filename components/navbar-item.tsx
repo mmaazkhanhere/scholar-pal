@@ -40,7 +40,7 @@ const NavbarItems = (props: Props) => {
             {/*Link to forums */}
             <Link
                 title='Forums'
-                href='/forums'
+                href='/forum'
                 aria-label='Forums'
             >
                 <MdForum

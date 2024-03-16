@@ -1,6 +1,8 @@
 
 import "./globals.css";
 import type { Metadata } from "next";
+import 'react-quill/dist/quill.snow.css';
+import 'highlight.js/styles/monokai-sublime.css';
 
 import AuthContext from "@/libs/auth-context";
 
@@ -13,6 +15,7 @@ import CreateGroupModal from "@/components/modals/create-group-modal";
 import NotificationDisplayModal from "@/components/modals/notification-display-modal";
 import UserCardModal from "@/components/modals/user-cards-modal";
 import GroupPostModal from "@/components/modals/group-post-modal";
+import QuestionModal from "@/components/modals/question-modal";
 
 
 export const metadata: Metadata = {
@@ -41,6 +44,7 @@ export default function RootLayout({
           <NotificationDisplayModal />
           <UserCardModal />
           <GroupPostModal />
+          <QuestionModal />
           {children}
         </AuthContext>
       </body>

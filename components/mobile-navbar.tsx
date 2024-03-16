@@ -56,7 +56,7 @@ const MobileNavbar: React.FC<Props> = ({ toggleButton }) => {
                 </Link>
 
                 {/*Link to forums */}
-                <Link href="/forums"
+                <Link href="/forum"
                     className='flex justify-between items-center w-full'
                 >
                     <MdForum
