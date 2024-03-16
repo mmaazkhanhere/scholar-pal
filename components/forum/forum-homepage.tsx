@@ -1,5 +1,6 @@
 import React from 'react'
 import ForumHeader from './forum-header'
+import QuestionsList from './questions-list'
 
 type Props = {}
 
@@ -10,6 +11,7 @@ const ForumHomepage = (props: Props) => {
             lg:grid-cols-7 w-full px-2 lg:px-4 '
         >
             <ForumHeader />
+            <QuestionsList />
         </section>
     )
 }

@@ -138,3 +138,27 @@ export enum NotificationType {
     DOWNVOTE = "DOWNVOTE",
     COMMENT = "COMMENT",
 }
+
+export interface IQuestion {
+    id: string;
+    title: string;
+    body: string;
+    createdAt: Date;
+    updatedAt: Date;
+    authorId: string;
+    author: IUser;
+    answers: IAnswer[]
+}
+
+export interface IAnswer {
+    id: string;
+    body: string;
+    createdAt: Date;
+    updatedAt: Date;
+    authorId: string;
+    questionId: string;
+    upvotes: string[];
+    downvotes: string[];
+    author: IUser;
+    question: IQuestion;
+}

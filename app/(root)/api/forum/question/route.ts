@@ -1,6 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
 import prismadb from '@/libs/prismadb'
 
+export const GET = async (request: NextRequest) => {
+    try {
+        const questions = await prismadb.question.findMany({
+            include: {
+                answers: true,
+                author: {
+                    select: {
+                        name: true,
+                        profilePicture: true
+                    }
+                }
+            }
+        });
+
+        return NextResponse.json(questions);
+    } catch (error) {
+        console.error('GET_ALL_QUESTIONS_API_ERROR', error);
+        return new NextResponse('Internal Server Error', { status: 500 });
+    }
+}
+
+
+
 export const POST = async (request: NextRequest) => {
 
     const body = await request.json();
@@ -28,7 +51,7 @@ export const POST = async (request: NextRequest) => {
 
     } catch (error) {
         console.error('QUESTION_POST_API_ERROR', error);
-        return new NextResponse('Internal Server Error', { status: 500 })
+        return new NextResponse('Internal Server Error', { status: 500 });
     }
 
 }
