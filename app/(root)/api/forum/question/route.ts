@@ -12,6 +12,9 @@ export const GET = async (request: NextRequest) => {
                         profilePicture: true
                     }
                 }
+            },
+            orderBy: {
+                createdAt: 'desc'
             }
         });
 

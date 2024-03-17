@@ -12,7 +12,7 @@ const ForumHomepage = (props: Props) => {
         >
             <div
                 className='lg:col-span-5 w-full flex flex-col items-start 
-                px-2 lg:px-0 '
+                px-4 lg:px-2 '
             >
                 <ForumHeader />
                 <QuestionsList />

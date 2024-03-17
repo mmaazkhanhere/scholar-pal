@@ -1,13 +1,11 @@
-"use client"
+
 
 import { IQuestion } from '@/interface-d'
 import React, { useMemo } from 'react'
 import Avatar from '../avatar'
 import QuestionMetrics from './question-metrics'
-import { useRouter } from 'next/navigation'
-import { useSession } from 'next-auth/react'
-import useLoginModal from '@/hooks/useLoginModal'
 import { format, formatDistanceToNowStrict } from 'date-fns'
+import Link from 'next/link'
 
 type Props = {
     question: IQuestion
@@ -15,18 +13,6 @@ type Props = {
 
 const QuestionCard = ({ question }: Props) => {
 
-    const router = useRouter();
-    const { status } = useSession();
-    const { onOpen: openLoginModal } = useLoginModal();
-
-    const onClick = () => {
-        if (status === 'unauthenticated') {
-            openLoginModal();
-        }
-        else {
-            router.push(`/forum/${question.id}`)
-        }
-    }
 
     const createdAtCalculation = useMemo(() => {
         if (!question.createdAt) {
@@ -43,12 +29,12 @@ const QuestionCard = ({ question }: Props) => {
             className='w-full shadow-lg flex flex-col items-start
             p-7 rounded-lg gap-y-4'
         >
-            <h3
-                onClick={onClick}
+            <Link
+                href={`/forum/${question.id}`}
                 className='lg:text-2xl font-semibold cursor-pointer'
             >
                 {question.title}
-            </h3>
+            </Link>
             <div className='flex items-center justify-between w-full'>
                 <div className='flex items-center gap-x-3'>
                     <Avatar
