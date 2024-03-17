@@ -12,7 +12,7 @@ const ForumHeader = (props: Props) => {
 
     return (
         <section
-            className='lg:col-span-5 w-full flex items-center justify-between '
+            className='w-full flex items-center justify-between '
         >
             <h1 className='text-2xl lg:text-4xl uppercase font-medium lg:font-bold'>
                 All Questions

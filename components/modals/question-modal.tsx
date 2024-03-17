@@ -12,6 +12,7 @@ import { errorNotification } from '@/helpers/error-notification';
 import Input from '../input';
 import { useSession } from 'next-auth/react';
 import useLoginModal from '@/hooks/useLoginModal';
+import useQuestionFetch from '@/hooks/useQuestionFetch';
 
 type Props = {}
 
@@ -52,6 +53,7 @@ const QuestionModal = (props: Props) => {
     const { onOpen: openLoginModal } = useLoginModal();
 
     const { user: currentUser, mutate: updateCurrentUser } = useUser();
+    const { mutate: updateQuestionList } = useQuestionFetch();
     const { status } = useSession();
 
 
@@ -74,6 +76,8 @@ const QuestionModal = (props: Props) => {
                 successNotification('Question Posted');
 
                 updateCurrentUser();
+                updateQuestionList();
+
                 setQuestionContent('')
                 setLoading(false);
                 handleQuestionModal.onClose();
@@ -95,7 +99,7 @@ const QuestionModal = (props: Props) => {
         } finally {
             setLoading(false);
         }
-    }, [currentUser?.id, handleQuestionModal, questionContent, title, updateCurrentUser])
+    }, [currentUser?.id, handleQuestionModal, openLoginModal, questionContent, status, title, updateCurrentUser, updateQuestionList])
 
 
     const modalBody: React.ReactNode = (
