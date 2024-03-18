@@ -104,7 +104,7 @@ const QuestionDetail = (props: Props) => {
 
     return (
         <section
-            className='w-full mx-auto flex flex-col gap-y-4 mt-10'
+            className='w-full mx-auto flex flex-col gap-y-4 mt-10 px-4 lg:px-2'
         >
 
             <Avatar
@@ -132,7 +132,7 @@ const QuestionDetail = (props: Props) => {
                 <div className='flex items-center gap-x-2 text-[#343a40]/70'>
                     <SiAnswer className='w-4 h-4' />
                     <p className='text-sm lg:text-sm '>
-                        {0} Answers
+                        {answersList?.length} Answers
                     </p>
                 </div>
             </div>

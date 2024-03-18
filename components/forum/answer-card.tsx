@@ -48,7 +48,10 @@ const AnswerCard = ({ answer }: Props) => {
                 className='md:text-lg lg:text-xl my-5'
             />
 
-            <ForumButton />
+            <ForumButton
+                answer={answer}
+                questionId={answer.questionId}
+            />
         </article>
     )
 }
