@@ -54,7 +54,9 @@ const QuestionCard = ({ question }: Props) => {
                 </div>
 
                 <div>
-                    <QuestionMetrics />
+                    <QuestionMetrics
+                        questionId={question.id}
+                    />
                 </div>
             </div>
         </article>

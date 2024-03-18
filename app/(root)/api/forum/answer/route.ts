@@ -18,6 +18,16 @@ export const POST = async (request: NextRequest) => {
             return new NextResponse('Missing Data', { status: 400 });
         }
 
+        const question = await prismadb.question.findUnique({
+            where: {
+                id: questionId,
+            },
+            select: {
+                authorId: true
+            }
+        })
+
+
         const answer = await prismadb.answer.create({
             data: {
                 questionId: questionId,
@@ -25,6 +35,24 @@ export const POST = async (request: NextRequest) => {
                 body: answerContent
             }
         })
+
+        await prismadb.notification.create({
+            data: {
+                type: 'NEW_POST',
+                senderId: currentUser.id,
+                body: `${currentUser.name} has answered your question`,
+                userId: question?.authorId as string
+            }
+        })
+
+        await prismadb.user.update({
+            where: {
+                id: question?.authorId
+            },
+            data: {
+                hasNotifications: true
+            }
+        });
 
         return NextResponse.json(answer);
 

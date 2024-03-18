@@ -76,7 +76,8 @@ export const POST = async (request: NextRequest) => {
                     id: answer.authorId
                 },
                 data: {
-                    score: authorUpdatedScore
+                    score: authorUpdatedScore,
+                    hasNotifications: true
                 }
             });
 
