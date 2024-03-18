@@ -23,7 +23,7 @@ export const POST = async (request: NextRequest) => {
                 id: answerId
             },
             select: {
-                upvotes: true,
+                downvotes: true,
                 authorId: true
             }
         })
@@ -38,14 +38,14 @@ export const POST = async (request: NextRequest) => {
         })
 
         const authorScore = author?.score
-        const authorUpdatedScore = authorScore! + 10;
 
+        const authorUpdatedScore = authorScore! - 5;
 
         if (!answer) {
             return new NextResponse('Cannot find answer', { status: 400 });
         }
 
-        let updatedList = answer.upvotes;
+        let updatedList = answer.downvotes;
 
         if (updatedList.includes(currentUser.id)) {
             updatedList = updatedList.filter((userId) => userId !== currentUser.id);
@@ -66,8 +66,8 @@ export const POST = async (request: NextRequest) => {
                 data: {
                     userId: answer.authorId,
                     senderId: currentUser.id,
-                    body: `${currentUser.name} has upvoted your answer`,
-                    type: 'UPVOTE'
+                    body: `${currentUser.name} has downvoted your answer`,
+                    type: 'DOWNVOTE'
                 }
             })
 
@@ -82,19 +82,19 @@ export const POST = async (request: NextRequest) => {
 
         }
 
-        const updatedUpVoteList = await prismadb.answer.update({
+        const updateDownVoteList = await prismadb.answer.update({
             where: {
                 id: answerId
             },
             data: {
-                upvotes: updatedList
+                downvotes: updatedList
             }
         });
 
-        return NextResponse.json(updatedUpVoteList);
+        return NextResponse.json(updateDownVoteList);
 
     } catch (error) {
-        console.error('THUMBUP_POST_API_ERROR', error);
+        console.error('DOWN_VOTE_POST_API_ERROR', error);
         return new NextResponse('Internal Server Error', { status: 500 });
     }
 };

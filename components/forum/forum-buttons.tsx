@@ -1,6 +1,7 @@
 "use client"
 
 import { successNotification } from '@/helpers/success-notification';
+import useDownVote from '@/hooks/useDownVote';
 import useQuestion from '@/hooks/useQuestion';
 import useUpVote from '@/hooks/useUpVote';
 import useUser from '@/hooks/useUser';
@@ -23,14 +24,17 @@ const ForumButton = ({ answer, questionId }: Props) => {
     const { mutate: updateAnswerAuthor } = useUser(answer.authorId);
 
     const { data: upVoteList = [], mutate: updateUpVoteList } = useUpVote(answer?.id);
+    const { data: downVoteList = [], mutate: updateDownVote } = useDownVote(answer?.id);
     const { mutate: updateQuestion } = useQuestion(questionId);
 
     const [upVote, setUpVote] = useState(upVoteList?.includes(currentUser?.id as string));
+    const [downVote, setDownVote] = useState(downVoteList?.includes(currentUser?.id as string));
 
 
     useEffect(() => {
         setUpVote(upVoteList?.includes(currentUser?.id as string));
-    }, [currentUser?.id, upVoteList]);
+        setDownVote(downVoteList?.includes(currentUser?.id as string));
+    }, [currentUser?.id, downVoteList, upVoteList]);
 
     const handleUpVote = useCallback(async () => {
         try {
@@ -58,6 +62,32 @@ const ForumButton = ({ answer, questionId }: Props) => {
         }
     }, [answer?.id, updateAnswerAuthor, updateQuestion, updateUpVoteList])
 
+    const handleDownVote = useCallback(async () => {
+        try {
+            setLoading(true)
+
+            const request = await axios.post('/api/forum/downVote', {
+                answerId: answer?.id,
+            })
+
+            if (request.status === 200) {
+                successNotification('Downvoted')
+
+                updateUpVoteList();
+                updateQuestion();
+                updateAnswerAuthor();
+
+                setLoading(false);
+            }
+
+        } catch (error) {
+            console.error('FORUM_BUTTON_HANDLE_DOWNVOTE_FUNCTION_ERROR', error);
+        }
+        finally {
+            setLoading(false);
+        }
+    }, [answer?.id, updateAnswerAuthor, updateQuestion, updateUpVoteList])
+
     return (
         <div className='flex items-center gap-x-6 mt-5'>
 
@@ -78,10 +108,17 @@ const ForumButton = ({ answer, questionId }: Props) => {
             </button>
 
             {/*Thumb Down Button */}
-            <button className='flex items-center justify-center gap-x-2'>
-                <MdThumbDown className='w-7 h-7' />
+            <button
+                aria-label='Downvote Button'
+                title='Down Vote'
+                className='flex items-center justify-center gap-x-2'
+                onClick={handleDownVote}
+            >
+                <MdThumbDown
+                    className={`${downVote && 'fill-red-500'} w-7 h-7`}
+                />
                 <span>
-                    {0}
+                    {downVoteList.length}
                 </span>
             </button>
         </div>
