@@ -6,11 +6,11 @@ type Props = {}
 
 const ForumButton = (props: Props) => {
     return (
-        <div className='flex items-center gap-x-6'>
+        <div className='flex items-center gap-x-6 mt-5'>
 
             {/*Thumb Up Button */}
             <button className='flex items-center justify-center gap-x-2'>
-                <FaRegThumbsUp className='w-6 h-6' />
+                <FaRegThumbsUp className='w-7 h-7' />
                 <span>
                     {0}
                 </span>
@@ -18,7 +18,7 @@ const ForumButton = (props: Props) => {
 
             {/*Thumb Down Button */}
             <button className='flex items-center justify-center gap-x-2'>
-                <FaRegThumbsDown className='w-6 h-6' />
+                <FaRegThumbsDown className='w-7 h-7' />
                 <span>
                     {0}
                 </span>

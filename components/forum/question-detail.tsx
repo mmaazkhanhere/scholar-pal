@@ -9,7 +9,6 @@ import Avatar from '../avatar'
 import { FaRegClock } from "react-icons/fa6";
 import { SiAnswer } from "react-icons/si";
 import { format, formatDistanceToNowStrict } from 'date-fns'
-import ForumButton from './forum-buttons'
 import { markdownToHtml } from '@/libs/showdown'
 import ReactQuill from 'react-quill'
 import hljs from 'highlight.js'
@@ -17,6 +16,9 @@ import Button from '../button'
 import axios from 'axios'
 import { successNotification } from '@/helpers/success-notification'
 import { errorNotification } from '@/helpers/error-notification'
+import useAnswerList from '@/hooks/useAnswerList'
+import { IAnswer } from '@/interface-d'
+import AnswerCard from './answer-card'
 
 
 type Props = {}
@@ -54,10 +56,11 @@ const QuestionDetail = (props: Props) => {
 
     const questionId = usePathname().split('/').pop();
 
-    const [loading, setLoading] = useState<boolean>(false)
-    const [answerContent, setAnswerContent] = useState<string>('')
+    const [loading, setLoading] = useState<boolean>(false);
+    const [answerContent, setAnswerContent] = useState<string>('');
 
-    const { data: question, isLoading, mutate: updateQuestion } = useQuestion(questionId)
+    const { data: question, isLoading, mutate: updateQuestion } = useQuestion(questionId);
+    const { data: answersList, mutate: updateAnswerList } = useAnswerList(questionId);
 
     const handleSubmit = async () => {
         try {
@@ -69,6 +72,7 @@ const QuestionDetail = (props: Props) => {
             if (request.status == 200) {
                 successNotification('Answer posted');
                 updateQuestion();
+                updateAnswerList();
 
                 setAnswerContent('');
                 setLoading(false);
@@ -98,7 +102,6 @@ const QuestionDetail = (props: Props) => {
         )
     }
 
-
     return (
         <section
             className='w-full mx-auto flex flex-col gap-y-4 mt-10'
@@ -118,17 +121,17 @@ const QuestionDetail = (props: Props) => {
             {/*Creation Time and Answers Received */}
             <div className='flex items-center gap-x-6'>
                 {/*Creation Time */}
-                <div className='flex items-center gap-x-2'>
-                    <FaRegClock className='w-6 h-6' />
-                    <span className='text-sm lg:text-base text-[#343a40]/70'>
+                <div className='flex items-center gap-x-2 text-[#343a40]/70'>
+                    <FaRegClock className='w-4 h-4' />
+                    <span className='text-sm lg:text-sm '>
                         {createdAtCalculation}
                     </span>
                 </div>
 
                 {/*Answer */}
-                <div className='flex items-center gap-x-2'>
-                    <SiAnswer className='w-6 h-6' />
-                    <p className='text-sm lg:text-base text-[#343a40]/70'>
+                <div className='flex items-center gap-x-2 text-[#343a40]/70'>
+                    <SiAnswer className='w-4 h-4' />
+                    <p className='text-sm lg:text-sm '>
                         {0} Answers
                     </p>
                 </div>
@@ -140,10 +143,6 @@ const QuestionDetail = (props: Props) => {
                 dangerouslySetInnerHTML={{ __html: markdownToHtml(question.body) }}
                 className='lg:text-xl my-5'
             />
-
-            <div className='flex items-center'>
-                <ForumButton />
-            </div>
 
             <div className='w-full flex flex-col gap-y-4 lg:mt-10'>
                 <span className='font-bold text-lg'>
@@ -170,8 +169,18 @@ const QuestionDetail = (props: Props) => {
                 <h3 className='lg: text-2xl font-medium'>
                     {question.answers.length} Answers
                 </h3>
-                <div className='flex flex-col items-start gap-y-4'>
-                    Answer Card
+                <div
+                    className='flex flex-col items-start gap-y-4 my-10
+                shadow-xl'
+                >
+                    {
+                        answersList?.map((answer: IAnswer) => (
+                            <AnswerCard
+                                key={answer.id}
+                                answer={answer}
+                            />
+                        ))
+                    }
                 </div>
             </div>
 
