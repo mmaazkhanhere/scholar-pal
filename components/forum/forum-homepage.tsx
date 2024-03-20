@@ -1,6 +1,7 @@
 import React from 'react'
 import ForumHeader from './forum-header'
 import QuestionsList from './questions-list'
+import ForumSidebar from './forum-sidebar'
 
 type Props = {}
 
@@ -16,6 +17,10 @@ const ForumHomepage = (props: Props) => {
             >
                 <ForumHeader />
                 <QuestionsList />
+            </div>
+
+            <div className='hidden lg:block lg:col-span-2 w-full relative'>
+                <ForumSidebar />
             </div>
 
         </section>
