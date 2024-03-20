@@ -35,10 +35,10 @@ const AnswerCard = ({ answer }: Props) => {
                     userId={answer.authorId}
                     profilePicture={answer.author.profilePicture}
                 />
-                <p className='text-xl font-semibold'>
+                <p className='text-lg lg:text-xl font-semibold'>
                     {answer.author.name}
                 </p>
-                <p className='text-sm text-[#343a40]/70'>
+                <p className='text-xs lg:text-sm text-[#343a40]/70'>
                     answered {createdAtCalculation}
                 </p>
             </div>

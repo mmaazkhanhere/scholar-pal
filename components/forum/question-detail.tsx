@@ -19,6 +19,7 @@ import { errorNotification } from '@/helpers/error-notification'
 import useAnswerList from '@/hooks/useAnswerList'
 import { IAnswer } from '@/interface-d'
 import AnswerCard from './answer-card'
+import useTopQuestion from '@/hooks/useTopQuestions'
 
 
 type Props = {}
@@ -61,6 +62,7 @@ const QuestionDetail = (props: Props) => {
 
     const { data: question, isLoading, mutate: updateQuestion } = useQuestion(questionId);
     const { data: answersList, mutate: updateAnswerList } = useAnswerList(questionId);
+    const { mutate: updateTopQuestions } = useTopQuestion();
 
     const handleSubmit = async () => {
         try {
@@ -73,6 +75,7 @@ const QuestionDetail = (props: Props) => {
                 successNotification('Answer posted');
                 updateQuestion();
                 updateAnswerList();
+                updateTopQuestions();
 
                 setAnswerContent('');
                 setLoading(false);
@@ -114,7 +117,7 @@ const QuestionDetail = (props: Props) => {
                 userId={question.author.id}
             />
 
-            <h1 className='text-3xl font-bold'>
+            <h1 className='text-2xl lg:text-3xl font-bold'>
                 {question.title}
             </h1>
 
@@ -166,7 +169,7 @@ const QuestionDetail = (props: Props) => {
             </div>
 
             <div className='flex flex-col items-start lg:mt-20'>
-                <h3 className='lg: text-2xl font-medium'>
+                <h3 className='text-lg lg:text-2xl font-medium'>
                     {question.answers.length} Answers
                 </h3>
                 <div

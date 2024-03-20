@@ -100,9 +100,9 @@ const ForumButton = ({ answer, questionId }: Props) => {
                 onClick={handleUpVote}
             >
                 <MdThumbUp
-                    className={` ${upVote && 'fill-[#1abc9c]'} w-7 h-7 `}
+                    className={` ${upVote && 'fill-[#1abc9c]'} w-5 lg:w-7 h-5 lg:h-7 `}
                 />
-                <span>
+                <span className='text-sm lg:text-base'>
                     {upVoteList.length}
                 </span>
             </button>
@@ -115,9 +115,9 @@ const ForumButton = ({ answer, questionId }: Props) => {
                 onClick={handleDownVote}
             >
                 <MdThumbDown
-                    className={`${downVote && 'fill-red-500'} w-7 h-7`}
+                    className={`${downVote && 'fill-red-500'} w-5 lg:w-7 h-5 lg:h-7`}
                 />
-                <span>
+                <span className='text-sm lg:text-base'>
                     {downVoteList.length}
                 </span>
             </button>

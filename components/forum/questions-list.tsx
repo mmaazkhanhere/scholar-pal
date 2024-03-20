@@ -18,13 +18,18 @@ const QuestionsList = (props: Props) => {
     }
 
     return (
-        <div className='w-full border mt-10 flex flex-col gap-y-4'>
+        <div className='w-full mt-10'>
             {
                 questionList?.map((question) => (
-                    <QuestionCard
+                    <div
                         key={question.id}
-                        question={question}
-                    />
+                        className='flex flex-col gap-y-10 lg:gap-y-4'
+                    >
+                        <QuestionCard
+                            question={question}
+                        />
+                    </div>
+
                 ))
             }
         </div>

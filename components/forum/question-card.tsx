@@ -35,7 +35,10 @@ const QuestionCard = ({ question }: Props) => {
             >
                 {question.title}
             </Link>
-            <div className='flex items-center justify-between w-full'>
+            <div
+                className='flex flex-col lg:flex-row lg:items-center 
+            lg:justify-between w-full gap-y-4'
+            >
                 <div className='flex items-center gap-x-3'>
                     <Avatar
                         isHeaderAvatar
@@ -48,7 +51,7 @@ const QuestionCard = ({ question }: Props) => {
                         {question.author.name}
                     </p>
 
-                    <p className='text-sm text-[#343a40]/60'>
+                    <p className='hidden lg:block text-sm text-[#343a40]/60'>
                         asked {createdAtCalculation}
                     </p>
                 </div>
