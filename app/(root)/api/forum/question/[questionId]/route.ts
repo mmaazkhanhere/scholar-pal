@@ -13,7 +13,7 @@ export const GET = async (request: NextRequest) => {
 
         if (!questionId) {
             //if no question id, return nothing
-            return null;
+            return new NextResponse('Question ID is missing', { status: 400 });
         }
 
         /*find the question using the prisma query and return all of its relative

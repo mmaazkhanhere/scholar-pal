@@ -11,8 +11,8 @@ export const GET = async (request: NextRequest) => {
     try {
 
         if (!answerId) {
-            //if no answerId, return nothing
-            return null;
+            //if no answerId, return error message
+            return new NextResponse('Answer ID is missing', { status: 400 });;
         }
 
         //get the list of down vote list for a given answer id
@@ -26,8 +26,8 @@ export const GET = async (request: NextRequest) => {
         })
 
         if (!downVoteList) {
-            //if no down vote list, return nothing
-            return null;
+            //if no down vote list, return error message
+            return new NextResponse('Down vote list is missing', { status: 400 });
         }
 
         return NextResponse.json(downVoteList.downvotes)  //return list of down votes

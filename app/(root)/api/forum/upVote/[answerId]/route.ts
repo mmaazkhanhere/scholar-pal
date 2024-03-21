@@ -11,7 +11,7 @@ export const GET = async (request: NextRequest) => {
 
         if (!answerId) {
             //return nothing if no answer id found
-            return null;
+            return new NextResponse('Answer ID is missing', { status: 400 });
         }
 
         //find the answer and fetch its up votes list
@@ -26,7 +26,7 @@ export const GET = async (request: NextRequest) => {
 
         if (!upVoteList) {
             //return nothing if no vote list found
-            return null;
+            return new NextResponse('Answer ID is missing', { status: 400 });
         }
 
         return NextResponse.json(upVoteList.upvotes) //return the list of up votes
