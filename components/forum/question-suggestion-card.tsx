@@ -1,3 +1,7 @@
+/*a react component that represents the UI of the top questions suggestion card.
+It displays the question title and a navigation arrow. When user clicks on the
+card, they are navigated to the question detail overview*/
+
 import Link from 'next/link'
 import React from 'react'
 

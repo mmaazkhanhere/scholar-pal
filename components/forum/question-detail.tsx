@@ -1,39 +1,53 @@
+/*A react component which represents the detail view of question, read existing 
+answers, and submit their answers. It provides a rich text editor for composing
+answers and updates the UI dynamically based on user interactions and data changes*/
+
 "use client"
 
-import useQuestion from '@/hooks/useQuestion'
-import { usePathname } from 'next/navigation'
 import React, { useMemo, useState } from 'react'
+import { usePathname } from 'next/navigation'
+import ReactQuill from 'react-quill'
+import hljs from 'highlight.js'
+import axios from 'axios'
+import { format, formatDistanceToNowStrict } from 'date-fns'
+
 import LoadingSpinner from '../loading-spinner'
 import Avatar from '../avatar'
+import AnswerCard from './answer-card'
+import Button from '../button'
+
+import useQuestion from '@/hooks/useQuestion'
+import useAnswerList from '@/hooks/useAnswerList'
+import useTopQuestion from '@/hooks/useTopQuestions'
+
+import { markdownToHtml } from '@/libs/showdown'
+
+import { successNotification } from '@/helpers/success-notification'
+import { errorNotification } from '@/helpers/error-notification'
+
+import { IAnswer } from '@/interface-d'
 
 import { FaRegClock } from "react-icons/fa6";
 import { SiAnswer } from "react-icons/si";
-import { format, formatDistanceToNowStrict } from 'date-fns'
-import { markdownToHtml } from '@/libs/showdown'
-import ReactQuill from 'react-quill'
-import hljs from 'highlight.js'
-import Button from '../button'
-import axios from 'axios'
-import { successNotification } from '@/helpers/success-notification'
-import { errorNotification } from '@/helpers/error-notification'
-import useAnswerList from '@/hooks/useAnswerList'
-import { IAnswer } from '@/interface-d'
-import AnswerCard from './answer-card'
-import useTopQuestion from '@/hooks/useTopQuestions'
 
 
 type Props = {}
 
+
+/*These constants define configuration options for the ReactQuill editor */
+
 const modules = {
     toolbar: [
-        [{ header: [1, 2, false] }],
-        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{ header: [1, 2, false] }], //heading section
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'], //text formatting
         [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
-        ['link', 'image'],
-        ['clean'],
+        //creating ordered and unordered lists
+        ['link', 'image'], //adding hyperlinks and images
+        ['clean'], //remove all formatting from selected text
     ],
     syntax: {
-        highlight: (text: any) => hljs.highlightAuto(text).value,
+        highlight: (text: any) => hljs.highlightAuto(text).value, /*syntax 
+        for highlight feature */
     },
 };
 
@@ -55,15 +69,27 @@ const formats = [
 
 const QuestionDetail = (props: Props) => {
 
-    const questionId = usePathname().split('/').pop();
+    const questionId = usePathname().split('/').pop();//get question id from url path
 
     const [loading, setLoading] = useState<boolean>(false);
-    const [answerContent, setAnswerContent] = useState<string>('');
+    const [answerContent, setAnswerContent] = useState<string>(''); /*state variable
+    for the answer content */
 
     const { data: question, isLoading, mutate: updateQuestion } = useQuestion(questionId);
-    const { data: answersList, mutate: updateAnswerList } = useAnswerList(questionId);
-    const { mutate: updateTopQuestions } = useTopQuestion();
+    /*custom hook to fetch the question details and a mutate function to update
+    the question */
 
+    const { data: answersList, mutate: updateAnswerList } = useAnswerList(questionId);
+    /*custom hook to fetch the list of answers and a mutate function to update
+    the list of answers */
+
+    const { mutate: updateTopQuestions } = useTopQuestion();/*mutate function
+    to update the top questions */
+
+    /*function is called when user posts an answer. It makes an http POST request
+    to specified endpoint. If the response status is 200, a success notification 
+    is displayed. The question, list of answers and top questions list is
+    updated. If any error occurs, an error notification is displayed */
     const handleSubmit = async () => {
         try {
             setLoading(true);
@@ -88,6 +114,8 @@ const QuestionDetail = (props: Props) => {
         }
     }
 
+    /*function to calculate relative time of question creation and display it 
+    in specific format */
     const createdAtCalculation = useMemo(() => {
         if (!question?.createdAt) {
             return null;
@@ -97,6 +125,8 @@ const QuestionDetail = (props: Props) => {
         return `${timeString}, ${relativeTimeString} ago`;
     }, [question?.createdAt]);
 
+
+    /*While the question details are being fetched, display a loading spinner */
     if (isLoading || !question) {
         return (
             <div className='flex items-center justify-center w-screen h-screen'>
@@ -110,6 +140,7 @@ const QuestionDetail = (props: Props) => {
             className='w-full mx-auto flex flex-col gap-y-4 mt-10 px-4 lg:px-2'
         >
 
+            {/*Author Avatar */}
             <Avatar
                 isSuggestionAvatar
                 isNavigable={true}
@@ -117,6 +148,7 @@ const QuestionDetail = (props: Props) => {
                 userId={question.author.id}
             />
 
+            {/*Question title */}
             <h1 className='text-2xl lg:text-3xl font-bold'>
                 {question.title}
             </h1>
@@ -125,7 +157,11 @@ const QuestionDetail = (props: Props) => {
             <div className='flex items-center gap-x-6'>
                 {/*Creation Time */}
                 <div className='flex items-center gap-x-2 text-[#343a40]/70'>
+
+                    {/*Icon */}
                     <FaRegClock className='w-4 h-4' />
+
+                    {/*Time of Creation */}
                     <span className='text-sm lg:text-sm '>
                         {createdAtCalculation}
                     </span>
@@ -133,24 +169,33 @@ const QuestionDetail = (props: Props) => {
 
                 {/*Answer */}
                 <div className='flex items-center gap-x-2 text-[#343a40]/70'>
+
+                    {/*Icon */}
                     <SiAnswer className='w-4 h-4' />
+
+                    {/*Total answers */}
                     <p className='text-sm lg:text-sm '>
                         {answersList?.length} Answers
                     </p>
                 </div>
             </div>
 
-            {/*Question*/}
+            {/*Question body*/}
 
             <div
                 dangerouslySetInnerHTML={{ __html: markdownToHtml(question.body) }}
                 className='lg:text-xl my-5'
             />
 
+            {/*New Answer */}
             <div className='w-full flex flex-col gap-y-4 lg:mt-10'>
-                <span className='font-bold text-lg'>
+
+                {/*Subheading */}
+                <h3 className='font-bold text-lg'>
                     Write your answer
-                </span>
+                </h3>
+
+                {/*text editor */}
                 <ReactQuill
                     value={answerContent}
                     onChange={setAnswerContent}
@@ -159,6 +204,8 @@ const QuestionDetail = (props: Props) => {
                     modules={modules}
                     formats={formats}
                 />
+
+                {/*button to submit answer */}
                 <Button
                     ariaLabel='Submit Button'
                     disabled={loading}
@@ -168,10 +215,15 @@ const QuestionDetail = (props: Props) => {
                 />
             </div>
 
+            {/*List of answers */}
             <div className='flex flex-col items-start lg:mt-20'>
+
+                {/*Subheading */}
                 <h3 className='text-lg lg:text-2xl font-medium'>
                     {question.answers.length} Answers
                 </h3>
+
+                {/*List of answers */}
                 <div
                     className='flex flex-col items-start gap-y-4 my-10
                 shadow-xl'

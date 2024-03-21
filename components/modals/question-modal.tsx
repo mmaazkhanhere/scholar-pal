@@ -1,21 +1,29 @@
+/*A react component that displays a modal for posting a question */
+
 "use client"
 
 import React, { useCallback, useState } from 'react'
-import Modal from '../modal'
-import useQuestionModal from '@/hooks/useQuestionModal'
 import ReactQuill from 'react-quill';
 import hljs from 'highlight.js';
-import useUser from '@/hooks/useUser';
 import axios from 'axios';
-import { successNotification } from '@/helpers/success-notification';
-import { errorNotification } from '@/helpers/error-notification';
-import Input from '../input';
 import { useSession } from 'next-auth/react';
+
+import Modal from '../modal'
+import Input from '../input';
+
+import useQuestionModal from '@/hooks/useQuestionModal'
+import useUser from '@/hooks/useUser';
 import useLoginModal from '@/hooks/useLoginModal';
 import useQuestionFetch from '@/hooks/useQuestionFetch';
 
+import { successNotification } from '@/helpers/success-notification';
+import { errorNotification } from '@/helpers/error-notification';
+
+
 type Props = {}
 
+/*the constants is used to configure the ReactQuill editor providing various editing
+and formatting options */
 const modules = {
     toolbar: [
         [{ header: [1, 2, false] }],
@@ -46,17 +54,26 @@ const formats = [
 const QuestionModal = (props: Props) => {
 
     const [loading, setLoading] = useState<boolean>(false);
-    const [questionContent, setQuestionContent] = useState<string>('');
-    const [title, setTitle] = useState<string>('');
+    const [questionContent, setQuestionContent] = useState<string>('');/*state 
+    variable for the content of question */
 
-    const handleQuestionModal = useQuestionModal();
-    const { onOpen: openLoginModal } = useLoginModal();
+    const [title, setTitle] = useState<string>('');//title of the question
 
-    const { user: currentUser, mutate: updateCurrentUser } = useUser();
-    const { mutate: updateQuestionList } = useQuestionFetch();
-    const { status } = useSession();
+    const handleQuestionModal = useQuestionModal(); //hook to manage the question modal
+    const { onOpen: openLoginModal } = useLoginModal(); //hook to open the login modal
 
+    const { user: currentUser, mutate: updateCurrentUser } = useUser(); /*hook
+    to fetch current user and mutate function to update the current user */
 
+    const { mutate: updateQuestionList } = useQuestionFetch(); /*mutate function
+    to update the list of questions */
+
+    const { status } = useSession(); //status of the current user
+
+    /*function that is called when user post the question. An http POST request
+    is made to the specified endpoint. If the response status is 200, a success 
+    notification is displayed with relative data being updated and the modal is
+    closed. If any error occurs, an error notification is displayed */
     const handleSubmit = useCallback(async () => {
 
         try {
@@ -102,9 +119,11 @@ const QuestionModal = (props: Props) => {
     }, [currentUser?.id, handleQuestionModal, openLoginModal, questionContent, status, title, updateCurrentUser, updateQuestionList])
 
 
+    /*Body of the modal */
     const modalBody: React.ReactNode = (
         <div className='flex flex-col items-start w-full gap-y-4'>
 
+            {/*Title of the question */}
             <Input
                 label='Title'
                 disabled={loading}
@@ -113,6 +132,7 @@ const QuestionModal = (props: Props) => {
 
             />
 
+            {/*Text Editor */}
             <ReactQuill
                 theme='snow'
                 value={questionContent}
