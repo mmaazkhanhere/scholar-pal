@@ -6,7 +6,6 @@ answers and updates the UI dynamically based on user interactions and data chang
 
 import React, { useMemo, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import ReactQuill from 'react-quill'
 import hljs from 'highlight.js'
 import axios from 'axios'
 import { format, formatDistanceToNowStrict } from 'date-fns'
@@ -29,43 +28,11 @@ import { IAnswer } from '@/interface-d'
 
 import { FaRegClock } from "react-icons/fa6";
 import { SiAnswer } from "react-icons/si";
+import TextEditor from '../text-editor'
+import HtmlParser from '../html-parser'
 
 
 type Props = {}
-
-
-/*These constants define configuration options for the ReactQuill editor */
-
-const modules = {
-    toolbar: [
-        [{ header: [1, 2, false] }], //heading section
-        ['bold', 'italic', 'underline', 'strike', 'blockquote'], //text formatting
-        [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
-        //creating ordered and unordered lists
-        ['link', 'image'], //adding hyperlinks and images
-        ['clean'], //remove all formatting from selected text
-    ],
-    syntax: {
-        highlight: (text: any) => hljs.highlightAuto(text).value, /*syntax 
-        for highlight feature */
-    },
-};
-
-const formats = [
-    'header',
-    'bold',
-    'italic',
-    'underline',
-    'strike',
-    'list',
-    'bullet',
-    'indent',
-    'link',
-    'code',
-    'image',
-    'video',
-];
-
 
 const QuestionDetail = (props: Props) => {
 
@@ -135,6 +102,8 @@ const QuestionDetail = (props: Props) => {
         )
     }
 
+    console.log(question.body)
+
     return (
         <section
             className='w-full mx-auto flex flex-col gap-y-4 mt-10 px-4 lg:px-2'
@@ -182,10 +151,13 @@ const QuestionDetail = (props: Props) => {
 
             {/*Question body*/}
 
-            <div
+            <HtmlParser
+                data={question.body}
+            />
+            {/* <div
                 dangerouslySetInnerHTML={{ __html: markdownToHtml(question.body) }}
                 className='lg:text-xl my-5'
-            />
+            /> */}
 
             {/*New Answer */}
             <div className='w-full flex flex-col gap-y-4 lg:mt-10'>
@@ -196,13 +168,9 @@ const QuestionDetail = (props: Props) => {
                 </h3>
 
                 {/*text editor */}
-                <ReactQuill
-                    value={answerContent}
-                    onChange={setAnswerContent}
-                    className='w-full '
-                    theme='snow'
-                    modules={modules}
-                    formats={formats}
+                <TextEditor
+                    content={answerContent}
+                    setContent={setAnswerContent}
                 />
 
                 {/*button to submit answer */}

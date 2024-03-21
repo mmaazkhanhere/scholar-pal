@@ -67,6 +67,7 @@ const AnswerCard = ({ answer }: Props) => {
 
             {/*Answer body that is displayed in the format created using the
             text editor (preserves the format of the answer) */}
+
             <div
                 dangerouslySetInnerHTML={{ __html: markdownToHtml(answer.body) }}
                 className='md:text-lg lg:text-xl my-5'

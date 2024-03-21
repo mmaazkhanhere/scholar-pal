@@ -3,7 +3,6 @@
 "use client"
 
 import React, { useCallback, useState } from 'react'
-import ReactQuill from 'react-quill';
 import hljs from 'highlight.js';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
@@ -18,38 +17,11 @@ import useQuestionFetch from '@/hooks/useQuestionFetch';
 
 import { successNotification } from '@/helpers/success-notification';
 import { errorNotification } from '@/helpers/error-notification';
+import TextEditor from '../text-editor';
 
 
 type Props = {}
 
-/*the constants is used to configure the ReactQuill editor providing various editing
-and formatting options */
-const modules = {
-    toolbar: [
-        [{ header: [1, 2, false] }],
-        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-        [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
-        ['link', 'image'],
-        ['clean'],
-    ],
-    syntax: {
-        highlight: (text: any) => hljs.highlightAuto(text).value,
-    },
-};
-
-const formats = [
-    'header',
-    'bold',
-    'italic',
-    'underline',
-    'strike',
-    'list',
-    'bullet',
-    'indent',
-    'link',
-    'image',
-    'video',
-];
 
 const QuestionModal = (props: Props) => {
 
@@ -133,14 +105,9 @@ const QuestionModal = (props: Props) => {
             />
 
             {/*Text Editor */}
-            <ReactQuill
-                theme='snow'
-                value={questionContent}
-                onChange={setQuestionContent}
-                className='w-full'
-                modules={modules}
-                formats={formats}
-
+            <TextEditor
+                content={questionContent}
+                setContent={setQuestionContent}
             />
         </div>
     )
