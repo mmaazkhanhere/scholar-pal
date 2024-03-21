@@ -24,7 +24,7 @@ import "prismjs/components/prism-sql";
 import "prismjs/components/prism-markup";
 import "prismjs/plugins/line-numbers/prism-line-numbers.js";
 import "prismjs/plugins/line-numbers/prism-line-numbers.css";
-import '@/app/prism.css'
+import "@/styles/prism.css";
 
 interface Props {
     data: string;
@@ -36,12 +36,7 @@ const HtmlParser = ({ data }: Props) => {
     }, []);
 
     return (
-        <div
-            className=" max-w-full prose 
-        prose-headings:text-[#343a40]  prose-p:text-[#343a40]  
-        prose-ul:text-[#343a40] prose-ol:text-[#343a40]
-        w-full min-w-full"
-        >
+        <div className="text-dark400_light700 markdown w-full min-w-full">
             {parser(data)}
         </div>
     );
