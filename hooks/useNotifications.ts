@@ -1,3 +1,5 @@
+/*A custom hook that fetches all the notification of the user provided with userID */
+
 "use client"
 
 import { INotification } from "@/interface-d"

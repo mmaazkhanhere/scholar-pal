@@ -1,3 +1,5 @@
+/*A custom hook to fetch details of a question given questionId */
+
 "use client"
 
 import useSWR from "swr"

@@ -1,3 +1,5 @@
+/*a custom hook that fetches list of all the group created */
+
 "use client"
 
 import useSWR from "swr"

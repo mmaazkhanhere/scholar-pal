@@ -1,3 +1,5 @@
+/*A custom hook to fetch list of questions for suggestion */
+
 "use client"
 
 import useSWR from "swr"

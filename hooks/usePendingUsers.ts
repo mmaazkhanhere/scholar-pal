@@ -1,3 +1,6 @@
+/*A custom hook that fetches the list of pending users of a group given the
+groupId which is used in fetching */
+
 "use client"
 
 import fetcher from "@/libs/fetcher"

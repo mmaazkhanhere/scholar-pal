@@ -1,3 +1,5 @@
+/*a custom hook that fetches up votes an answer has received */
+
 "use client"
 
 import useSWR from "swr"

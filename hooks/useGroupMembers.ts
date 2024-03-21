@@ -1,3 +1,6 @@
+/*A custom hook which is responsible for fetching the list of members associated with
+a specific group ID */
+
 "use client"
 
 import { IMembership } from "@/interface-d";

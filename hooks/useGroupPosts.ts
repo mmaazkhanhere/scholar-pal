@@ -1,3 +1,6 @@
+/*a custom react hook that fetch list of post associated with a group using groupId
+provided  */
+
 "use client"
 
 import useSWR from 'swr';

@@ -1,3 +1,6 @@
+/*a custom hook that fetches list of down votes an answer has received given 
+an answerId */
+
 "use client"
 
 import useSWR from "swr"
